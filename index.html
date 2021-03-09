@@ -241,40 +241,6 @@
 <p>0001 01          移位</p>
 <p>0001 0100     补位</p>
 <p>结果:20</p>
-<h2 id="Mysql位运算简化一对多关系"><a href="#Mysql位运算简化一对多关系" class="headerlink" title="Mysql位运算简化一对多关系"></a><strong><em>Mysql位运算简化一对多关系</em></strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">这个举个例子：这边涉及到位运算，首先我们先假设一个6位二进制，0代表关闭，1代表开启</span><br><span class="line">0 0 0 0 0 0   #这代表全关闭</span><br><span class="line">0 0 0 0 0 1   #只开启1    二的零次方 1</span><br><span class="line">0 0 0 0 1 0   #只开启2    二的一次方 2</span><br><span class="line">0 0 0 1 0 0   #只开启3    二的二次方 4</span><br><span class="line">0 0 1 0 0 0   #只开启4    二的三次方 8</span><br><span class="line">0 1 0 0 0 0   #只开启5    二的四次方 16 </span><br><span class="line">1 0 0 0 0 0   #只开启6    二的五次方 32</span><br></pre></td></tr></table></figure>
-
-<p>所以，运用这个技巧，首先字段的值都要是以2的N次幂为基础，如下:</p>
-<p>1，2，4，8，16，32，64，128，512，1024，2048，4096…</p>
-<p>然后，把上面的每一个值当做一个属性。多个属性就进行累加，然后记录合。</p>
-<p>为什么是2的N次幂呢？</p>
-<p>因为这种情况下每个元素的二进制都有且仅有一个栏位为1，为1的栏位也都是不同的，赋予其独特性。而这种独特性有多奇妙，就要往下看了。</p>
-<p>这个技巧适用于属性较少的一对多的场景，可以存储1个或者多个。</p>
-<p>– 添加一个分类 用 “|”SELECT (4|2|1);  4+2+1= 7 7代表这4，2，1三个属性。</p>
-<p> 0001</p>
-<p> 0010</p>
-<p> 0100</p>
-<hr>
-<p> 0111</p>
-<p>为什么可以直接相加呢？因为”|”是有1则为1，你会发现(当然是2的N次幂这种)，用“|”会增加一个为1的栏位，好巧这些值又都只是二进制只有一个栏位为1的值。</p>
-<p>– 去掉一个分类，用“^”SELECT 7 ^ 1; 7-1=6    6代表4,2这两个数据(不相同时，结果为 1 ，否则为 0)</p>
-<p> 0111</p>
-<p> 0001</p>
-<hr>
-<p>0110</p>
-<p>– 当我们需要查询某个月份的景点时，例如查询3月份的景点，可使用以下语句：</p>
-<p>SELECT * FROM <code>spots</code> WHERE <code>month</code> &amp; 4 = 4;</p>
-<p>– 当设置某个景点适合某个月份时，例如设置4325的景点适合2月份，可使用下面的语句：</p>
-<p>UPDATE <code>spots</code> SET <code>month</code> = <code>month</code> | 2 WHERE <code>id</code> = 4325</p>
-<p>– 当取消设置某个景点的月份时，可使用下面的语句：</p>
-<p>UPDATE <code>spots</code> SET<code> month</code> = <code>month</code> ^ 2 WHERE <code>id</code>= 4325</p>
-<p>– 查询同时适合多个月份的数据，例如需要查询设置了11，12，1月份的景点，将其三个月份对应的数值加起来，结果为6145，然后使用这个数值进行查询：</p>
-<p>SELECT * FROM <code>spots</code> WHERE <code>month</code> &amp; 6145 = 6145</p>
-<p>– 查询只要适合，1,11,12月份其中一个月份的景点就行</p>
-<p>SELECT * FROM <code>spots</code> WHERE (<code>month</code> &amp; 4096 = 4096) or (<code>month</code> &amp; 2048 = 2048) or (<code>month</code> &amp; 1 = 1)</p>
-<h2 id="php运用"><a href="#php运用" class="headerlink" title="php运用"></a>php运用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$a &lt;&lt; $b    Shift left（左移） 将 $a 中的位向左移动 $b 次（每一次移动都表示“乘以 2”）。</span><br><span class="line">$a &gt;&gt; $b   Shift right（右移） 将 $a 中的位向右移动 $b 次（每一次移动都表示“除以 2”）。</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">那么反转，给你一个7如果解读，</span><br><span class="line">(7 &amp; 1)   &gt; 1      &#x3D;&gt;   (7 &amp; （1 &lt;&lt; 0)) &gt; 1</span><br><span class="line">(7 &amp; 2)   &gt; 1      &#x3D;&gt;   (7 &amp;  (1 &lt;&lt; 1))&gt; 1</span><br><span class="line">(7 &amp; 4)   &gt; 1      &#x3D;&gt;   (7 &amp;  (1 &lt;&lt; 2))&gt; 1</span><br><span class="line">位运算会转成2进制，而&amp;的特性是都要为1才为1，这边的1，2，4都是只有一个位置为1，其他都为0。</span><br><span class="line">这样就可以通过是否为1判断。</span><br></pre></td></tr></table></figure>
-
 
       
 
