@@ -59,6 +59,8 @@
 	        
 				<li><a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/">知识点</a></li>
 	        
+				<li><a href="/tags/mysql/">mysql</a></li>
+	        
 				<li><a href="/tags/%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/">工具推荐</a></li>
 	        
 			</ul>
@@ -113,6 +115,8 @@
 			
 				
 			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -125,13 +129,15 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 25%"><a href="/">主页</a></li>
+					<li style="width: 20%"><a href="/">主页</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/%E9%9A%8F%E7%AC%94/">随笔</a></li>
+					<li style="width: 20%"><a href="/tags/%E9%9A%8F%E7%AC%94/">随笔</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/">知识点</a></li>
+					<li style="width: 20%"><a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/">知识点</a></li>
 		        
-					<li style="width: 25%"><a href="/tags/%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/">工具推荐</a></li>
+					<li style="width: 20%"><a href="/tags/mysql/">mysql</a></li>
+		        
+					<li style="width: 20%"><a href="/tags/%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/">工具推荐</a></li>
 		        
 				</ul>
 			</nav>
@@ -147,6 +153,106 @@
           </div>
           <div id="js-content" class="content-ll">
             
+  
+    <article id="post-concat以及group-concat" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/03/22/concat%E4%BB%A5%E5%8F%8Agroup-concat/">concat以及group_concat</a>
+    </h1>
+  
+
+        
+        <a href="/2021/03/22/concat%E4%BB%A5%E5%8F%8Agroup-concat/" class="archive-article-date">
+  	<time datetime="2021-03-22T11:28:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-03-22</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>concat()函数</p>
+</blockquote>
+<p>1.功能：将多个字符串连成一个字符串。</p>
+<p>2.语法：concat(str1,str2,…)<br>返回结果为连接参数产生的字符串，如果有任何一个参数为NULL，则返回值为NULL。这边测试null，空白都没有效果，只有NULL有效。</p>
+<p>3.举例:</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>姓</th>
+<th>名</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>林</td>
+<td>晓明</td>
+</tr>
+</tbody></table>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> concat(id,first_name,last_name) <span class="keyword">as</span> info <span class="keyword">from</span> business_account_info <span class="keyword">where</span> id<span class="operator">=</span><span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>结果：1林晓明</p>
+<p>添加分隔符</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> concat(id,&quot;.&quot;，first_name,&quot; &quot;,last_name) <span class="keyword">as</span> info <span class="keyword">from</span> business_account_info <span class="keyword">where</span> id<span class="operator">=</span><span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>结果：1.林 晓明</p>
+        
+          <a class="article-more-a" href="/2021/03/22/concat%E4%BB%A5%E5%8F%8Agroup-concat/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/03/22/concat%E4%BB%A5%E5%8F%8Agroup-concat/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
   
     <article id="post-关于学习的一些思考" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
@@ -667,6 +773,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">工具推荐</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
               </li>
             
             <div class="clearfix"></div>
