@@ -63,6 +63,10 @@
 	        
 				<li><a href="/tags/GO/">GO</a></li>
 	        
+				<li><a href="/tags/%E7%BD%91%E7%BB%9C/">网络</a></li>
+	        
+				<li><a href="/tags/gopush/">gopush</a></li>
+	        
 				<li><a href="/tags/%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/">优化案例</a></li>
 	        
 				<li><a href="/tags/%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/">工具推荐</a></li>
@@ -125,6 +129,10 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -137,19 +145,23 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 14.285714285714286%"><a href="/">主页</a></li>
+					<li style="width: 11.11111111111111%"><a href="/">主页</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags/%E9%9A%8F%E7%AC%94/">随笔</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/%E9%9A%8F%E7%AC%94/">随笔</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/">知识点</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/">知识点</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags/mysql/">mysql</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/mysql/">mysql</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags/GO/">GO</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/GO/">GO</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags/%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/">优化案例</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/%E7%BD%91%E7%BB%9C/">网络</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags/%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/">工具推荐</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/gopush/">gopush</a></li>
+		        
+					<li style="width: 11.11111111111111%"><a href="/tags/%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/">优化案例</a></li>
+		        
+					<li style="width: 11.11111111111111%"><a href="/tags/%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/">工具推荐</a></li>
 		        
 				</ul>
 			</nav>
@@ -165,6 +177,306 @@
           </div>
           <div id="js-content" class="content-ll">
             
+  
+    <article id="post-网络掩码" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/08/03/%E7%BD%91%E7%BB%9C%E6%8E%A9%E7%A0%81/">网络掩码</a>
+    </h1>
+  
+
+        
+        <a href="/2021/08/03/%E7%BD%91%E7%BB%9C%E6%8E%A9%E7%A0%81/" class="archive-article-date">
+  	<time datetime="2021-08-03T02:31:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-08-03</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="ip地址的组成（网络位-主机位）"><a href="#ip地址的组成（网络位-主机位）" class="headerlink" title="ip地址的组成（网络位+主机位）"></a>ip地址的组成（网络位+主机位）</h3><p><strong>IP地址采用分层结构；</strong></p>
+<p>IP地址是由网络号（net ID）与主机号（host ID）两部分组成的。</p>
+<p><strong>根据不同的取值范围，IP地址可以分为五类</strong>；IP地址中的前5位用于标识IP地址的类别：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">A类地址的第一位为0；  127 &#x3D;&gt; 0(128)1(64)1(32)1(16) 1(8)1(4)1(2)1(1)</span><br><span class="line">网络位7(8-1)位，主机号24位(32-7-1 &#x3D; 24)</span><br><span class="line"></span><br><span class="line">B类地址的前两位为10； 191 &#x3D;&gt; 1(128)0(64)1(32)1(16) 1(8)1(4)1(2)1(1)</span><br><span class="line">网络位14(8+8-2)位，主机号16位(32-14-2 &#x3D; 16)</span><br><span class="line"></span><br><span class="line">C类地址的前三位为110；223 &#x3D;&gt; 1(128)1(64)0(32)1(16) 1(8)1(4)1(2)1(1)</span><br><span class="line">网络位21(8+8+8-3)位，主机号位(32-21-3 &#x3D; 8)</span><br><span class="line"></span><br><span class="line">D类地址的前四位为1110；</span><br><span class="line">E类地址的前五位为11110；</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/08/03/%E7%BD%91%E7%BB%9C%E6%8E%A9%E7%A0%81/wl_1.png" alt="png"></p>
+<p>实际大多通过<code>子网掩码</code>来区分网络位和主机位，子网掩码跟IP地址一一对应，子网掩码为1的是网络位，为0的是主机位。<br>如：192.168.1.2 掩码255.255.255.0 。网络位192.168.1 主机位是2</p>
+<p>举个例子：比如172.16.2.160/255.255.255.0</p>
+<p>这个IP地址的【网络号】就是172.16.2.0 主机号为   0.0.0.160 </p>
+<blockquote>
+<p>划分子网情况</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">如：172.16.2.160&#x2F;255.255.255.192(IP地址&#x2F;掩码)</span><br><span class="line"></span><br><span class="line">1010   1100   0001   0000   0000   0010   1010   0000   (二进制)</span><br><span class="line"></span><br><span class="line">1111   1111   1111   1111   1111   1111   1100   0000  （子网掩码）</span><br><span class="line"></span><br><span class="line">------------------------------------------相&quot;与&quot;(理解成相乘）</span><br><span class="line"></span><br><span class="line">1010   1100   0001   0000   0000   0010   1000   0000（172.16.2.128这就是子网号）</span><br><span class="line"></span><br><span class="line">1010   1100   0001   0000   0000   0010   1000   0001（172.16.2.129是第一个主机）</span><br><span class="line"></span><br><span class="line">1010   1100   0001   0000   0000   0010   1011   1110（172.16.2.190最后一个主机）</span><br><span class="line"></span><br><span class="line">1010   1100   0001   0000   0000   0010   1011   1111   广播地址  172.16.2.191 </span><br><span class="line"></span><br><span class="line">个人的理解:</span><br><span class="line">通过ip二进制和子网掩码二进制&quot;与&quot;可以发现，子网掩码二进制 1 的部分代表&quot;网络位&quot;, 0 的部分代表&quot;主机位&quot;，</span><br><span class="line">上面的例子可以看出&quot;主机位&quot;有6位，那么最后一段8位前两位是定的10，所以&quot;第一个主机位&quot;是1000 0001，&quot;最后一个主机位&quot;是1011 1110，因为还要留一个&quot;广播地址&quot;1011 1111。 </span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>子网掩码的作用：</p>
+</blockquote>
+<ol>
+<li>将一类ip地址（也就是只确定的网络号的ip）划分为更加小的子网络(<code>通常得到一个c类ip,如：212.26.220.0最后一组是主机号（最大255），用子网掩码分成更小的网段</code>）</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">因为掩码的值是连续的1，那么子网掩码的值也就是有规律的：</span><br><span class="line">比如</span><br><span class="line">1000 0000 ---&gt; 128</span><br><span class="line">1100 0000 ---&gt; 192</span><br><span class="line">1110 0000 ---&gt; 224</span><br><span class="line">1111 0000 ---&gt; 240</span><br><span class="line">1111 1000 ---&gt; 248</span><br><span class="line">1111 1100 ---&gt; 252</span><br><span class="line">1111 1110 ---&gt; 254</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>将相邻的网络地址合并成同一逻辑网络</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">两个C类IP地址215.60.30.0与215.60.31.0与子网掩码255.255.254.0</span><br><span class="line">11010111.00111100.00011110.00000000--&gt;215.60.30.0</span><br><span class="line">11010111.00111100.00011111.00000000--&gt;215.60.31.0</span><br><span class="line">11111111.11111111.11111110.10000000--&gt;255.255.254.0&#x2F;&#x2F;掩码</span><br><span class="line">11010111.00111100.00011110.00000000--&gt;215.60.30.0&#x2F;&#x2F;都是该网段</span><br></pre></td></tr></table></figure>
+
+<p>注意：一个错误的理解：子网掩码主要目的是增加了ip数量！！！其实并没有增加！！！（<code>也不能说没有增加，比如相同的ip不同子网掩码，实际公网是不存在相同的ip,如果说是两个局域网这种情况，不知道算不算增加了</code>）</p>
+<p>补充：</p>
+<ul>
+<li><p>只知道ip地址那么只能知道是属于哪一类ip。或者认为没有子网络，比如c类ip，那么前3组是网络号，后面一组是主机号</p>
+</li>
+<li><p>只有知道子网掩码和ip，才能知道具体的网段和主机号</p>
+</li>
+<li><p>相同子网掩码未必是同一网段ip,同一网段的ip必然有相同的子网掩码。</p>
+</li>
+</ul>
+<blockquote>
+<p>“IP地址/ 数字” 是什么意思？例如 192.168.5.12 / 21</p>
+</blockquote>
+<p>数字是子网掩码位（数），说明子网掩码由21个1组成，即 子网掩码是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">11111111 11111111 11111000 00000000  ，也就是255.255.248.0</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="http://t.zoukankan.com/straybirds-p-5319604.html">文章链接</a></p>
+<h3 id="子网掩码-网络掩码-的位数"><a href="#子网掩码-网络掩码-的位数" class="headerlink" title="子网掩码(网络掩码)的位数"></a>子网掩码(网络掩码)的位数</h3><p>255.255.255.0  =&gt; / 24</p>
+<p>1111 1111 1111 1111 1111 1111 0000 0000  = 24（总长32，1算，0不算）</p>
+<h4 id="已知IP地址和子网掩码-如何快速计算是否在同一网段-仍待验证"><a href="#已知IP地址和子网掩码-如何快速计算是否在同一网段-仍待验证" class="headerlink" title="已知IP地址和子网掩码,如何快速计算是否在同一网段(仍待验证)"></a>已知IP地址和子网掩码,如何快速计算是否在同一网段(仍待验证)</h4><p>下面哪些IP位于同一子网中？</p>
+<ul>
+<li>192.168.78.36/29</li>
+<li>192.168.78.42/29</li>
+<li>192.168.78.41/29</li>
+<li>192.168.78.45/29</li>
+<li>192.168.78.48/29</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">通过上面子网掩码29位，我们可以知道 网络位是29位，主机位3位。所以，判断是否同一网段，看&quot;网络位&quot;是否相同。</span><br><span class="line">因为前面都是相同的，所以看最后一段的数字二进制8位扣除3位&quot;主机位&quot;后是否相同。</span><br><span class="line"></span><br><span class="line">36 (2 +4)                      0010 0100   &#x3D;&gt;  0010 0 (扣除3位主机位)</span><br><span class="line"></span><br><span class="line">42  (32 + 8 + 2)             0010 1010    &#x3D;&gt; 0010 1</span><br><span class="line"></span><br><span class="line">41  (32 + 8 + 1)              0010 1001    &#x3D;&gt; 0010 1</span><br><span class="line"></span><br><span class="line">45  (32 + 8 + 4 +1)         0010 1101    &#x3D;&gt;  0010 1</span><br><span class="line"></span><br><span class="line">48  (32 + 16)                  0011  0000   &#x3D;&gt; 0011  0</span><br><span class="line"></span><br><span class="line">可以看出 42 41 45在同一网段</span><br><span class="line"></span><br><span class="line">那么快速的方法</span><br><span class="line">主机位3位： 2^3 &#x3D; 8</span><br><span class="line">36&#x2F;8 &#x3D; 4</span><br><span class="line">42&#x2F;8 &#x3D; 5</span><br><span class="line">41&#x2F;8 &#x3D; 5</span><br><span class="line">45&#x2F;8 &#x3D; 5</span><br><span class="line">48&#x2F;8 &#x3D; 6</span><br></pre></td></tr></table></figure>
+
+<p>下面哪些IP位于同一子网中？</p>
+<ul>
+<li>192.168.165.24/255.255.254.0 和 192.168.164.78/255.255.254.0</li>
+<li>192.168.165.24/255.255.255.255 和 192.168.164.78/255.255.255.255</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">第一组计算:</span><br><span class="line">255.255.254.0        2^9  &#x3D;  256</span><br><span class="line"></span><br><span class="line">16524 &#x2F; 256 &#x3D; 64.5</span><br><span class="line"></span><br><span class="line">16478 &#x2F; 256  &#x3D; 64.3</span><br><span class="line"></span><br><span class="line">商64，相同</span><br><span class="line"></span><br><span class="line">第二组计算:</span><br><span class="line">255.255.255.255  2^8 &#x3D; 128</span><br><span class="line"></span><br><span class="line">16524&#x2F;128 &#x3D; 129</span><br><span class="line"></span><br><span class="line">16478&#x2F;128 &#x3D; 128.7</span><br><span class="line"></span><br><span class="line">商129和128，不相同</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/VmXgt6usAfPKyfmsAM_UZg">文章地址-还有其他知识点哦</a></p>
+<h3 id="IP地址、子网掩码、网段、网关的关系"><a href="#IP地址、子网掩码、网段、网关的关系" class="headerlink" title="IP地址、子网掩码、网段、网关的关系"></a>IP地址、子网掩码、网段、网关的关系</h3><p>IP地址、子网掩码、网络地址、广播地址、网段、网关的关系,例：</p>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>终端A</th>
+<th>终端B</th>
+<th>终端C</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>IP地址</td>
+<td>192.168.1.10</td>
+<td>192.168.1.23</td>
+<td>192.168.1.40</td>
+</tr>
+<tr>
+<td>子网掩码</td>
+<td>255.255.255.224</td>
+<td>255.255.255.224</td>
+<td>255.255.255.224</td>
+</tr>
+<tr>
+<td>网络地址</td>
+<td>192.168.1.0</td>
+<td>192.168.1.0</td>
+<td>192.168.1.32</td>
+</tr>
+<tr>
+<td>广播地址</td>
+<td>192.168.1.31</td>
+<td>192.168.1.31</td>
+<td>192.168.1.63</td>
+</tr>
+<tr>
+<td>网段</td>
+<td>192.168.1.0~192.168.1.31</td>
+<td>192.168.1.0~192.168.1.31</td>
+<td>192.168.1.31~192.168.1.63</td>
+</tr>
+<tr>
+<td>网关</td>
+<td>192.168.1.1</td>
+<td>192.168.1.1</td>
+<td>192.168.1.32</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>总结：</p>
+</blockquote>
+<ul>
+<li>网络地址=IP地址&amp;子网掩码</li>
+<li>广播地址=IP地址|（！子网掩码）</li>
+<li>网段：网络地址相同的IP地址属于同一网段，即同一子网。</li>
+<li>网关：同一网段（子网）间终端可直接通信，如终端A和终端B；不在同一网段（子网）的终端不能直接通信，需要通过网关才能通信，如终端A和终端C。</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41324483/article/details/100179816">文章地址</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">网络</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/08/03/%E7%BD%91%E7%BB%9C%E6%8E%A9%E7%A0%81/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-哈希算法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/16/%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/">哈希算法</a>
+    </h1>
+  
+
+        
+        <a href="/2021/07/16/%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/" class="archive-article-date">
+  	<time datetime="2021-07-16T02:58:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-07-16</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>为什么开启这一篇呢？因为后面要对gopush进行讲解。</p>
+<h3 id="一致性哈希算法-图片网上资源，联系可删，描述均为自己观点"><a href="#一致性哈希算法-图片网上资源，联系可删，描述均为自己观点" class="headerlink" title="一致性哈希算法(图片网上资源，联系可删，描述均为自己观点)"></a>一致性哈希算法(图片网上资源，联系可删，描述均为自己观点)</h3><blockquote>
+<p>0~2^32-1 可以理解为一个圆的外环均匀分布为2^32个点 =&gt; key</p>
+</blockquote>
+<p><img src="/2021/07/16/%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/hx1.jpg" alt="jpg"></p>
+<blockquote>
+<p>在圆上分布均匀分布4个节点(node)</p>
+</blockquote>
+<p><img src="/2021/07/16/%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/hx2.jpg" alt="jpg"></p>
+<blockquote>
+<p>查找方式</p>
+</blockquote>
+<p><img src="/2021/07/16/%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/hx3.jpg" alt="jpg"></p>
+<blockquote>
+<p>删除节点影响</p>
+</blockquote>
+<p><img src="/2021/07/16/%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/hx4.jpg" alt="jpg"></p>
+<blockquote>
+<p>添加节点影响</p>
+</blockquote>
+<p><img src="/2021/07/16/%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/hx5.jpg" alt="jpg"></p>
+<blockquote>
+<p>节点少的影响</p>
+</blockquote>
+<p><img src="/2021/07/16/%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/hx6.jpg" alt="jpg"></p>
+<blockquote>
+<p>虚拟节点</p>
+</blockquote>
+<p><img src="/2021/07/16/%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/hx7.jpg" alt="jpg"></p>
+<h3 id="哈希函数"><a href="#哈希函数" class="headerlink" title="哈希函数"></a>哈希函数</h3><p>定义:记录的存储位置 = f(关键字)</p>
+<p>第一代：SHA-1(1993),MD5(1992),CRC(1975),Lookup3(2006)<br>第二代：MurmurHash(2008)<br>第三代：CityHash,SpookyHash(2011)</p>
+<h3 id="通过key获取comet-node节点"><a href="#通过key获取comet-node节点" class="headerlink" title="通过key获取comet-node节点"></a>通过key获取comet-node节点</h3><p>MurmurHash 是一种非加密型哈希函数，适用于一般的哈希检索操作。与其它流行的哈希函数相比，对于规律性较强的key，MurmurHash的随机分布特征表现更良好。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; init consistent hashing circle</span><br><span class="line">func (k *Ketama) initCircle2(node []string) &#123;</span><br><span class="line">	h :&#x3D; NewMurmur3C()</span><br><span class="line">	for _, str :&#x3D; range node &#123;</span><br><span class="line">		for i :&#x3D; 0; i &lt; k.vnode; i++ &#123;</span><br><span class="line">			vnode :&#x3D; fmt.Sprintf(&quot;%s#%d&quot;, str, i)</span><br><span class="line">			h.Write([]byte(vnode))</span><br><span class="line">			vpos :&#x3D; uint(h.Sum32())</span><br><span class="line">			k.nodes &#x3D; append(k.nodes, vpos)</span><br><span class="line">			k.nodesMapping[vpos] &#x3D; str</span><br><span class="line">			h.Reset()</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	sort.Sort(UIntSlice(k.nodes))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id><a href="#" class="headerlink" title></a></h3>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">gopush</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/07/16/%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
   
     <article id="post-hexo使用markdown图片无法显示问题" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
@@ -1009,183 +1321,6 @@
 
 
   
-    <article id="post-concat以及group-concat" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/03/22/concat%E4%BB%A5%E5%8F%8Agroup-concat/">concat以及group_concat</a>
-    </h1>
-  
-
-        
-        <a href="/2021/03/22/concat%E4%BB%A5%E5%8F%8Agroup-concat/" class="archive-article-date">
-  	<time datetime="2021-03-22T11:28:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-03-22</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>concat()函数</p>
-</blockquote>
-<p>1.功能：将多个字符串连成一个字符串。</p>
-<p>2.语法：concat(str1,str2,…)<br>返回结果为连接参数产生的字符串，如果有任何一个参数为NULL，则返回值为NULL。这边测试null，空白都没有效果，只有NULL有效。</p>
-<p>3.举例:</p>
-<table>
-<thead>
-<tr>
-<th>id</th>
-<th>姓</th>
-<th>名</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>1</td>
-<td>林</td>
-<td>晓明</td>
-</tr>
-</tbody></table>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> concat(id,first_name,last_name) <span class="keyword">as</span> info <span class="keyword">from</span> business_account_info <span class="keyword">where</span> id<span class="operator">=</span><span class="number">1</span></span><br></pre></td></tr></table></figure>
-<p>结果：1林晓明</p>
-<p>添加分隔符</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> concat(id,&quot;.&quot;，first_name,&quot; &quot;,last_name) <span class="keyword">as</span> info <span class="keyword">from</span> business_account_info <span class="keyword">where</span> id<span class="operator">=</span><span class="number">1</span></span><br></pre></td></tr></table></figure>
-<p>结果：1.林 晓明</p>
-        
-          <a class="article-more-a" href="/2021/03/22/concat%E4%BB%A5%E5%8F%8Agroup-concat/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/03/22/concat%E4%BB%A5%E5%8F%8Agroup-concat/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-关于学习的一些思考" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/03/15/%E5%85%B3%E4%BA%8E%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/">关于学习的一些思考</a>
-    </h1>
-  
-
-        
-        <a href="/2021/03/15/%E5%85%B3%E4%BA%8E%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/" class="archive-article-date">
-  	<time datetime="2021-03-15T02:38:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-03-15</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>今天看了一篇文章，<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/VSZbuj8HGs5IJNtNn4dvtg">关于如何学习技术的一点感悟</a> ,感到受益匪浅。</p>
-<p>文章的内容主要分为两部分，对技术的学习,一是要战略上藐视技术，二是要战术上重视技术。</p>
-        
-          <a class="article-more-a" href="/2021/03/15/%E5%85%B3%E4%BA%8E%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">随笔</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/03/15/%E5%85%B3%E4%BA%8E%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
@@ -1304,6 +1439,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">优化案例</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">gopush</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">网络</a>
               </li>
             
             <div class="clearfix"></div>
