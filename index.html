@@ -65,6 +65,8 @@
 	        
 				<li><a href="/tags/GO/">GO</a></li>
 	        
+				<li><a href="/tags/GO%E5%85%A5%E9%97%A8/">GO入门</a></li>
+	        
 				<li><a href="/tags/%E7%BD%91%E7%BB%9C/">网络</a></li>
 	        
 				<li><a href="/tags/gopush/">gopush</a></li>
@@ -135,6 +137,8 @@
 			
 				
 			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -147,23 +151,25 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 11.11111111111111%"><a href="/">主页</a></li>
+					<li style="width: 10%"><a href="/">主页</a></li>
 		        
-					<li style="width: 11.11111111111111%"><a href="/tags/%E9%9A%8F%E7%AC%94/">随笔</a></li>
+					<li style="width: 10%"><a href="/tags/%E9%9A%8F%E7%AC%94/">随笔</a></li>
 		        
-					<li style="width: 11.11111111111111%"><a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/">知识点</a></li>
+					<li style="width: 10%"><a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/">知识点</a></li>
 		        
-					<li style="width: 11.11111111111111%"><a href="/tags/mysql/">mysql</a></li>
+					<li style="width: 10%"><a href="/tags/mysql/">mysql</a></li>
 		        
-					<li style="width: 11.11111111111111%"><a href="/tags/GO/">GO</a></li>
+					<li style="width: 10%"><a href="/tags/GO/">GO</a></li>
 		        
-					<li style="width: 11.11111111111111%"><a href="/tags/%E7%BD%91%E7%BB%9C/">网络</a></li>
+					<li style="width: 10%"><a href="/tags/GO%E5%85%A5%E9%97%A8/">GO入门</a></li>
 		        
-					<li style="width: 11.11111111111111%"><a href="/tags/gopush/">gopush</a></li>
+					<li style="width: 10%"><a href="/tags/%E7%BD%91%E7%BB%9C/">网络</a></li>
 		        
-					<li style="width: 11.11111111111111%"><a href="/tags/%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/">优化案例</a></li>
+					<li style="width: 10%"><a href="/tags/gopush/">gopush</a></li>
 		        
-					<li style="width: 11.11111111111111%"><a href="/tags/%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/">工具推荐</a></li>
+					<li style="width: 10%"><a href="/tags/%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/">优化案例</a></li>
+		        
+					<li style="width: 10%"><a href="/tags/%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/">工具推荐</a></li>
 		        
 				</ul>
 			</nav>
@@ -179,6 +185,498 @@
           </div>
           <div id="js-content" class="content-ll">
             
+  
+    <article id="post-Go-控制结构for循环loop" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/08/16/Go-%E6%8E%A7%E5%88%B6%E7%BB%93%E6%9E%84for%E5%BE%AA%E7%8E%AFloop/">Go 控制结构for循环loop</a>
+    </h1>
+  
+
+        
+        <a href="/2021/08/16/Go-%E6%8E%A7%E5%88%B6%E7%BB%93%E6%9E%84for%E5%BE%AA%E7%8E%AFloop/" class="archive-article-date">
+  	<time datetime="2021-08-16T02:39:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-08-16</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>for循环是编程语言中一种循环语句，<strong>for 是 Go 语言唯一的循环语句.Go 语言中并没有其他语言比如 C 语言中的 while 和 do while 循环.</strong></p>
+<blockquote>
+<p>for循环</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">for initialisation; condition; post &#123;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这是典型的 for 循环三个表达式,第一个为初始化表达式或赋值语句;第二个为循环条件判定表达式;第三个为循环变量修正表达式,即此处的 post。</p>
+<p>示例:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">package main  </span><br><span class="line">import &quot;fmt&quot;  </span><br><span class="line">func main() &#123;  </span><br><span class="line">   for a :&#x3D; 0; a &lt; 12; a++ &#123;  </span><br><span class="line">      fmt.Print(a,&quot;\n&quot;)  </span><br><span class="line">   &#125;  </span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+<p>&nbsp;</p>
+<blockquote>
+<p>for嵌套</p>
+</blockquote>
+<p>Go 语言允许用户在循环内使用循环.接下来我们将为大家介绍嵌套循环的使用.</p>
+<p>以下实例使用循环嵌套来输出 2 到 100 间的素数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">   &#x2F;* 定义局部变量 *&#x2F;</span><br><span class="line">   var i, j int</span><br><span class="line"></span><br><span class="line">   for i&#x3D;2; i &lt; 100; i++ &#123;</span><br><span class="line">      for j&#x3D;2; j &lt;&#x3D; (i&#x2F;j); j++ &#123;</span><br><span class="line">         if(i%j&#x3D;&#x3D;0) &#123;</span><br><span class="line">            break; &#x2F;&#x2F; 如果发现因子,则不是素数</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      if(j &gt; (i&#x2F;j)) &#123;</span><br><span class="line">         fmt.Printf(&quot;%d  是素数\n&quot;, i);</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>break</p>
+</blockquote>
+<p>break 语句用于在完成正常执行之前突然终止 for 循环,之后程序将会在 for 循环下一行代码开始执行。简单说就是整个for循环都结束了。</p>
+<blockquote>
+<p>continue</p>
+</blockquote>
+<p>continue 语句用来跳出 for 循环中当前循环.在 continue 语句后的所有的 for 循环语句都不会在本次循环中执行.循环体会在一下次循环中继续执行。简单说就是for循环当前对应值的循环体内容终止执行，但for循环会继续匹配下一个值。</p>
+<blockquote>
+<p>goto</p>
+</blockquote>
+<p>Go 语言的 goto 语句可以<strong>无条件地转移到过程中指定的行</strong>.</p>
+<p>goto 语句通常与条件语句配合使用.可用来实现条件转移, 构成循环,跳出循环体等功能.</p>
+<p><strong>但是,在结构化程序设计中一般不主张使用 goto 语句, 以免造成程序流程的混乱,使理解和调试程序都产生困难.</strong></p>
+<p><strong>直接看示例：</strong></p>
+<p>在变量 a 等于 15 的时候跳过本次循环并回到循环的开始语句 LOOP 处：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">   &#x2F;* 定义局部变量 *&#x2F;</span><br><span class="line">   var a int &#x3D; 10</span><br><span class="line"></span><br><span class="line">   &#x2F;* 循环 *&#x2F;</span><br><span class="line">   LOOP: for a &lt; 20 &#123;</span><br><span class="line">      if a &#x3D;&#x3D; 15 &#123;</span><br><span class="line">         &#x2F;* 跳过迭代 *&#x2F;</span><br><span class="line">         a &#x3D; a + 1</span><br><span class="line">         goto LOOP</span><br><span class="line">      &#125;</span><br><span class="line">      fmt.Printf(&quot;a的值为 : %d\n&quot;, a)</span><br><span class="line">      a++     </span><br><span class="line">   &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>解析:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">goto 和 LOOP配合使用在for循环中是比较经典的案例。上面的例子，a&#x3D;a+1后a&#x3D;15,跳转到LOOP处,for循环条件判断位置进行判断。</span><br><span class="line">结果:</span><br><span class="line">a的值为 : 10</span><br><span class="line">a的值为 : 11</span><br><span class="line">a的值为 : 12</span><br><span class="line">a的值为 : 13</span><br><span class="line">a的值为 : 14</span><br><span class="line">a的值为 : 16</span><br><span class="line">a的值为 : 17</span><br><span class="line">a的值为 : 18</span><br><span class="line">a的值为 : 19</span><br></pre></td></tr></table></figure>
+
+<p>但是，语法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">goto label;</span><br><span class="line">..</span><br><span class="line">.</span><br><span class="line">label: statement;</span><br></pre></td></tr></table></figure>
+
+<p>说明，LOOP你可以随意变换其他值(比如A、LO…)。下面也是一种使用例子:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">   &#x2F;* 定义局部变量 *&#x2F;</span><br><span class="line">   var a int &#x3D; 10</span><br><span class="line"></span><br><span class="line">   &#x2F;* 循环 *&#x2F;</span><br><span class="line">   for a &lt; 20 &#123;</span><br><span class="line">      if a &#x3D;&#x3D; 15 &#123;</span><br><span class="line">         &#x2F;* 跳过迭代 *&#x2F;</span><br><span class="line">         a &#x3D; a + 1</span><br><span class="line">         goto A</span><br><span class="line">      &#125;</span><br><span class="line">      fmt.Printf(&quot;a的值为 : %d\n&quot;, a)</span><br><span class="line">      a++</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   A : fmt.Println(&quot;对，就是你&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">a的值为 : 10</span><br><span class="line">a的值为 : 11</span><br><span class="line">a的值为 : 12</span><br><span class="line">a的值为 : 13</span><br><span class="line">a的值为 : 14</span><br><span class="line">对，就是你</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;没错，跳到A执行后，for循环终止了。</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">GO入门</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/08/16/Go-%E6%8E%A7%E5%88%B6%E7%BB%93%E6%9E%84for%E5%BE%AA%E7%8E%AFloop/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-GO-控制结构if-else" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/08/16/GO-%E6%8E%A7%E5%88%B6%E7%BB%93%E6%9E%84if-else/">GO 控制结构if-else</a>
+    </h1>
+  
+
+        
+        <a href="/2021/08/16/GO-%E6%8E%A7%E5%88%B6%E7%BB%93%E6%9E%84if-else/" class="archive-article-date">
+  	<time datetime="2021-08-16T02:26:38.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-08-16</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>简单例子:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">if condition1 &#123;</span><br><span class="line">	&#x2F;&#x2F; do something	</span><br><span class="line">&#125; else if condition2 &#123;</span><br><span class="line">	&#x2F;&#x2F; do something else	</span><br><span class="line">&#125; else &#123;</span><br><span class="line">	&#x2F;&#x2F; catch-all or default</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意:</strong></p>
+<p>1.即使当代码块之间只有一条语句时,大括号也不可被省略。</p>
+<p>2.关键字 if 和 else 之后的<strong>左</strong>大括号 <code>&#123;</code> 必须和关键字在同一行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if x&#123;</span><br><span class="line">&#125;</span><br><span class="line">else &#123;	&#x2F;&#x2F; 无效的</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&nbsp;</p>
+<blockquote>
+<p>使用方式</p>
+</blockquote>
+<p>当 if 结构内有 break,continue,goto 或者 return 语句时,Go 代码的常见写法是省略 else 部分.无论满足哪个条件都会返回 x 或者 y 时,一般使用以下写法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if condition &#123;</span><br><span class="line">	return x</span><br><span class="line">&#125;</span><br><span class="line">return y</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意事项</strong> 不要同时在 if-else 结构的两个分支里都使用 return 语句,这将导致编译报错 <code>function ends without a return statement</code>（您可以认为这是一个编译器的 Bug 或者特性）.（ <strong>译者注：该问题已经在 Go 1.1 中被修复或者说改进</strong> ）</p>
+<blockquote>
+<p>一些有用的例子</p>
+</blockquote>
+<p>1.判断一个字符串是否为空：</p>
+<ul>
+<li><code>if str == &quot;&quot; &#123; ... &#125;</code></li>
+<li><code>if len(str) == 0 &#123;...&#125;</code> (个人习惯)</li>
+</ul>
+<p>2.判断运行 Go 程序的操作系统类型,这可以通过常量 <code>runtime.GOOS</code> 来判断.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if runtime.GOOS &#x3D;&#x3D; &quot;windows&quot;	 &#123;</span><br><span class="line">    .	..</span><br><span class="line">&#125; else &#123; &#x2F;&#x2F; Unix-like</span><br><span class="line">    .	..</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这段代码一般被放在 init() 函数中执行.这儿还有一段示例来演示如何根据操作系统来决定输入结束的提示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var prompt &#x3D; &quot;Enter a digit, e.g. 3 &quot;+ &quot;or %s to quit.&quot;</span><br><span class="line"></span><br><span class="line">func init() &#123;</span><br><span class="line">    if runtime.GOOS &#x3D;&#x3D; &quot;windows&quot; &#123;</span><br><span class="line">        prompt &#x3D; fmt.Sprintf(prompt, &quot;Ctrl+Z, Enter&quot;)		</span><br><span class="line">    &#125; else &#123; &#x2F;&#x2F;Unix-like</span><br><span class="line">        prompt &#x3D; fmt.Sprintf(prompt, &quot;Ctrl+D&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>3.函数 <code>Abs()</code> 用于返回一个整型数字的绝对值:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">func Abs(x int) int &#123;</span><br><span class="line">    if x &lt; 0 &#123;</span><br><span class="line">        return -x</span><br><span class="line">    &#125;</span><br><span class="line">    return x	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>4.<code>isGreater</code> 用于比较两个整型数字的大小:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">func isGreater(x, y int) bool &#123;</span><br><span class="line">    if x &gt; y &#123;</span><br><span class="line">        return true	</span><br><span class="line">    &#125;</span><br><span class="line">    return false</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>if-else包含一个初始化语句</p>
+</blockquote>
+<p>例如:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">val :&#x3D; 10</span><br><span class="line">if val &gt; max &#123;</span><br><span class="line">	&#x2F;&#x2F; do something</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>也可以这样写</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if val :&#x3D; 10; val &gt; max &#123;</span><br><span class="line">	&#x2F;&#x2F; do something</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意:<strong>使用简短方式 <code>:=</code> 声明的变量的作用域只存在于 if 结构中</strong>（在 if 结构的<strong>大括号之间</strong>,如果使用 if-else 结构则在 else 代码块中变量也会存在)。 如果<strong>变量在 if 结构之前就已经存在</strong>,那么在 if 结构中,该<strong>变量原来的值会被覆盖</strong>.最简单的解决方案就是<strong>不要在初始化语句中声明变量</strong>.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	var first int &#x3D; 10</span><br><span class="line">	var cond int</span><br><span class="line"></span><br><span class="line">  &#x2F;&#x2F;基础款，声明变量赋予好值，再进行if判断</span><br><span class="line">	if first &lt;&#x3D; 0 &#123;</span><br><span class="line">		fmt.Printf(&quot;first is less than or equal to 0\n&quot;)</span><br><span class="line">	&#125; else if first &gt; 0 &amp;&amp; first &lt; 5 &#123;</span><br><span class="line">		fmt.Printf(&quot;first is between 0 and 5\n&quot;)</span><br><span class="line">	&#125; else &#123;</span><br><span class="line">		fmt.Printf(&quot;first is 5 or greater\n&quot;)</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	&#x2F;&#x2F;声明变量，在if判断中，先赋值再判断。这个cond赋予的值会覆盖上面的声明变量。</span><br><span class="line">	if cond &#x3D; 5; cond &gt; 10 &#123;</span><br><span class="line">		fmt.Printf(&quot;cond is greater than 10\n&quot;)</span><br><span class="line">	&#125; else &#123;</span><br><span class="line">		fmt.Printf(&quot;cond is not greater than 10\n&quot;)</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	fmt.Println(cond) &#x2F;&#x2F;等于5</span><br><span class="line">	</span><br><span class="line">	&#x2F;&#x2F;在if判断中，声明变量赋值再判断。</span><br><span class="line">	if cond2 :&#x3D; 5; cond2 &gt; 10 &#123;</span><br><span class="line">		fmt.Printf(&quot;cond2 is greater than 10\n&quot;)</span><br><span class="line">	&#125; else &#123;</span><br><span class="line">		fmt.Printf(&quot;cond2 is not greater than 10\n&quot;)</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	fmt.Println(cond2) &#x2F;&#x2F;报错，未声明cond2。因为if中声明的变量的作用域只存在于if结构中。</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">first is 5 or greater</span><br><span class="line">cond is not greater than 10</span><br></pre></td></tr></table></figure>
+
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">GO入门</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/08/16/GO-%E6%8E%A7%E5%88%B6%E7%BB%93%E6%9E%84if-else/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-GO-包package和import" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/08/16/GO-%E5%8C%85package%E5%92%8Cimport/">GO 包package和import</a>
+    </h1>
+  
+
+        
+        <a href="/2021/08/16/GO-%E5%8C%85package%E5%92%8Cimport/" class="archive-article-date">
+  	<time datetime="2021-08-16T02:17:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-08-16</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>什么是package</p>
+</blockquote>
+<p>package用于对我们的程序进行*<strong>分类*</strong>,以便易于维护. 每个go文件都属于某个包. 每个Go应用程序必须具有<code>main</code>包。包名称应以小写字母书写. 如果更改并重新编译package,则必须重新编译使用此package的所有代码程序！</p>
+<blockquote>
+<p>Import 别名导入</p>
+</blockquote>
+<p> <code>import mongo &quot;mywebapp/libs/mongodb/db&quot;</code></p>
+<blockquote>
+<p>Import 省略package名导入</p>
+</blockquote>
+<p>这里的点.符号表示,对包 lib 的调用直接省略包名,您我以后就是一家人,不分彼此,您的东西就像我就的一样,随便用.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line">import . &quot;github.com&#x2F;libragen&#x2F;felix&#x2F;lib&quot;</span><br><span class="line">func main() &#123;</span><br><span class="line">	SayHello() &#x2F;&#x2F;如果没有.忽略包名,那么需要lib.SayHello()。不过这样可能要注意函数名或变量名是否会冲突，个人不推荐</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Import  执行初始化工作导入</p>
+</blockquote>
+<p><code>import _ &quot;github.com/libragen/felix/lib&quot;</code></p>
+<p>形象解释:这里说的是我还不准备现在使用您们家的东西,但得提前告诉一声.您先做好准备,先准备好饭菜,等我来就行,也有可能我压根就不来.</p>
+<p>具体解释:特殊符号“_” <strong>仅仅</strong>会导致 lib 执行初始化工作,如初始化全局变量,<strong>调用 init 函数</strong>。而正常导入一个包的时候，该包的init和其他函数都会被导入。</p>
+<blockquote>
+<p> package和文件的关系</p>
+</blockquote>
+<p><strong>一个文件夹下只能有一个package.</strong></p>
+<p>import后面的其实是<code>GOPATH</code>开始的相对目录路径,包括最后一段.</p>
+<ul>
+<li>但由于一个目录下只能有一个<code>package</code>,所以<code>import</code>一个路径就等于是<code>import</code>了这个路径下的包.</li>
+<li>注意,这里指的是“直接包含”的go文件. 如果有子目录,那么子目录的父目录是完全两个包.</li>
+<li>比如您实现了一个计算器<code>package</code>,名叫calc,位于calc目录下; 但又想给别人一个使用范例,于是在<code>calc</code>下可以建个<code>example</code>子目录（<code>calc/example/</code>）, 这个子目录里有个<code>example.go（calc/example/example.go）</code>. 此时,<code>example.go</code>可以是main包,里面还可以有个main函数.<br>&nbsp;<br>&nbsp;</li>
+</ul>
+<p><strong>一个<code>package</code>的文件不能在多个文件夹下.</strong></p>
+<ul>
+<li>如果多个文件夹下有重名的<code>package</code>,它们其实是彼此无关的package.</li>
+<li>如果一个<code>go</code>文件需要同时使用不同目录下的同名<code>package</code>,需要在<code>import</code>这些目录时为每个目录指定一个package的<strong>别名</strong>.</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">GO入门</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/08/16/GO-%E5%8C%85package%E5%92%8Cimport/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-GO-数据类型" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/08/16/GO-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">GO 数据类型(入门篇必读)</a>
+    </h1>
+  
+
+        
+        <a href="/2021/08/16/GO-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" class="archive-article-date">
+  	<time datetime="2021-08-16T02:12:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-08-16</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>为什么是必读？因为这边会给出这个系列的参考/出处文章地址</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://mojotv.cn/">https://mojotv.cn/</a></p>
+<blockquote>
+<p> 变量声明语法</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">var a int &#x2F;&#x2F;声明一个int类型的变量</span><br><span class="line"></span><br><span class="line">var b struct &#123; &#x2F;&#x2F;声明一个结构体</span><br><span class="line">    Name string</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var a &#x3D; 8 &#x2F;&#x2F;声明变量的同时赋值,编译器自动推导其数据类型</span><br><span class="line"></span><br><span class="line">var a int &#x3D; 8 &#x2F;&#x2F;声明变量的同时赋值</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;声明变量的同时赋值更习惯用&quot;:&#x3D;&quot;，但注意全局变量不可以用&quot;:&#x3D;&quot;</span><br><span class="line">a :&#x3D; 8</span><br></pre></td></tr></table></figure>
+
+<p><strong>go可使用var关键字声明全局变量,但是:=这种方式是不能用在全局变量中的.:=只能用在函数体内部.</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var (</span><br><span class="line">    a int</span><br><span class="line">    b bool</span><br><span class="line">    xx,yy,dd string&#x3D;&quot;xx&quot;,&quot;yy&quot;,&quot;dd&quot;</span><br><span class="line">    &#x2F;&#x2F;这里省略变量类型也是可以的.</span><br><span class="line">    zz,aa&#x3D;&quot;zz&quot;,&quot;aa&quot;        &#x2F;&#x2F;注意用&quot;&#x3D;&quot;，不能用&quot;:&#x3D;&quot;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p><strong>go函数体内的变量是如果被声明了,那么必须使用,不然会报错。注:全局变量声明未使用不会报错</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;已声明,但如果不想使用可以加上_&#x3D;varName,表示为已抛弃的变量.</span><br><span class="line">var a&#x3D;1</span><br><span class="line">&#x2F;&#x2F;标识为已抛弃的变量.</span><br><span class="line">_&#x3D;a  </span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>变量初始化</p>
+</blockquote>
+<p><strong>Go 语言在声明变量时会默认给变量赋个当前类型的<code>空值</code>/<code>零值</code></strong></p>
+<p>在方法中声明一个临时变量并赋初值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;推荐,会更新值的格式自动声明变量类型</span><br><span class="line">tmpStr :&#x3D;&quot;&quot;</span><br></pre></td></tr></table></figure>
+
+<p>当一个变量或者新值被创建时, 如果没有为其明确指定初始值,go语言会自动初始化其值为此类型对应的零值。</p>
+<table>
+<thead>
+<tr>
+<th align="center">类型</th>
+<th align="center"><strong>零值</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">数值类型</td>
+<td align="center">0</td>
+</tr>
+<tr>
+<td align="center">布尔类型</td>
+<td align="center">false</td>
+</tr>
+<tr>
+<td align="center">字符串</td>
+<td align="center">“”（空字符串）</td>
+</tr>
+<tr>
+<td align="center">slice</td>
+<td align="center">nil</td>
+</tr>
+<tr>
+<td align="center">map</td>
+<td align="center">nil</td>
+</tr>
+<tr>
+<td align="center">指针</td>
+<td align="center">nil</td>
+</tr>
+<tr>
+<td align="center">函数</td>
+<td align="center">nil</td>
+</tr>
+<tr>
+<td align="center">接口</td>
+<td align="center">nil</td>
+</tr>
+<tr>
+<td align="center">信道</td>
+<td align="center">nil</td>
+</tr>
+</tbody></table>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">GO入门</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/08/16/GO-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
   
     <article id="post-Hexo博客中插入音乐" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
@@ -216,14 +714,14 @@
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/MirageFox/p/7995929.html">文章链接</a></p>
 <h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>mac端(<code>win端没有测试过</code>)控制不了音量大小，只能空过电脑或耳机条件。</p>
 
-        <div id="aplayer-DDUHcoGO" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+        <div id="aplayer-tJmCKDzt" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
             <pre class="aplayer-lrc-content"></pre>
         </div>
         <script>
           var ap = new APlayer({
-            element: document.getElementById("aplayer-DDUHcoGO"),
+            element: document.getElementById("aplayer-tJmCKDzt"),
             narrow: false,
-            autoplay: true,
+            autoplay: false,
             showlrc: false,
             music: {
               title: "U",
@@ -957,376 +1455,9 @@
 
 
   
-    <article id="post-Go-单元测试篇" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/06/Go-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E7%AF%87/">Go-单元测试篇(简单)</a>
-    </h1>
-  
-
-        
-        <a href="/2021/07/06/Go-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E7%AF%87/" class="archive-article-date">
-  	<time datetime="2021-07-06T02:44:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-07-06</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>参考文章</p>
-</blockquote>
-<p><a target="_blank" rel="noopener" href="https://studygolang.com/articles/2491">golang test测试使用</a></p>
-<p><a target="_blank" rel="noopener" href="https://geektutu.com/post/quick-go-test.html">Go Test 单元测试简明教程</a></p>
-<p><a target="_blank" rel="noopener" href="https://learnku.com/articles/33446">Golang 单元测试执行 _test.go 中的某个 func 方法</a></p>
-<blockquote>
-<p>正文</p>
-</blockquote>
-<p>为什么需要单元测试，因为你可能修改的只是一个方法，但如果整个接口都放进去测试，明显效率不高。</p>
-<ul>
-<li>创建测试go文件，测试文件以 _test.go 结尾;引入包 import “testing”;测试用的参数有且只有一个，在这里是 t *testing.T。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import &quot;testing&quot;</span><br><span class="line"></span><br><span class="line">func TestAdd(t *testing.T) &#123;</span><br><span class="line">	if ans :&#x3D; Add(1, 2); ans !&#x3D; 3 &#123;</span><br><span class="line">		t.Errorf(&quot;1 + 2 expected be 3, but %d got&quot;, ans)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	if ans :&#x3D; Add(-10, -20); ans !&#x3D; -30 &#123;</span><br><span class="line">		t.Errorf(&quot;-10 + -20 expected be -30, but %d got&quot;, ans)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>基准测试(benchmark)的参数是 *testing.B，TestMain 的参数是 *testing.M 类型。</p>
-<ul>
-<li>运行 go test，该 package 下所有的测试用例都会被执行。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ go test</span><br><span class="line">ok      example 0.009s</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>go test -v，-v 参数会显示每个用例的测试结果，另外 -cover 参数可以查看覆盖率。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ go test -v</span><br><span class="line">&#x3D;&#x3D;&#x3D; RUN   TestAdd</span><br><span class="line">--- PASS: TestAdd (0.00s)</span><br><span class="line">&#x3D;&#x3D;&#x3D; RUN   TestMul</span><br><span class="line">--- PASS: TestMul (0.00s)</span><br><span class="line">PASS</span><br><span class="line">ok      example 0.007s</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>但我们更常用的是运行其中一个，例如要运行上面的TestAdd方法，用<code>-run</code>参数指定，该参数支持通配符 *，和部分正则表达式，例如 ^、$。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ go test -run TestAdd -v</span><br><span class="line">&#x3D;&#x3D;&#x3D; RUN   TestAdd</span><br><span class="line">--- PASS: TestAdd (0.00s)</span><br><span class="line">PASS</span><br><span class="line">ok      example 0.007s</span><br></pre></td></tr></table></figure>
-当然，go单元测试还有其他的使用内容，不过这边仅给最简单的。具体可以看上面的链接文档。</li>
-</ul>
-<blockquote>
-<p>真实场景注意点</p>
-</blockquote>
-<ul>
-<li>报错：flag provided but not defined: -test.timeout</li>
-</ul>
-<p>处理方法：注释掉flag.Parse()</p>
-<p>理由：从flag.Parse()源码发现，他把go test的test当作一个参数处理，而flag没有对这个参数做处理导致解析失败。<a target="_blank" rel="noopener" href="https://my.oschina.net/u/3223370/blog/4272500">链接</a></p>
-<ul>
-<li>最好在测试文件添加初始化，完成数据库之类的默认配置<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">func init()  &#123;</span><br><span class="line">	initConfig()</span><br><span class="line">	initRedis()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">GO</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/07/06/Go-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E7%AF%87/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-MYSQL查询-存在一个表而不在另一个表中的数据" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/05/18/MYSQL%E6%9F%A5%E8%AF%A2-%E5%AD%98%E5%9C%A8%E4%B8%80%E4%B8%AA%E8%A1%A8%E8%80%8C%E4%B8%8D%E5%9C%A8%E5%8F%A6%E4%B8%80%E4%B8%AA%E8%A1%A8%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE/">MYSQL查询~ 存在一个表而不在另一个表中的数据</a>
-    </h1>
-  
-
-        
-        <a href="/2021/05/18/MYSQL%E6%9F%A5%E8%AF%A2-%E5%AD%98%E5%9C%A8%E4%B8%80%E4%B8%AA%E8%A1%A8%E8%80%8C%E4%B8%8D%E5%9C%A8%E5%8F%A6%E4%B8%80%E4%B8%AA%E8%A1%A8%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE/" class="archive-article-date">
-  	<time datetime="2021-05-18T11:39:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-05-18</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>业务场景：</p>
-</blockquote>
-<p>account表保存的用户信息 包含 真正用户 和 测试用户(内部测试账号),test表保存测试用户信息，对应account表id字段test.account_id。</p>
-<p>查询时需要剔除account表测试用户，找出account表id字段中，不与test表account字段相等的值。</p>
-<blockquote>
-<p>方法一: 使用 not in ,容易理解,效率低  执行时间为：8.6ms(其他数据相同方法)</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">注：这边因为account_id字段具有唯一性，所以才不用distinct去重。</span><br><span class="line"></span><br><span class="line">select account.id from account where account.id not in (select account_id from test)</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>方法二：使用 left join…on… , “test.account_id is null” 表示左连接之后在test.account_id 字段为 null的记录  执行时间：9ms(其他数据相同方法)</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select account.id from account left join test on account.id &#x3D; test.account_id where test.account_id is null</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>方法三: 逻辑相对复杂,但是速度最快  执行时间: 10.2ms(其他数据相同方法)</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select * from account where (select count(1) as num from test where account.id &#x3D; test.account_id) &#x3D; 0</span><br><span class="line"></span><br><span class="line">当account表获取的id数据作为test表查询条件(account.id &#x3D; test.account_id)时，数据为0的account表数据。</span><br></pre></td></tr></table></figure>
-
-<p><strong>注：时间仅作为参考，还是要用实际数据模拟，语句可以用explain优化</strong></p>
-<blockquote>
-<p>参考链接</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;www.cnblogs.com&#x2F;softidea&#x2F;p&#x2F;9482120.html</span><br></pre></td></tr></table></figure>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/05/18/MYSQL%E6%9F%A5%E8%AF%A2-%E5%AD%98%E5%9C%A8%E4%B8%80%E4%B8%AA%E8%A1%A8%E8%80%8C%E4%B8%8D%E5%9C%A8%E5%8F%A6%E4%B8%80%E4%B8%AA%E8%A1%A8%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-GO-time篇" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/04/26/GO-time%E7%AF%87/">GO time篇</a>
-    </h1>
-  
-
-        
-        <a href="/2021/04/26/GO-time%E7%AF%87/" class="archive-article-date">
-  	<time datetime="2021-04-26T12:24:38.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-04-26</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="go-Time篇"><a href="#go-Time篇" class="headerlink" title="go Time篇"></a>go Time篇</h3><p>当前日期 time.Now().Format(“2006-01-02”)</p>
-<p>当前时间 time.Now().Format(“2006-01-02 15:04:05”)</p>
-<p>年月日 year, mon, day := time.Now().UTC().Date()      mon格式为month需要转换</p>
-<p>也可以单独获取</p>
-<p>加一天 time.Parse(“2006-01-02 15:04:05”, date).AddDate(0, 0, 1).Format(“2006-01-02 15:04:05”)</p>
-<p>减一天 time.Parse(“2006-01-02 15:04:05”, date).AddDate(0, 0, -1).Format(“2006-01-02 15:04:05”)</p>
-<p>0 0 1 前面两个零分别代表年，月    date初始日期</p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/wschq/article/details/80114036">golang包time用法详解</a></p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41004440/article/details/89252653">golang map 获取某个值</a></p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_39524842/article/details/111890157">https://blog.csdn.net/weixin_39524842/article/details/111890157</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">GO</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/04/26/GO-time%E7%AF%87/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-GO-mod篇" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/03/30/GO-mod%E7%AF%87/">GO mod篇</a>
-    </h1>
-  
-
-        
-        <a href="/2021/03/30/GO-mod%E7%AF%87/" class="archive-article-date">
-  	<time datetime="2021-03-30T11:36:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-03-30</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">GO</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/03/30/GO-mod%E7%AF%87/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
     </nav>
   
 
@@ -1450,6 +1581,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">网络</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">GO入门</a>
               </li>
             
             <div class="clearfix"></div>

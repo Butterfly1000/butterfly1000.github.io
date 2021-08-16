@@ -63,6 +63,8 @@
 	        
 				<li><a href="/tags/GO/">GO</a></li>
 	        
+				<li><a href="/tags/GO%E5%85%A5%E9%97%A8/">GO入门</a></li>
+	        
 				<li><a href="/tags/%E7%BD%91%E7%BB%9C/">网络</a></li>
 	        
 				<li><a href="/tags/gopush/">gopush</a></li>
@@ -133,6 +135,8 @@
 			
 				
 			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -145,23 +149,25 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 11.11111111111111%"><a href="/">主页</a></li>
+					<li style="width: 10%"><a href="/">主页</a></li>
 		        
-					<li style="width: 11.11111111111111%"><a href="/tags/%E9%9A%8F%E7%AC%94/">随笔</a></li>
+					<li style="width: 10%"><a href="/tags/%E9%9A%8F%E7%AC%94/">随笔</a></li>
 		        
-					<li style="width: 11.11111111111111%"><a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/">知识点</a></li>
+					<li style="width: 10%"><a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/">知识点</a></li>
 		        
-					<li style="width: 11.11111111111111%"><a href="/tags/mysql/">mysql</a></li>
+					<li style="width: 10%"><a href="/tags/mysql/">mysql</a></li>
 		        
-					<li style="width: 11.11111111111111%"><a href="/tags/GO/">GO</a></li>
+					<li style="width: 10%"><a href="/tags/GO/">GO</a></li>
 		        
-					<li style="width: 11.11111111111111%"><a href="/tags/%E7%BD%91%E7%BB%9C/">网络</a></li>
+					<li style="width: 10%"><a href="/tags/GO%E5%85%A5%E9%97%A8/">GO入门</a></li>
 		        
-					<li style="width: 11.11111111111111%"><a href="/tags/gopush/">gopush</a></li>
+					<li style="width: 10%"><a href="/tags/%E7%BD%91%E7%BB%9C/">网络</a></li>
 		        
-					<li style="width: 11.11111111111111%"><a href="/tags/%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/">优化案例</a></li>
+					<li style="width: 10%"><a href="/tags/gopush/">gopush</a></li>
 		        
-					<li style="width: 11.11111111111111%"><a href="/tags/%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/">工具推荐</a></li>
+					<li style="width: 10%"><a href="/tags/%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/">优化案例</a></li>
+		        
+					<li style="width: 10%"><a href="/tags/%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/">工具推荐</a></li>
 		        
 				</ul>
 			</nav>
@@ -177,6 +183,373 @@
           </div>
           <div id="js-content" class="content-ll">
             
+  
+    <article id="post-Go-单元测试篇" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/06/Go-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E7%AF%87/">Go-单元测试篇(简单)</a>
+    </h1>
+  
+
+        
+        <a href="/2021/07/06/Go-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E7%AF%87/" class="archive-article-date">
+  	<time datetime="2021-07-06T02:44:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-07-06</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>参考文章</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://studygolang.com/articles/2491">golang test测试使用</a></p>
+<p><a target="_blank" rel="noopener" href="https://geektutu.com/post/quick-go-test.html">Go Test 单元测试简明教程</a></p>
+<p><a target="_blank" rel="noopener" href="https://learnku.com/articles/33446">Golang 单元测试执行 _test.go 中的某个 func 方法</a></p>
+<blockquote>
+<p>正文</p>
+</blockquote>
+<p>为什么需要单元测试，因为你可能修改的只是一个方法，但如果整个接口都放进去测试，明显效率不高。</p>
+<ul>
+<li>创建测试go文件，测试文件以 _test.go 结尾;引入包 import “testing”;测试用的参数有且只有一个，在这里是 t *testing.T。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import &quot;testing&quot;</span><br><span class="line"></span><br><span class="line">func TestAdd(t *testing.T) &#123;</span><br><span class="line">	if ans :&#x3D; Add(1, 2); ans !&#x3D; 3 &#123;</span><br><span class="line">		t.Errorf(&quot;1 + 2 expected be 3, but %d got&quot;, ans)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	if ans :&#x3D; Add(-10, -20); ans !&#x3D; -30 &#123;</span><br><span class="line">		t.Errorf(&quot;-10 + -20 expected be -30, but %d got&quot;, ans)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>基准测试(benchmark)的参数是 *testing.B，TestMain 的参数是 *testing.M 类型。</p>
+<ul>
+<li>运行 go test，该 package 下所有的测试用例都会被执行。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ go test</span><br><span class="line">ok      example 0.009s</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>go test -v，-v 参数会显示每个用例的测试结果，另外 -cover 参数可以查看覆盖率。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ go test -v</span><br><span class="line">&#x3D;&#x3D;&#x3D; RUN   TestAdd</span><br><span class="line">--- PASS: TestAdd (0.00s)</span><br><span class="line">&#x3D;&#x3D;&#x3D; RUN   TestMul</span><br><span class="line">--- PASS: TestMul (0.00s)</span><br><span class="line">PASS</span><br><span class="line">ok      example 0.007s</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>但我们更常用的是运行其中一个，例如要运行上面的TestAdd方法，用<code>-run</code>参数指定，该参数支持通配符 *，和部分正则表达式，例如 ^、$。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ go test -run TestAdd -v</span><br><span class="line">&#x3D;&#x3D;&#x3D; RUN   TestAdd</span><br><span class="line">--- PASS: TestAdd (0.00s)</span><br><span class="line">PASS</span><br><span class="line">ok      example 0.007s</span><br></pre></td></tr></table></figure>
+当然，go单元测试还有其他的使用内容，不过这边仅给最简单的。具体可以看上面的链接文档。</li>
+</ul>
+<blockquote>
+<p>真实场景注意点</p>
+</blockquote>
+<ul>
+<li>报错：flag provided but not defined: -test.timeout</li>
+</ul>
+<p>处理方法：注释掉flag.Parse()</p>
+<p>理由：从flag.Parse()源码发现，他把go test的test当作一个参数处理，而flag没有对这个参数做处理导致解析失败。<a target="_blank" rel="noopener" href="https://my.oschina.net/u/3223370/blog/4272500">链接</a></p>
+<ul>
+<li>最好在测试文件添加初始化，完成数据库之类的默认配置<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">func init()  &#123;</span><br><span class="line">	initConfig()</span><br><span class="line">	initRedis()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">GO</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/07/06/Go-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E7%AF%87/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-MYSQL查询-存在一个表而不在另一个表中的数据" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/05/18/MYSQL%E6%9F%A5%E8%AF%A2-%E5%AD%98%E5%9C%A8%E4%B8%80%E4%B8%AA%E8%A1%A8%E8%80%8C%E4%B8%8D%E5%9C%A8%E5%8F%A6%E4%B8%80%E4%B8%AA%E8%A1%A8%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE/">MYSQL查询~ 存在一个表而不在另一个表中的数据</a>
+    </h1>
+  
+
+        
+        <a href="/2021/05/18/MYSQL%E6%9F%A5%E8%AF%A2-%E5%AD%98%E5%9C%A8%E4%B8%80%E4%B8%AA%E8%A1%A8%E8%80%8C%E4%B8%8D%E5%9C%A8%E5%8F%A6%E4%B8%80%E4%B8%AA%E8%A1%A8%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE/" class="archive-article-date">
+  	<time datetime="2021-05-18T11:39:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-05-18</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>业务场景：</p>
+</blockquote>
+<p>account表保存的用户信息 包含 真正用户 和 测试用户(内部测试账号),test表保存测试用户信息，对应account表id字段test.account_id。</p>
+<p>查询时需要剔除account表测试用户，找出account表id字段中，不与test表account字段相等的值。</p>
+<blockquote>
+<p>方法一: 使用 not in ,容易理解,效率低  执行时间为：8.6ms(其他数据相同方法)</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">注：这边因为account_id字段具有唯一性，所以才不用distinct去重。</span><br><span class="line"></span><br><span class="line">select account.id from account where account.id not in (select account_id from test)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>方法二：使用 left join…on… , “test.account_id is null” 表示左连接之后在test.account_id 字段为 null的记录  执行时间：9ms(其他数据相同方法)</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select account.id from account left join test on account.id &#x3D; test.account_id where test.account_id is null</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>方法三: 逻辑相对复杂,但是速度最快  执行时间: 10.2ms(其他数据相同方法)</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select * from account where (select count(1) as num from test where account.id &#x3D; test.account_id) &#x3D; 0</span><br><span class="line"></span><br><span class="line">当account表获取的id数据作为test表查询条件(account.id &#x3D; test.account_id)时，数据为0的account表数据。</span><br></pre></td></tr></table></figure>
+
+<p><strong>注：时间仅作为参考，还是要用实际数据模拟，语句可以用explain优化</strong></p>
+<blockquote>
+<p>参考链接</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;www.cnblogs.com&#x2F;softidea&#x2F;p&#x2F;9482120.html</span><br></pre></td></tr></table></figure>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/05/18/MYSQL%E6%9F%A5%E8%AF%A2-%E5%AD%98%E5%9C%A8%E4%B8%80%E4%B8%AA%E8%A1%A8%E8%80%8C%E4%B8%8D%E5%9C%A8%E5%8F%A6%E4%B8%80%E4%B8%AA%E8%A1%A8%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-GO-time篇" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/04/26/GO-time%E7%AF%87/">GO time篇</a>
+    </h1>
+  
+
+        
+        <a href="/2021/04/26/GO-time%E7%AF%87/" class="archive-article-date">
+  	<time datetime="2021-04-26T12:24:38.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-04-26</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="go-Time篇"><a href="#go-Time篇" class="headerlink" title="go Time篇"></a>go Time篇</h3><p>当前日期 time.Now().Format(“2006-01-02”)</p>
+<p>当前时间 time.Now().Format(“2006-01-02 15:04:05”)</p>
+<p>年月日 year, mon, day := time.Now().UTC().Date()      mon格式为month需要转换</p>
+<p>也可以单独获取</p>
+<p>加一天 time.Parse(“2006-01-02 15:04:05”, date).AddDate(0, 0, 1).Format(“2006-01-02 15:04:05”)</p>
+<p>减一天 time.Parse(“2006-01-02 15:04:05”, date).AddDate(0, 0, -1).Format(“2006-01-02 15:04:05”)</p>
+<p>0 0 1 前面两个零分别代表年，月    date初始日期</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/wschq/article/details/80114036">golang包time用法详解</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41004440/article/details/89252653">golang map 获取某个值</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_39524842/article/details/111890157">https://blog.csdn.net/weixin_39524842/article/details/111890157</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">GO</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/04/26/GO-time%E7%AF%87/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-GO-mod篇" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/03/30/GO-mod%E7%AF%87/">GO mod篇</a>
+    </h1>
+  
+
+        
+        <a href="/2021/03/30/GO-mod%E7%AF%87/" class="archive-article-date">
+  	<time datetime="2021-03-30T11:36:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-03-30</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">GO</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/03/30/GO-mod%E7%AF%87/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
   
     <article id="post-Go指针篇" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
@@ -748,84 +1121,9 @@
 
 
   
-    <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/02/25/hello-world/">Hello World</a>
-    </h1>
-  
-
-        
-        <a href="/2021/02/25/hello-world/" class="archive-article-date">
-  	<time datetime="2021-02-25T12:26:55.137Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-02-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/02/25/hello-world/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+      <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &amp;raquo;</a>
     </nav>
   
 
@@ -949,6 +1247,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">网络</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">GO入门</a>
               </li>
             
             <div class="clearfix"></div>

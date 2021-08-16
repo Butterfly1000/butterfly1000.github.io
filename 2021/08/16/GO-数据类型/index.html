@@ -6,14 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Archives: 2021 | Hero or Joker</title>
+  <title>GO 数据类型(入门篇必读) | Hero or Joker</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hero or Joker">
-<meta property="og:url" content="http://example.com/archives/2021/page/2/index.html">
+  <meta name="description" content="为什么是必读？因为这边会给出这个系列的参考&#x2F;出处文章地址  https:&#x2F;&#x2F;mojotv.cn&#x2F;   变量声明语法  123456789101112var a int &#x2F;&#x2F;声明一个int类型的变量var b struct &amp;#123; &#x2F;&#x2F;声明一个结构体    Name string&amp;#125;var a &#x3D; 8 &#x2F;&#x2F;声明变量">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GO 数据类型(入门篇必读)">
+<meta property="og:url" content="http://example.com/2021/08/16/GO-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/index.html">
 <meta property="og:site_name" content="Hero or Joker">
+<meta property="og:description" content="为什么是必读？因为这边会给出这个系列的参考&#x2F;出处文章地址  https:&#x2F;&#x2F;mojotv.cn&#x2F;   变量声明语法  123456789101112var a int &#x2F;&#x2F;声明一个int类型的变量var b struct &amp;#123; &#x2F;&#x2F;声明一个结构体    Name string&amp;#125;var a &#x3D; 8 &#x2F;&#x2F;声明变量">
 <meta property="og:locale">
+<meta property="article:published_time" content="2021-08-16T02:12:23.000Z">
+<meta property="article:modified_time" content="2021-08-16T02:43:32.898Z">
 <meta property="article:author" content="Kj">
+<meta property="article:tag" content="GO入门">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Hero or Joker" type="application/atom+xml">
@@ -182,405 +187,169 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-GO-数据类型" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      GO 数据类型(入门篇必读)
+    </h1>
+  
+
+        
+        <a href="/2021/08/16/GO-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" class="archive-article-date">
+  	<time datetime="2021-08-16T02:12:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-08-16</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>为什么是必读？因为这边会给出这个系列的参考/出处文章地址</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://mojotv.cn/">https://mojotv.cn/</a></p>
+<blockquote>
+<p> 变量声明语法</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">var a int &#x2F;&#x2F;声明一个int类型的变量</span><br><span class="line"></span><br><span class="line">var b struct &#123; &#x2F;&#x2F;声明一个结构体</span><br><span class="line">    Name string</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var a &#x3D; 8 &#x2F;&#x2F;声明变量的同时赋值,编译器自动推导其数据类型</span><br><span class="line"></span><br><span class="line">var a int &#x3D; 8 &#x2F;&#x2F;声明变量的同时赋值</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;声明变量的同时赋值更习惯用&quot;:&#x3D;&quot;，但注意全局变量不可以用&quot;:&#x3D;&quot;</span><br><span class="line">a :&#x3D; 8</span><br></pre></td></tr></table></figure>
+
+<p><strong>go可使用var关键字声明全局变量,但是:=这种方式是不能用在全局变量中的.:=只能用在函数体内部.</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var (</span><br><span class="line">    a int</span><br><span class="line">    b bool</span><br><span class="line">    xx,yy,dd string&#x3D;&quot;xx&quot;,&quot;yy&quot;,&quot;dd&quot;</span><br><span class="line">    &#x2F;&#x2F;这里省略变量类型也是可以的.</span><br><span class="line">    zz,aa&#x3D;&quot;zz&quot;,&quot;aa&quot;        &#x2F;&#x2F;注意用&quot;&#x3D;&quot;，不能用&quot;:&#x3D;&quot;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p><strong>go函数体内的变量是如果被声明了,那么必须使用,不然会报错。注:全局变量声明未使用不会报错</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;已声明,但如果不想使用可以加上_&#x3D;varName,表示为已抛弃的变量.</span><br><span class="line">var a&#x3D;1</span><br><span class="line">&#x2F;&#x2F;标识为已抛弃的变量.</span><br><span class="line">_&#x3D;a  </span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>变量初始化</p>
+</blockquote>
+<p><strong>Go 语言在声明变量时会默认给变量赋个当前类型的<code>空值</code>/<code>零值</code></strong></p>
+<p>在方法中声明一个临时变量并赋初值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;推荐,会更新值的格式自动声明变量类型</span><br><span class="line">tmpStr :&#x3D;&quot;&quot;</span><br></pre></td></tr></table></figure>
+
+<p>当一个变量或者新值被创建时, 如果没有为其明确指定初始值,go语言会自动初始化其值为此类型对应的零值。</p>
+<table>
+<thead>
+<tr>
+<th align="center">类型</th>
+<th align="center"><strong>零值</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">数值类型</td>
+<td align="center">0</td>
+</tr>
+<tr>
+<td align="center">布尔类型</td>
+<td align="center">false</td>
+</tr>
+<tr>
+<td align="center">字符串</td>
+<td align="center">“”（空字符串）</td>
+</tr>
+<tr>
+<td align="center">slice</td>
+<td align="center">nil</td>
+</tr>
+<tr>
+<td align="center">map</td>
+<td align="center">nil</td>
+</tr>
+<tr>
+<td align="center">指针</td>
+<td align="center">nil</td>
+</tr>
+<tr>
+<td align="center">函数</td>
+<td align="center">nil</td>
+</tr>
+<tr>
+<td align="center">接口</td>
+<td align="center">nil</td>
+</tr>
+<tr>
+<td align="center">信道</td>
+<td align="center">nil</td>
+</tr>
+</tbody></table>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2021" class="archive-year">2021</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/07/06/Go-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E7%AF%87/" class="archive-article-date">
-  	<time datetime="2021-07-06T02:44:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-07-06</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/07/06/Go-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E7%AF%87/">Go-单元测试篇(简单)</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">GO</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">GO入门</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/05/18/MYSQL%E6%9F%A5%E8%AF%A2-%E5%AD%98%E5%9C%A8%E4%B8%80%E4%B8%AA%E8%A1%A8%E8%80%8C%E4%B8%8D%E5%9C%A8%E5%8F%A6%E4%B8%80%E4%B8%AA%E8%A1%A8%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE/" class="archive-article-date">
-  	<time datetime="2021-05-18T11:39:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-05-18</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2021/08/16/GO-%E5%8C%85package%E5%92%8Cimport/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          GO 包package和import
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/08/03/Hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E9%9F%B3%E4%B9%90/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Hexo博客中插入音乐</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/05/18/MYSQL%E6%9F%A5%E8%AF%A2-%E5%AD%98%E5%9C%A8%E4%B8%80%E4%B8%AA%E8%A1%A8%E8%80%8C%E4%B8%8D%E5%9C%A8%E5%8F%A6%E4%B8%80%E4%B8%AA%E8%A1%A8%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE/">MYSQL查询~ 存在一个表而不在另一个表中的数据</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/04/26/GO-time%E7%AF%87/" class="archive-article-date">
-  	<time datetime="2021-04-26T12:24:38.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-04-26</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/04/26/GO-time%E7%AF%87/">GO time篇</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">GO</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/03/30/GO-mod%E7%AF%87/" class="archive-article-date">
-  	<time datetime="2021-03-30T11:36:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-03-30</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/03/30/GO-mod%E7%AF%87/">GO mod篇</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">GO</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/03/24/Go%E6%8C%87%E9%92%88%E7%AF%87/" class="archive-article-date">
-  	<time datetime="2021-03-24T00:22:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-03-24</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/03/24/Go%E6%8C%87%E9%92%88%E7%AF%87/">Go指针篇</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">GO</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/03/22/concat%E4%BB%A5%E5%8F%8Agroup-concat/" class="archive-article-date">
-  	<time datetime="2021-03-22T11:28:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-03-22</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/03/22/concat%E4%BB%A5%E5%8F%8Agroup-concat/">concat以及group_concat</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/03/15/%E5%85%B3%E4%BA%8E%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/" class="archive-article-date">
-  	<time datetime="2021-03-15T02:38:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-03-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/03/15/%E5%85%B3%E4%BA%8E%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/">关于学习的一些思考</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">随笔</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/03/10/%E5%9B%A0%E9%80%89%E7%A7%80%E8%80%8C%E5%BC%95%E5%8F%91%E7%9A%84%E6%80%9D%E8%80%83/" class="archive-article-date">
-  	<time datetime="2021-03-10T06:02:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-03-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/03/10/%E5%9B%A0%E9%80%89%E7%A7%80%E8%80%8C%E5%BC%95%E5%8F%91%E7%9A%84%E6%80%9D%E8%80%83/">因选秀而引发的思考</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">随笔</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/03/10/%E6%8E%A8%E8%8D%90%E4%B8%80%E6%AC%BE%E7%94%BB%E6%B5%81%E7%A8%8B%E5%9B%BE%E5%B7%A5%E5%85%B7/" class="archive-article-date">
-  	<time datetime="2021-03-10T05:41:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-03-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/03/10/%E6%8E%A8%E8%8D%90%E4%B8%80%E6%AC%BE%E7%94%BB%E6%B5%81%E7%A8%8B%E5%9B%BE%E5%B7%A5%E5%85%B7/">推荐一款画流程图工具</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">工具推荐</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/03/08/%E4%BD%8D%E8%BF%90%E7%AE%97/" class="archive-article-date">
-  	<time datetime="2021-03-08T06:03:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-03-08</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/03/08/%E4%BD%8D%E8%BF%90%E7%AE%97/">位运算</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">知识点</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/2021/">&amp;laquo; Prev</a><a class="page-number" href="/archives/2021/">1</a><span class="page-number current">2</span><a class="page-number" href="/archives/2021/page/3/">3</a><a class="extend next" rel="next" href="/archives/2021/page/3/">Next &amp;raquo;</a>
-    </nav>
   
 
 
@@ -604,8 +373,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
