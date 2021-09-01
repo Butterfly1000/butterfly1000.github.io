@@ -69,6 +69,10 @@
 	        
 				<li><a href="/tags/gopush/">gopush</a></li>
 	        
+				<li><a href="/tags/Docker/">Docker</a></li>
+	        
+				<li><a href="/tags/MQTT/">MQTT</a></li>
+	        
 				<li><a href="/tags/%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/">优化案例</a></li>
 	        
 				<li><a href="/tags/%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/">工具推荐</a></li>
@@ -137,6 +141,10 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -149,25 +157,29 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 10%"><a href="/">主页</a></li>
+					<li style="width: 8.333333333333334%"><a href="/">主页</a></li>
 		        
-					<li style="width: 10%"><a href="/tags/%E9%9A%8F%E7%AC%94/">随笔</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/%E9%9A%8F%E7%AC%94/">随笔</a></li>
 		        
-					<li style="width: 10%"><a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/">知识点</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/">知识点</a></li>
 		        
-					<li style="width: 10%"><a href="/tags/mysql/">mysql</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/mysql/">mysql</a></li>
 		        
-					<li style="width: 10%"><a href="/tags/GO/">GO</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/GO/">GO</a></li>
 		        
-					<li style="width: 10%"><a href="/tags/GO%E5%85%A5%E9%97%A8/">GO入门</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/GO%E5%85%A5%E9%97%A8/">GO入门</a></li>
 		        
-					<li style="width: 10%"><a href="/tags/%E7%BD%91%E7%BB%9C/">网络</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/%E7%BD%91%E7%BB%9C/">网络</a></li>
 		        
-					<li style="width: 10%"><a href="/tags/gopush/">gopush</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/gopush/">gopush</a></li>
 		        
-					<li style="width: 10%"><a href="/tags/%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/">优化案例</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/Docker/">Docker</a></li>
 		        
-					<li style="width: 10%"><a href="/tags/%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/">工具推荐</a></li>
+					<li style="width: 8.333333333333334%"><a href="/tags/MQTT/">MQTT</a></li>
+		        
+					<li style="width: 8.333333333333334%"><a href="/tags/%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/">优化案例</a></li>
+		        
+					<li style="width: 8.333333333333334%"><a href="/tags/%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/">工具推荐</a></li>
 		        
 				</ul>
 			</nav>
@@ -183,6 +195,148 @@
           </div>
           <div id="js-content" class="content-ll">
             
+  
+    <article id="post-Go-解决go的fatal-error-concurrent-map-writes-map非并发安全" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/06/Go-%E8%A7%A3%E5%86%B3go%E7%9A%84fatal-error-concurrent-map-writes-map%E9%9D%9E%E5%B9%B6%E5%8F%91%E5%AE%89%E5%85%A8/">Go-解决go的fatal error: concurrent map writes map非并发安全</a>
+    </h1>
+  
+
+        
+        <a href="/2021/07/06/Go-%E8%A7%A3%E5%86%B3go%E7%9A%84fatal-error-concurrent-map-writes-map%E9%9D%9E%E5%B9%B6%E5%8F%91%E5%AE%89%E5%85%A8/" class="archive-article-date">
+  	<time datetime="2021-07-06T03:13:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-07-06</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>普及概念：</p>
+</blockquote>
+<h4 id="普及1"><a href="#普及1" class="headerlink" title="普及1"></a>普及1</h4><p><a target="_blank" rel="noopener" href="https://studygolang.com/articles/12972?fr=sidebar">Golang sync.WaitGroup的用法</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">    &quot;fmt&quot;</span><br><span class="line">    &quot;time&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main()&#123;</span><br><span class="line">    for i :&#x3D; 0; i &lt; 100 ; i++&#123;</span><br><span class="line">        go fmt.Println(i) &#x2F;&#x2F;并行</span><br><span class="line">    &#125;</span><br><span class="line">    time.Sleep(time.Second)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>上述方法，其实就是通过sleep等待go并行线程都完成再往下走，但是这个也是有问题的因为sleep的时间无法精确。</p>
+<ul>
+<li>可以考虑使用管道来完成上述操作：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">func main() &#123;</span><br><span class="line">    c :&#x3D; make(chan bool, 100)</span><br><span class="line">    for i :&#x3D; 0; i &lt; 100; i++ &#123;</span><br><span class="line">        go func(i int) &#123;</span><br><span class="line">            fmt.Println(i)</span><br><span class="line">            c &lt;- true</span><br><span class="line">        &#125;(i)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    for i :&#x3D; 0; i &lt; 100; i++ &#123;</span><br><span class="line">        &lt;-c</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先可以肯定的是使用管道是能达到我们的目的的，而且不但能达到目的，还能十分完美的达到目的。</p>
+<ul>
+<li>但go语言中有一个其他的工具<code>sync.WaitGroup</code> 能更加方便的帮助我们达到这个目的。</li>
+</ul>
+<p><code>WaitGroup</code> 对象内部有一个计数器，最初从0开始，它有三个方法：<code>Add(), Done(), Wait()</code> 用来控制计数器的数量。<code>Add(n)</code> 把计数器设置为<code>n</code> ，<code>Done()</code> 每次把计数器<code>-1</code> ，<code>wait()</code> 会阻塞代码的运行，直到计数器地值减为0。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">func main() &#123;</span><br><span class="line">    wg :&#x3D; sync.WaitGroup&#123;&#125;</span><br><span class="line">    wg.Add(100) &#x2F;&#x2F;计算器设置为100</span><br><span class="line">    for i :&#x3D; 0; i &lt; 100; i++ &#123;</span><br><span class="line">        go func(i int) &#123;</span><br><span class="line">            fmt.Println(i)</span><br><span class="line">            wg.Done() &#x2F;&#x2F;减1</span><br><span class="line">        &#125;(i)</span><br><span class="line">    &#125;</span><br><span class="line">    wg.Wait() &#x2F;&#x2F;等待100减到0，取消阻塞，往下执行</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但是要注意：</p>
+<p>1.我们不能使用<code>Add()</code> 给<code>wg</code> 设置一个负值</p>
+<p>2.WaitGroup对象不是一个引用类型</p>
+<p>WaitGroup对象不是一个引用类型，在通过函数传值的时候需要使用地址：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">func main() &#123;</span><br><span class="line">    wg :&#x3D; sync.WaitGroup&#123;&#125;</span><br><span class="line">    wg.Add(100)</span><br><span class="line">    for i :&#x3D; 0; i &lt; 100; i++ &#123;</span><br><span class="line">        go f(i, &amp;wg)</span><br><span class="line">    &#125;</span><br><span class="line">    wg.Wait()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 一定要通过指针传值，不然进程会进入死锁状态</span><br><span class="line">func f(i int, wg *sync.WaitGroup) &#123; </span><br><span class="line">    fmt.Println(i)</span><br><span class="line">    wg.Done()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="普及2"><a href="#普及2" class="headerlink" title="普及2"></a>普及2</h4><p><a target="_blank" rel="noopener" href="http://c.biancheng.net/view/61.html">Go语言defer (延迟执行语句)</a></p>
+<p>Go语言的 defer 语句会将其后面跟随的语句进行延迟处理，在 defer 归属的函数即将返回时，将延迟处理的语句按 defer 的<strong>逆序</strong>进行执行，也就是说，<strong>先</strong>被 defer 的语句<strong>最后</strong>被执行，<strong>最后</strong>被 defer 的语句，<strong>最先</strong>被执行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">好处及用处就不用说了。</span><br><span class="line">这边讲关于sync.WaitGroup的实际应用。</span><br><span class="line">defer wg.Done()  &#x2F;&#x2F;可以将这条语句放在函数中，不用担心句末遗忘，或者后续添加内容遗忘移动位置</span><br></pre></td></tr></table></figure>
+
+<h4 id="普及3"><a href="#普及3" class="headerlink" title="普及3"></a>普及3</h4><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/setevn/p/8977922.html">golang中sync.RWMutex和sync.Mutex区别</a></p>
+<p>golang中sync包实现了两种锁<strong>Mutex （互斥锁）</strong>和<strong>RWMutex（读写锁）</strong>，其中RWMutex是基于Mutex实现的，只读锁的实现使用类似引用计数器的功能．</p>
+<p>其中<strong>Mutex</strong>为互斥锁，Lock()加锁，Unlock()解锁，使用Lock()加锁后，便不能再次对其进行加锁，直到利用Unlock()解锁对其解锁后，才能再次加锁．适用于<strong>读写不确定</strong>场景，即读写次数没有明显的区别，并且只允许只有一个读或者写的场景，所以该锁叶叫做<strong>全局锁</strong>。</p>
+<p><strong>RWMutex</strong>是一个读写锁，该锁可以加多个读锁或者一个写锁，其经常用于读次数远远多于写次数的场景．</p>
+<p><strong><a target="_blank" rel="noopener" href="https://blog.csdn.net/u010230794/article/details/78554370">RWMutex的使用主要事项</a></strong></p>
+<ul>
+<li><strong>1、读锁的时候无需等待读锁的结束</strong></li>
+<li><strong>2、读锁的时候要等待写锁的结束</strong></li>
+<li><strong>3、写锁的时候要等待读锁的结束</strong></li>
+<li><strong>4、写锁的时候要等待写锁的结束</strong></li>
+</ul>
+<blockquote>
+<p>正题</p>
+</blockquote>
+<h4 id="问题代码"><a href="#问题代码" class="headerlink" title="问题代码"></a>问题代码</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">var wg sync.WaitGroup</span><br><span class="line">sortUrl :&#x3D; make(map[int]string) &#x2F;&#x2F;map</span><br><span class="line">for index, url :&#x3D; range matchStr &#123;</span><br><span class="line">	wg.Add(1)</span><br><span class="line">	go func(url string, i int) &#123;</span><br><span class="line">		defer wg.Done()</span><br><span class="line">		screenChangeUrl, err :&#x3D; ChangeImageToOurService(url, accountId, &quot;Claw-GooglePlay-AppInfo-Screenshot-&quot;, i, AMS_STORE_PREFIX)</span><br><span class="line">		if err &#x3D;&#x3D; nil &#123;</span><br><span class="line">			sortUrl[i] &#x3D; screenChangeUrl &#x2F;&#x2F;问题</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;(url, index)</span><br><span class="line">&#125;</span><br><span class="line">wg.Wait()</span><br></pre></td></tr></table></figure>
+
+<h4 id="为什么会报”fatal-error-concurrent-map-writes-map”？"><a href="#为什么会报”fatal-error-concurrent-map-writes-map”？" class="headerlink" title="为什么会报”fatal error: concurrent map writes map”？"></a>为什么会报”fatal error: concurrent map writes map”？</h4><p>因为map不是并发安全的 , 当有多个并发的groutine读写同一个map时，会出现panic错误。</p>
+<h4 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h4><p>在继续使用Map类型的情况下，常规解决方案一般分为两种。</p>
+<ul>
+<li>并发的groutine定义多个map，进行读写。这样就不存在同时读写一个map。这种的试用场景就是，</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">a :&#x3D; make(map[int]string)</span><br><span class="line">b :&#x3D; make(map[int]string)</span><br><span class="line">go func()&#123;</span><br><span class="line">   a[1] &#x3D; 5</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">go func()&#123;</span><br><span class="line">    b[1] &#x3D;5</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>但更多是通过锁(适合上面代码)</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">var wg sync.WaitGroup</span><br><span class="line">locker :&#x3D; new(sync.Mutex) &#x2F;&#x2F;互斥锁，这边也可以根据场景考虑用写锁</span><br><span class="line">sortUrl :&#x3D; make(map[int]string)</span><br><span class="line">for index, url :&#x3D; range matchStr &#123;</span><br><span class="line">    wg.Add(1)</span><br><span class="line">    go func(url string, i int) &#123;</span><br><span class="line">        locker.Lock() &#x2F;&#x2F;锁定</span><br><span class="line">        defer wg.Done()</span><br><span class="line">        defer locker.Unlock() &#x2F;&#x2F;解锁</span><br><span class="line">        screenChangeUrl, err :&#x3D; ChangeImageToOurService(url, accountId, &quot;Claw-GooglePlay-AppInfo-Screenshot-&quot;, i, AMS_STORE_PREFIX)</span><br><span class="line">        if err &#x3D;&#x3D; nil &#123;</span><br><span class="line">            sortUrl[i] &#x3D; screenChangeUrl</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;(url, index)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样就可以有效解决报错问题。但是会无形造成串行，因为都在等待解锁。</p>
+<h4 id="使用并行的解决方案"><a href="#使用并行的解决方案" class="headerlink" title="使用并行的解决方案"></a>使用并行的解决方案</h4><ul>
+<li>所以，我们想了两种方案，一种弃用map类型(这个该文章不描述)，另一种使用sync.Map(版本支持)。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">因为map本就是不适合并行的，所以go官方推出了sync.Map。</span><br><span class="line">通过测试，</span><br><span class="line">		var wg sync.WaitGroup</span><br><span class="line">		var t2 &#x3D; time.Now()</span><br><span class="line">		var sortUrl sync.Map &#x2F;&#x2F;新增</span><br><span class="line">		start :&#x3D; time.Now()</span><br><span class="line">		for index, url :&#x3D; range matchStr &#123;</span><br><span class="line">			wg.Add(1)</span><br><span class="line">			go func(url string, i int) &#123;</span><br><span class="line">				defer wg.Done()</span><br><span class="line">				urlString :&#x3D; &quot;url&quot; + &quot;,&quot; + fmt.Sprintf(&quot;%d&quot;,i)</span><br><span class="line">				if i &#x3D;&#x3D; 2 &#123;</span><br><span class="line">					time.Sleep(3 * time.Second)</span><br><span class="line">				&#125;</span><br><span class="line">				if i &#x3D;&#x3D; 3 &#123;</span><br><span class="line">					time.Sleep(8 * time.Second)</span><br><span class="line">				&#125;</span><br><span class="line">				sortUrl.Store(i, urlString) &#x2F;&#x2F;新增</span><br><span class="line">			&#125;(url, index)</span><br><span class="line">		&#125;</span><br><span class="line">		wg.Wait()</span><br><span class="line">		elapsed :&#x3D; time.Since(start)</span><br><span class="line">log.Debug(elapsed)</span><br></pre></td></tr></table></figure>
+<p>结果:elapsed为8.005294657s，证明可以并行。</p>
+<ul>
+<li>但是sync.Map和Map的使用却是有很大区别，下面介绍sync.Map的使用。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">var sortUrl sync.Map &#x2F;&#x2F;定义</span><br><span class="line">sortUrl.Store(i, urlString) &#x2F;&#x2F;使用i为key,urlString为value</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 遍历所有sync.Map中的键值对</span><br><span class="line">sortUrl.Range(func(k, v interface&#123;&#125;) bool &#123;</span><br><span class="line">  key :&#x3D; k.(int) &#x2F;&#x2F;注意转换成int类型</span><br><span class="line">  keys &#x3D; append(keys, key)</span><br><span class="line">  return true</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">for k :&#x3D; range keys &#123;</span><br><span class="line">  key,_ :&#x3D; sortUrl.Load(k) &#x2F;&#x2F;获取值，返回value interface&#123;&#125;, ok bool</span><br><span class="line">  keyValue :&#x3D; key.(string) &#x2F;&#x2F;转成string类型</span><br><span class="line">  uploadSuccessUrl &#x3D; append(uploadSuccessUrl, keyValue)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>更多操作可参考文档:<a target="_blank" rel="noopener" href="http://c.biancheng.net/view/34.html">Go语言sync.Map (在并发环境中使用的map)</a></p>
+<h4 id="附录介绍一些需要的类型转换文档"><a href="#附录介绍一些需要的类型转换文档" class="headerlink" title="附录介绍一些需要的类型转换文档:"></a>附录介绍一些需要的类型转换文档:</h4><p><a target="_blank" rel="noopener" href="https://www.jb51.net/article/142447.htm">Golang 中整数转字符串的方法</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/xujiamin0022016/article/details/109226605">golang-interface转string</a><br><a target="_blank" rel="noopener" href="https://studygolang.com/articles/7323">golang学习之interface与其它类型转换</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">GO</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/07/06/Go-%E8%A7%A3%E5%86%B3go%E7%9A%84fatal-error-concurrent-map-writes-map%E9%9D%9E%E5%B9%B6%E5%8F%91%E5%AE%89%E5%85%A8/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
   
     <article id="post-Go-单元测试篇" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
@@ -1010,117 +1164,6 @@
 
 
   
-    <article id="post-位运算" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/03/08/%E4%BD%8D%E8%BF%90%E7%AE%97/">位运算</a>
-    </h1>
-  
-
-        
-        <a href="/2021/03/08/%E4%BD%8D%E8%BF%90%E7%AE%97/" class="archive-article-date">
-  	<time datetime="2021-03-08T06:03:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-03-08</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="二进制"><a href="#二进制" class="headerlink" title="二进制"></a>二进制</h2><p><em>二进制</em>（binary）在数学和数字电路中指以2为基数的记数系统，以2为基数代表系统是<em>二进位制</em>的。</p>
-<p>简单的理解就是满二进一位，每一位只可能是0或1。</p>
-<p>以1,2,3,4为例，1就是<strong>1</strong>; 而2在1的基础上加1，位满2进一位，所以前面新增一位是1，之前的栏位因为进位所以为0，二进制就是<strong>1 0</strong>;那么,3的情况就是在2的末位加上1，所为为 <strong>1 1</strong>; 最后,4在3的末位加1,末位满2需要往倒数第二位进位加1，末位则为0，倒数第二位因为末位进位也满2进位，所为为0，新增一位为1，就是 <strong>1 0 0</strong> 。</p>
-<h2 id="位运算"><a href="#位运算" class="headerlink" title="位运算"></a>位运算</h2><table>
-<thead>
-<tr>
-<th><strong>运算符</strong></th>
-<th><strong>作用</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>\ &#124;</td>
-<td>位或</td>
-</tr>
-<tr>
-<td>&amp;</td>
-<td>位与</td>
-</tr>
-<tr>
-<td>^</td>
-<td>位异或</td>
-</tr>
-<tr>
-<td>&lt;&lt;</td>
-<td>位左移</td>
-</tr>
-<tr>
-<td>&#62;&#62;</td>
-<td>位右移</td>
-</tr>
-<tr>
-<td>~</td>
-<td>位取反</td>
-</tr>
-</tbody></table>
-<p>上面就是常见的运算符。下面讲解具体的运算:</p>
-        
-          <a class="article-more-a" href="/2021/03/08/%E4%BD%8D%E8%BF%90%E7%AE%97/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">知识点</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/03/08/%E4%BD%8D%E8%BF%90%E7%AE%97/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &amp;raquo;</a>
@@ -1307,6 +1350,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           
             <li class="search-li">
               <a href="https://github.com/Butterfly1000/blog_hexo" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>个人仓库</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="https://butterfly1000.github.io/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>博客地址</a>
             </li>
           
         </ul>
