@@ -32,9 +32,7 @@
 
   
 
-<meta name="generator" content="Hexo 5.4.0"><link rel="stylesheet" href="/assets/css/APlayer.min.css" class="aplayer-style-marker">
-<script src="/assets/js/APlayer.min.js" class="aplayer-script-marker"></script>
-</head>
+<meta name="generator" content="Hexo 5.4.0"></head>
 
 <body>
   <div id="container" q-class="show:isCtnShow">
@@ -203,6 +201,820 @@
           </div>
           <div id="js-content" class="content-ll">
             
+  
+    <article id="post-Redis数据库查看工具" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/08/Redis%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9F%A5%E7%9C%8B%E5%B7%A5%E5%85%B7/">Redis数据库查看工具</a>
+    </h1>
+  
+
+        
+        <a href="/2021/10/08/Redis%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9F%A5%E7%9C%8B%E5%B7%A5%E5%85%B7/" class="archive-article-date">
+  	<time datetime="2021-10-08T05:45:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-08</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h2><ul>
+<li><p>Redis Desktop Manager(被推荐，但未使用过)</p>
+</li>
+<li><p>DBeaver(不仅支持redis，还支持多种数据库)</p>
+</li>
+</ul>
+<h2 id="下载地址"><a href="#下载地址" class="headerlink" title="下载地址"></a>下载地址</h2><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/214baa511f2e">mac安装Redis可视化工具-Redis Desktop Manager</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhile.io/2019/05/08/dbeaver-license-crack.html">DBeaver Enterprise 21.0 企业版激活方法</a></p>
+<h2 id="DBeaver配置"><a href="#DBeaver配置" class="headerlink" title="DBeaver配置"></a>DBeaver配置</h2><p><img src="/2021/10/08/Redis%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9F%A5%E7%9C%8B%E5%B7%A5%E5%85%B7/r_1.png"></p>
+<blockquote>
+<p>Mac查询文件</p>
+</blockquote>
+<p>mdfind -name 文件名字</p>
+<blockquote>
+<p>Mac查询文本</p>
+</blockquote>
+<p>mdfind “John”<br>mdfind -onlyin ~/Library txt</p>
+<blockquote>
+<p>dbeaver.ini文件地址</p>
+</blockquote>
+<p>/Applications/DBeaverEE.app/Contents/Eclipse/dbeaver.ini</p>
+<blockquote>
+<p>dbeaver.ini内容</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">-startup</span><br><span class="line">..&#x2F;Eclipse&#x2F;plugins&#x2F;org.eclipse.equinox.launcher_1.6.0.v20200915-1508.jar</span><br><span class="line">--launcher.library</span><br><span class="line">..&#x2F;Eclipse&#x2F;plugins&#x2F;org.eclipse.equinox.launcher.cocoa.macosx.x86_64_1.2.0.v20200915-1442</span><br><span class="line">-vm</span><br><span class="line">&#x2F;Library&#x2F;Java&#x2F;JavaVirtualMachines&#x2F;openjdk-12.0.1.jdk&#x2F;Contents&#x2F;Home&#x2F;bin&#x2F;java</span><br><span class="line">-vmargs</span><br><span class="line">-XX:+IgnoreUnrecognizedVMOptions</span><br><span class="line">--add-modules&#x3D;ALL-SYSTEM</span><br><span class="line">-Dosgi.requiredJavaVersion&#x3D;11</span><br><span class="line">-Xms128m</span><br><span class="line">-Xmx2048m</span><br><span class="line">-XstartOnFirstThread</span><br><span class="line">-javaagent:&#x2F;Applications&#x2F;DBeaverEE.app&#x2F;dbeaver-agent&#x2F;dbeaver-agent.jar</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>使用方法:</p>
+</blockquote>
+<ol>
+<li>在打开的dbeaver.ini编辑窗口末行添加(绝对路径)：<br>“-vm”<br>“-javaagent”</li>
+<li>启动DBeaverEE即可。</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">工具推荐</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/10/08/Redis%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9F%A5%E7%9C%8B%E5%B7%A5%E5%85%B7/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-mongoDB数据库查看工具" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/08/mongoDB%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9F%A5%E7%9C%8B%E5%B7%A5%E5%85%B7/">mongoDB数据库查看工具</a>
+    </h1>
+  
+
+        
+        <a href="/2021/10/08/mongoDB%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9F%A5%E7%9C%8B%E5%B7%A5%E5%85%B7/" class="archive-article-date">
+  	<time datetime="2021-10-08T05:45:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-08</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>支持MAC，不确定是否支持Win</p>
+<h2 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h2><ul>
+<li>MongoDB Compass </li>
+</ul>
+<p>下载地址:<a target="_blank" rel="noopener" href="https://www.mongodb.com/try/download/compass">https://www.mongodb.com/try/download/compass</a></p>
+<ul>
+<li>Robo 3T (这个下载安装挺简单的)</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">工具推荐</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/10/08/mongoDB%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9F%A5%E7%9C%8B%E5%B7%A5%E5%85%B7/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-mysql数据库查看工具" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/08/mysql%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9F%A5%E7%9C%8B%E5%B7%A5%E5%85%B7/">mysql数据库查看工具</a>
+    </h1>
+  
+
+        
+        <a href="/2021/10/08/mysql%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9F%A5%E7%9C%8B%E5%B7%A5%E5%85%B7/" class="archive-article-date">
+  	<time datetime="2021-10-08T05:43:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-08</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h2><ul>
+<li>Sequel Pro</li>
+</ul>
+<p>这个仅支持Mac端，不过查询效率比navicat-premium要快，据说有特别优化加速。</p>
+<ul>
+<li>navicat-premium</li>
+</ul>
+<p>这个显示的sql执行时间更为接近真实场景。</p>
+<p>下载地址：<a target="_blank" rel="noopener" href="https://macwk.com/soft/navicat-premium">https://macwk.com/soft/navicat-premium</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">工具推荐</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/10/08/mysql%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9F%A5%E7%9C%8B%E5%B7%A5%E5%85%B7/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-PAW-API接口调试" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/08/PAW-API%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95/">PAW API接口调试</a>
+    </h1>
+  
+
+        
+        <a href="/2021/10/08/PAW-API%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95/" class="archive-article-date">
+  	<time datetime="2021-10-08T05:37:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-08</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="推荐"><a href="#推荐" class="headerlink" title="推荐"></a>推荐</h2><p>PAW一款类似postman的接口调试工具，curl导入效果感觉比postman要好，另外也有请求的多种代码方式源码。</p>
+<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>本文提供的下载链接仅支持Mac</p>
+<h2 id="下载安装链接-破解版"><a href="#下载安装链接-破解版" class="headerlink" title="下载安装链接(破解版)"></a>下载安装链接(破解版)</h2><p><a target="_blank" rel="noopener" href="https://macwk.com/soft/paw">https://macwk.com/soft/paw</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">工具推荐</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/10/08/PAW-API%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-GO包管理的前世今生" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/08/GO%E5%8C%85%E7%AE%A1%E7%90%86%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F/">GO包管理的前世今生</a>
+    </h1>
+  
+
+        
+        <a href="/2021/10/08/GO%E5%8C%85%E7%AE%A1%E7%90%86%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F/" class="archive-article-date">
+  	<time datetime="2021-10-08T03:13:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-08</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="git"><a href="#git" class="headerlink" title="git"></a>git</h2>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">GO</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/10/08/GO%E5%8C%85%E7%AE%A1%E7%90%86%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Docker-部署gitlab" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/">Docker-部署gitlab</a>
+    </h1>
+  
+
+        
+        <a href="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/" class="archive-article-date">
+  	<time datetime="2021-10-02T14:16:10.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-02</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="一、前提条件"><a href="#一、前提条件" class="headerlink" title="一、前提条件"></a>一、前提条件</h3><p>1.存在docker<br>2.服务器可以联网（外网）<br>3.服务器内存至少4G（内存不够会出现502错误）</p>
+<p>内存不足502错误如下图所示：</p>
+<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g1.png"></p>
+<h3 id="二、安装"><a href="#二、安装" class="headerlink" title="二、安装"></a>二、安装</h3><p>安装环境:Centos7</p>
+<p>1.查找GitLab镜像</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker search gitlab</span><br></pre></td></tr></table></figure>
+
+<p>2.拉取gitlab docker镜像</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull gitlab&#x2F;gitlab-ce:latest</span><br></pre></td></tr></table></figure>
+
+<p>3.运行GitLab并运行容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">docker run \</span><br><span class="line">-itd \</span><br><span class="line">-p 9980:80 \</span><br><span class="line">-p 9922:22 \</span><br><span class="line">-v &#x2F;usr&#x2F;local&#x2F;gitlab-test&#x2F;etc:&#x2F;etc&#x2F;gitlab \</span><br><span class="line">-v &#x2F;usr&#x2F;local&#x2F;gitlab-test&#x2F;log:&#x2F;var&#x2F;log&#x2F;gitlab \</span><br><span class="line">-v &#x2F;usr&#x2F;local&#x2F;gitlab-test&#x2F;opt:&#x2F;var&#x2F;opt&#x2F;gitlab \</span><br><span class="line">--restart always \</span><br><span class="line">--privileged&#x3D;true \</span><br><span class="line">--name gitlab-test \</span><br><span class="line">gitlab&#x2F;gitlab-ce</span><br></pre></td></tr></table></figure>
+<p>成功会返回的容器ID哦！！<br>　　<br>命令解释：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">-i 以交互模式运行容器，通常与 -t 同时使用命令解释：</span><br><span class="line"></span><br><span class="line">-t 为容器重新分配一个伪输入终端，通常与 -i 同时使用</span><br><span class="line"></span><br><span class="line">-d 后台运行容器，并返回容器ID</span><br><span class="line"></span><br><span class="line">-p 9980:80 将容器内80端口映射至宿主机9980端口，这是访问gitlab的端口</span><br><span class="line"></span><br><span class="line">-p 9922:22 将容器内22端口映射至宿主机9922端口，这是访问ssh的端口</span><br><span class="line"></span><br><span class="line">-v &#x2F;usr&#x2F;local&#x2F;gitlab-test&#x2F;etc:&#x2F;etc&#x2F;gitlab 将容器&#x2F;etc&#x2F;gitlab目录挂载到宿主机&#x2F;usr&#x2F;local&#x2F;gitlab-test&#x2F;etc目录下，若宿主机内此目录不存在将会自动创建，其他两个挂载同这个一样</span><br><span class="line"></span><br><span class="line">--restart always 容器自启动</span><br><span class="line"></span><br><span class="line">--privileged&#x3D;true 让容器获取宿主机root权限</span><br><span class="line"></span><br><span class="line">--name gitlab-test 设置容器名称为gitlab-test</span><br><span class="line"></span><br><span class="line">gitlab&#x2F;gitlab-ce 镜像的名称，这里也可以写镜像ID</span><br></pre></td></tr></table></figure>
+
+<p><strong>重点：接下来的配置请在容器内进行修改，不要在挂载到宿主机的文件上进行修改。否则可能出现配置更新不到容器内，或者是不能即时更新到容器内，导致gitlab启动成功，但是无法访问</strong></p>
+<p>4.进入容器内</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it gitlab-test &#x2F;bin&#x2F;bash</span><br></pre></td></tr></table></figure>
+
+<p>5.修改gitlab.rb</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 打开文件</span><br><span class="line">vi &#x2F;etc&#x2F;gitlab&#x2F;gitlab.rb</span><br><span class="line"> </span><br><span class="line"># 这个文件是全注释掉了的，所以直接在首行添加如下配置</span><br><span class="line">  </span><br><span class="line"># gitlab访问地址，可以写域名。如果端口不写的话默认为80端口 （图片上拼写错误，正确的是external_url）</span><br><span class="line">external_url &#39;http:&#x2F;&#x2F;192.168.201.5:9980&#39;</span><br><span class="line"># ssh主机ip</span><br><span class="line">gitlab_rails[&#39;gitlab_ssh_host&#39;] &#x3D; &#39;192.168.201.5&#39;</span><br><span class="line"># ssh连接端口</span><br><span class="line">gitlab_rails[&#39;gitlab_shell_ssh_port&#39;] &#x3D; 9922</span><br></pre></td></tr></table></figure>
+
+<p>6.修改gitlab.yml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 打开文件</span><br><span class="line">vi &#x2F;opt&#x2F;gitlab&#x2F;embedded&#x2F;service&#x2F;gitlab-rails&#x2F;config&#x2F;gitlab.yml</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g2.png"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># 配置解释：</span><br><span class="line"> </span><br><span class="line"># host：访问的IP  192.168.201.5</span><br><span class="line"> </span><br><span class="line"># port：访问的端口  9980</span><br><span class="line"> </span><br><span class="line"># 以上两个和gitlab.rb内external_url的配置保持一致</span><br><span class="line"> </span><br><span class="line"># ssh_host：ssh主机ip，和gitlab.rb内gitlab_rails[&#39;gitlab_ssh_host&#39;]保持一致</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 配置二：找到gitlab_shell标签下的ssh_port，将其修改为9922</span><br><span class="line">#（和gitlab.rb内gitlab_rails[&#39;gitlab_shell_ssh_port&#39;] 保持一致）</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g3.png"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># 保存并退出:wq</span><br></pre></td></tr></table></figure>
+
+<p>7.让修改后的配置生效</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitlab-ctl reconfigure</span><br></pre></td></tr></table></figure>
+
+<p>8.重启gitlab</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitlab-ctl restart</span><br></pre></td></tr></table></figure>
+
+<p>9.退出容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exit</span><br></pre></td></tr></table></figure>
+
+<p>10.在游览器输入如下地址，访问gitlab（eaxternal_url配置的就是这个）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:192.168.201.5:9980</span><br></pre></td></tr></table></figure>
+
+<p>如果访问不成功的话：</p>
+<p>（1）   进入容器查看gitlab.rb和gitlab.yml文件是否配置成功</p>
+<p>（2）   查看防火墙是否开放9980、9922端口</p>
+<p>11.依然访问不成功！！</p>
+<p>确认防火墙firewall 和 iptables 都没有阻止端口。gitlab也运行成功，但是无法访问！！</p>
+<p>查看端口,确实有监听9980和9922端口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -lntp</span><br></pre></td></tr></table></figure>
+
+<p>但是telnet还是被拒绝</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">telnet 192.168.201.5 9980</span><br></pre></td></tr></table></figure>
+
+<p>查看了了日志，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ docker logs -f -t  --tail&#x3D;100 gitlab-test | grep &quot;failed&quot;</span><br><span class="line"></span><br><span class="line">021&#x2F;09&#x2F;27 16:47:03 [crit] 929#0: *54 connect() to unix:&#x2F;var&#x2F;opt&#x2F;gitlab&#x2F;gitlab-workhorse&#x2F;sockets&#x2F;socket failed (2: No such file or directory) while connecting</span><br><span class="line">to upstream, client: 127.0.0.1, server: 756dc32e9be4, request: &quot;GET &#x2F;help HTTP&#x2F;1.1&quot;, upstream: &quot;http:&#x2F;&#x2F;unix:&#x2F;var&#x2F;opt&#x2F;gitlab&#x2F;gitlab-work</span><br><span class="line"></span><br><span class="line">实时查看gitlab的输出日志(也能找到上面错误)</span><br><span class="line">gitlab-ctl tail</span><br><span class="line"></span><br><span class="line">查看gitlab当前的启动状态(正常)</span><br><span class="line">gitlab-ctl status</span><br></pre></td></tr></table></figure>
+
+<p>于是网上搜了方法,docker 镜像启动成功但是无法访问</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">解决办法：</span><br><span class="line"></span><br><span class="line">vi &#x2F;etc&#x2F;sysctl.conf 或者</span><br><span class="line"></span><br><span class="line">vi &#x2F;usr&#x2F;lib&#x2F;sysctl.d&#x2F;00-system.conf 添加如下代码： net.ipv4.ip_forward&#x3D;1</span><br><span class="line"></span><br><span class="line">重启network服务</span><br><span class="line"></span><br><span class="line">systemctl restart network 查看是否修改成功</span><br><span class="line"></span><br><span class="line">sysctl net.ipv4.ip_forward 如果返回为“net.ipv4.ip_forward &#x3D; 1”则表示成功了</span><br></pre></td></tr></table></figure>
+<p>但因为原本就是”net.ipv4.ip_forward = 1”，所以也不是这个原因。</p>
+<p>还提升了虚拟机内存，但同样无法访问。</p>
+<p>最后，发现了gitlab对8080端口是有需求的，所以kill -9相关进程后，发现可以访问了(还是要等待一段时间)。</p>
+<p>12.第一次访问默认是root账户，会需要修改密码（密码至少8位数，出现如下界面就基本上部署成功了）</p>
+<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g4.png"></p>
+<p>13.输入新密码后进行登录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root&#x2F;gitlab123456</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g5.png"></p>
+<p>14.登录后界面如下图，创建一个新项目</p>
+<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g6.png"></p>
+<p>15.输入信息，创建项目</p>
+<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g7.png"></p>
+<p>16.检查这里两处的ip的端口是否是你配置的</p>
+<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g8.png"></p>
+<p>如果这里两处的端口和ip和配置的不一样，再次进入容器检查gitlab.yml文件</p>
+<p>如下图显示：</p>
+<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g9.png"></p>
+<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g10.png"></p>
+<p>若不一样，将其修改为你的配置，然后:wq，再进行下面的操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gitlab-ctl reconfigure</span><br><span class="line">gitlab-ctl restart</span><br></pre></td></tr></table></figure>
+
+<p>17.安装到此结束</p>
+<h3 id="三、关闭用户注册"><a href="#三、关闭用户注册" class="headerlink" title="三、关闭用户注册"></a>三、关闭用户注册</h3><p>1.使用root用户登录gitlab</p>
+<p>2.点击【Admin Area】</p>
+<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g11.png"></p>
+<p>3.点击【Settings】</p>
+<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g12.png"></p>
+<p>4.点击Sign-in restrictions这一栏的【Expand】</p>
+<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g13.png"></p>
+<p>5.取消勾选</p>
+<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g14.png"></p>
+<p>6.往下滑动，找到保存按钮，点击保存</p>
+<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g15.png"></p>
+<p>7.进入登录界面，发现注册的窗口已经消失了</p>
+<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g16.png"></p>
+<h3 id="四、邮件配置"><a href="#四、邮件配置" class="headerlink" title="四、邮件配置"></a>四、邮件配置</h3><h3 id="五、自动备份配置"><a href="#五、自动备份配置" class="headerlink" title="五、自动备份配置"></a>五、自动备份配置</h3><h3 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h3><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/diaomina/p/12830449.html">docker部署gitlab</a></p>
+<h3 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h3><p>虽然，这几篇文章没有真正帮助到点，但也给了启迪。让我关掉已占用的8080端口，在此附上链接。</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/zuxing/articles/9329152.html">docker安装配置gitlab详细过程</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/xiayuandongcn/article/details/119871356">centos7 gitlab14搭建完成后，无法访问的问题处理（“error“:“badgateway: failed to receive response: dial unix /var/opt）</a> 这篇有帮助，但未实践成功。因为直接kill了8080端口占用进程。</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/wangxicoding/article/details/43738137">我所遇到的GitLab 502问题的解决</a></p>
+<p>比较实用的几篇</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/kofsony/p/11103852.html">docker启动,重启,关闭命令</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/kreo/p/4368811.html">CentOS7安装iptables防火墙</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/zl1991/p/10531726.html">docker 端口映射 及外部无法访问问题</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">docker</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Docker-入门篇" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/02/Docker-%E5%85%A5%E9%97%A8%E7%AF%87/">Docker入门教程</a>
+    </h1>
+  
+
+        
+        <a href="/2021/10/02/Docker-%E5%85%A5%E9%97%A8%E7%AF%87/" class="archive-article-date">
+  	<time datetime="2021-10-02T13:39:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-02</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="安装Docker"><a href="#安装Docker" class="headerlink" title="安装Docker"></a>安装Docker</h2><h3 id="安装环境"><a href="#安装环境" class="headerlink" title="安装环境"></a>安装环境</h3><p>此处在Centos7进行安装，可以使用以下命令查看CentOS版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsb_release -a</span><br></pre></td></tr></table></figure>
+
+<p>在 CentOS 7安装docker要求系统为64位、系统内核版本为 3.10 以上，可以使用以下命令查看</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname -r</span><br></pre></td></tr></table></figure>
+
+<h3 id="用yum源安装"><a href="#用yum源安装" class="headerlink" title="用yum源安装"></a>用yum源安装</h3><p><strong>查看是否已安装docker列表</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum list installed | grep docker</span><br></pre></td></tr></table></figure>
+
+<p><strong>安装docker</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install docker</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/kingsonfu/p/11576797.html">linux 安装docker</a></p>
+<h3 id="查找docker安装路径"><a href="#查找docker安装路径" class="headerlink" title="查找docker安装路径"></a>查找docker安装路径</h3><p>Linux系统下查找安装包所在目录的方法,rpm查找安装包路径</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Linux rpm 命令用于管理套件</span><br><span class="line">参数说明：</span><br><span class="line">-a 　查询所有套件。</span><br><span class="line">-l 　显示套件的文件列表。</span><br><span class="line">-q 　使用询问模式，当遇到任何问题时，rpm指令会先询问用户</span><br><span class="line"></span><br><span class="line">rpm -qa | grep docker</span><br><span class="line"></span><br><span class="line">rpm -ql docker-ce-19.03.13-3.el7.x86_64</span><br><span class="line"></span><br><span class="line">which</span><br><span class="line">使用指令&quot;which&quot;查看&quot;nginx&quot;的绝对路径，输入如下命令</span><br><span class="line">which nginx</span><br><span class="line"></span><br><span class="line">whereis</span><br><span class="line">使用 whereis 命令，能够方便的定位到文件系统中可执行文件的位置</span><br><span class="line">whereis nginx</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看是否安装成功"><a href="#查看是否安装成功" class="headerlink" title="查看是否安装成功"></a>查看是否安装成功</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># docker version 或者# docker info</span><br></pre></td></tr></table></figure>
+
+<h3 id="Docker-需要用户具有-sudo-权限，为了避免每次命令都输入sudo，可以把用户加入-Docker-用户组"><a href="#Docker-需要用户具有-sudo-权限，为了避免每次命令都输入sudo，可以把用户加入-Docker-用户组" class="headerlink" title="Docker 需要用户具有 sudo 权限，为了避免每次命令都输入sudo，可以把用户加入 Docker 用户组"></a>Docker 需要用户具有 sudo 权限，为了避免每次命令都输入<code>sudo</code>，可以把用户加入 Docker 用户组</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo usermod -aG docker $USER</span><br></pre></td></tr></table></figure>
+
+<h3 id="Docker-运行命令"><a href="#Docker-运行命令" class="headerlink" title="Docker 运行命令"></a>Docker 运行命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># systemctl 命令的用法</span><br><span class="line">$ sudo systemctl start docker </span><br></pre></td></tr></table></figure>
+
+<h2 id="image文件"><a href="#image文件" class="headerlink" title="image文件"></a>image文件</h2><p><strong>Docker 把应用程序及其依赖，打包在 image 文件里面。</strong></p>
+<p>只有通过这个文件，才能生成 Docker 容器。<strong>image 文件可以看作是容器的模板</strong>。Docker 根据 image 文件<strong>生成</strong>容器的实例。同一个 image 文件，可以生成多个同时运行的容器实例。</p>
+<p>image 是二进制文件。实际开发中，一个 image 文件往往通过继承另一个 image 文件，加上一些个性化设置而生成。举例来说，你可以在 Ubuntu 的 image 基础上，往里面加入 Apache 服务器，形成你的 image。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 列出本机的所有 image 文件。</span><br><span class="line">$ docker image ls# 删除 image 文件$ docker image rm [imageName]</span><br></pre></td></tr></table></figure>
+
+<p>image 文件是通用的，一台机器的 image 文件拷贝到另一台机器，照样可以使用。一般来说，为了节省时间，我们应该尽量使用别人制作好的 image 文件，而不是自己制作。即使要定制，也应该基于别人的 image 文件进行加工，而不是从零开始制作。</p>
+<p>为了方便共享，image 文件制作完成后，可以上传到网上的仓库。Docker 的官方仓库 <a target="_blank" rel="noopener" href="https://hub.docker.com/">Docker Hub</a> 是最重要、最常用的 image 仓库。此外，出售自己制作的 image 文件也是可以的。</p>
+<blockquote>
+<p>将 image 文件从仓库抓取到本地</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker image pull library&#x2F;hello-world</span><br></pre></td></tr></table></figure>
+
+<p>上面代码中，<code>docker image pull</code>是抓取 image 文件的命令。<code>library/hello-world</code>是 image 文件在仓库里面的位置，其中<code>library</code>是 image 文件所在的组，<code>hello-world</code>是 image 文件的名字。</p>
+<p>由于 <strong>Docker 官方提供</strong> 的 image 文件，都放在<a target="_blank" rel="noopener" href="https://hub.docker.com/r/library/"><code>library</code></a>组里面，所以它的是默认组，<strong>可以省略</strong>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker image pull hello-world</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>查看 image 文件</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker image ls</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>运行这个 image 文件生成容器实例并运行</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker container run hello-world</span><br></pre></td></tr></table></figure>
+
+<p>注意，<code>docker container run</code>命令具有自动抓取 image 文件的功能。如果发现本地没有指定的 image 文件，就会从仓库自动抓取。因此，前面的<code>docker image pull</code>命令并不是必需的步骤。</p>
+<blockquote>
+<p>手动终止容器运行</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker container kill [containID]</span><br></pre></td></tr></table></figure>
+
+<h2 id="容器文件"><a href="#容器文件" class="headerlink" title="容器文件"></a>容器文件</h2><p><strong>image 文件生成的容器实例，本身也是一个文件，称为容器文件。</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 列出本机正在运行的容器</span><br><span class="line">$ docker container ls</span><br><span class="line">或</span><br><span class="line">$ docker ps</span><br><span class="line"></span><br><span class="line"># 列出本机所有容器，包括终止运行的容器</span><br><span class="line">$ docker container ls --all</span><br></pre></td></tr></table></figure>
+
+<p>终止运行的容器文件，依然会占据硬盘空间，可以使用<a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/container_rm/"><code>docker container rm</code></a>命令删除。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker container rm [containerID]</span><br></pre></td></tr></table></figure>
+
+<h2 id="Dockerfile-文件"><a href="#Dockerfile-文件" class="headerlink" title="Dockerfile 文件"></a>Dockerfile 文件</h2><p>学会使用 image 文件以后，接下来的问题就是，如何可以生成 image 文件？如果你要推广自己的软件，势必要自己制作 image 文件。</p>
+<p>这就需要用到 Dockerfile 文件。它是一个文本文件，用来配置 image。Docker 根据 该文件生成二进制的 image 文件。</p>
+<p>下面通过一个实例，演示如何编写 Dockerfile 文件。</p>
+<h2 id="实例：制作自己的-Docker-容器"><a href="#实例：制作自己的-Docker-容器" class="headerlink" title="实例：制作自己的 Docker 容器"></a>实例：制作自己的 Docker 容器</h2><p>这部分内容就不做抄录了，附上参考和转载文章地址 <a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2018/02/docker-tutorial.html">Docker 入门教程</a> 和 <a target="_blank" rel="noopener" href="https://www.ruanyifeng.com/blog/2018/02/docker-wordpress-tutorial.html">Docker 微服务教程</a>,</p>
+<h2 id="image-仓库的镜像网址"><a href="#image-仓库的镜像网址" class="headerlink" title="image 仓库的镜像网址"></a>image 仓库的镜像网址</h2><p>本教程需要从仓库下载 image 文件，但是国内访问 Docker 的官方仓库很慢，还经常断线，所以要把仓库网址改成国内的镜像站。这里推荐使用官方镜像 registry.docker-cn.com 。下面是我的 Debian 系统的默认仓库修改方法，其他系统的修改方法参考官方文档。</p>
+<p>打开/etc/default/docker文件（需要sudo权限），在文件的底部加上一行。</p>
+<p>DOCKER_OPTS=”–registry-mirror=<a target="_blank" rel="noopener" href="https://registry.docker-cn.com&quot;/">https://registry.docker-cn.com&quot;</a><br>然后，重启 Docker 服务。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo service docker restart</span><br></pre></td></tr></table></figure>
+<p>现在就会自动从镜像仓库下载 image 文件了。</p>
+<h2 id="github镜像"><a href="#github镜像" class="headerlink" title="github镜像"></a>github镜像</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;hub.fastgit.org&#x2F;</span><br></pre></td></tr></table></figure>
+
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">docker</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/10/02/Docker-%E5%85%A5%E9%97%A8%E7%AF%87/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-关于git撤回内容的思考" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/01/%E5%85%B3%E4%BA%8Egit%E6%92%A4%E5%9B%9E%E5%86%85%E5%AE%B9%E7%9A%84%E6%80%9D%E8%80%83/">关于git撤回内容的思考</a>
+    </h1>
+  
+
+        
+        <a href="/2021/09/01/%E5%85%B3%E4%BA%8Egit%E6%92%A4%E5%9B%9E%E5%86%85%E5%AE%B9%E7%9A%84%E6%80%9D%E8%80%83/" class="archive-article-date">
+  	<time datetime="2021-09-01T11:36:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-09-01</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="本地"><a href="#本地" class="headerlink" title="本地"></a>本地</h2><p>如果是在本地就直接用Reset</p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/c2ec5f06cf1a">Git Reset 三种模式</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">知识点</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/09/01/%E5%85%B3%E4%BA%8Egit%E6%92%A4%E5%9B%9E%E5%86%85%E5%AE%B9%E7%9A%84%E6%80%9D%E8%80%83/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
   
     <article id="post-限制ip接口案例" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
@@ -393,1020 +1205,9 @@
 
 
   
-    <article id="post-charles手机端捕获数据" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/08/17/charles%E6%89%8B%E6%9C%BA%E7%AB%AF%E6%8D%95%E8%8E%B7%E6%95%B0%E6%8D%AE/">charles手机端捕获数据</a>
-    </h1>
-  
-
-        
-        <a href="/2021/08/17/charles%E6%89%8B%E6%9C%BA%E7%AB%AF%E6%8D%95%E8%8E%B7%E6%95%B0%E6%8D%AE/" class="archive-article-date">
-  	<time datetime="2021-08-17T05:42:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-08-17</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>推荐一款自己常用的捕获手机端数据工具:<strong>charles</strong></p>
-<p>注意:关于安卓7.0版本以上charles无法抓取https包的问题,这个因为测试都是公司的包，所以安卓开发那边会做相应处理打包，就不会出现问题了。</p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/lovelygirlyuzhu/article/details/109645152">关于Charles的安装，Charles给手机链接代理，安装证书，安卓手机抓包的连接，以及配置</a> 这篇文章写得很不错的。</p>
-<blockquote>
-<p>常用的点</p>
-</blockquote>
-<p>在处理好PC端的charles的下载，安装，证书之类后。</p>
-<p>手机连接与电脑<strong>同一网络下</strong>的WIFI,手动设置<code>代理</code>，主机名<code>charles:Help-&gt;Local IP Addresses</code>,端口名<code>charles:Proxy-&gt;Proxy Settings-&gt;Port</code>。</p>
-<p>连接成功后，其实就可以捕获数据了。但是https的数据会显示错误，这时候就需要下载证书了。</p>
-<p>手机浏览器下载证书链接:<a target="_blank" rel="noopener" href="http://chls.pro/ssl,%E4%B8%8B%E8%BD%BD%E5%AE%8C%E5%90%8E%E3%80%82%E8%AE%A9%E6%89%8B%E6%9C%BA%E4%BF%A1%E4%BB%BB%E8%AF%81%E4%B9%A6%EF%BC%8C%E4%BE%8B%E5%A6%82:&quot;%E6%8C%87%E7%BA%B9%E4%B8%8E%E5%AF%86%E7%A0%81-%E5%85%B6%E4%BB%96%E5%AE%89%E8%A3%85%E9%80%89%E9%A1%B9-%E4%BB%8E%E5%AD%98%E5%82%A8%E8%A3%85%E7%BD%AE%E5%AE%89%E8%A3%85&quot;%E6%93%8D%E4%BD%9C%E4%BF%A1%E4%BB%BB%EF%BC%8C%E5%BD%93%E7%84%B6%E4%B8%8D%E5%90%8C%E6%89%8B%E6%9C%BA%E6%93%8D%E4%BD%9C%E4%BF%A1%E4%BB%BB%E7%9A%84%E8%B7%AF%E5%BE%84%E4%B8%8D%E4%B8%80%E5%AE%9A%E7%9B%B8%E5%90%8C%E3%80%82">http://chls.pro/ssl,下载完后。让手机信任证书，例如:&quot;指纹与密码-其他安装选项-从存储装置安装&quot;操作信任，当然不同手机操作信任的路径不一定相同。</a></p>
-<blockquote>
-<p>Charles抓包postman</p>
-</blockquote>
-<p>因为有很多测试再<code>postman</code>上面测试，那么如何让<code>postman</code>上面的数据被charles捕获，看下面这篇文章。</p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/zhongyili_sohu/article/details/87881861">Charles抓包postman</a></p>
-<p>要想postman请求走charles，那么需要手动在postman设置代理，如下图</p>
-<p><img src="/2021/08/17/charles%E6%89%8B%E6%9C%BA%E7%AB%AF%E6%8D%95%E8%8E%B7%E6%95%B0%E6%8D%AE/1.png"></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">工具推荐</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/08/17/charles%E6%89%8B%E6%9C%BA%E7%AB%AF%E6%8D%95%E8%8E%B7%E6%95%B0%E6%8D%AE/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Go-控制结构for循环loop" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/08/16/Go-%E6%8E%A7%E5%88%B6%E7%BB%93%E6%9E%84for%E5%BE%AA%E7%8E%AFloop/">Go 控制结构for循环loop</a>
-    </h1>
-  
-
-        
-        <a href="/2021/08/16/Go-%E6%8E%A7%E5%88%B6%E7%BB%93%E6%9E%84for%E5%BE%AA%E7%8E%AFloop/" class="archive-article-date">
-  	<time datetime="2021-08-16T02:39:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-08-16</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>for循环是编程语言中一种循环语句，<strong>for 是 Go 语言唯一的循环语句.Go 语言中并没有其他语言比如 C 语言中的 while 和 do while 循环.</strong></p>
-<blockquote>
-<p>for循环</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">for initialisation; condition; post &#123;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这是典型的 for 循环三个表达式,第一个为初始化表达式或赋值语句;第二个为循环条件判定表达式;第三个为循环变量修正表达式,即此处的 post。</p>
-<p>示例:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">package main  </span><br><span class="line">import &quot;fmt&quot;  </span><br><span class="line">func main() &#123;  </span><br><span class="line">   for a :&#x3D; 0; a &lt; 12; a++ &#123;  </span><br><span class="line">      fmt.Print(a,&quot;\n&quot;)  </span><br><span class="line">   &#125;  </span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
-<p>&nbsp;</p>
-<blockquote>
-<p>for嵌套</p>
-</blockquote>
-<p>Go 语言允许用户在循环内使用循环.接下来我们将为大家介绍嵌套循环的使用.</p>
-<p>以下实例使用循环嵌套来输出 2 到 100 间的素数：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">   &#x2F;* 定义局部变量 *&#x2F;</span><br><span class="line">   var i, j int</span><br><span class="line"></span><br><span class="line">   for i&#x3D;2; i &lt; 100; i++ &#123;</span><br><span class="line">      for j&#x3D;2; j &lt;&#x3D; (i&#x2F;j); j++ &#123;</span><br><span class="line">         if(i%j&#x3D;&#x3D;0) &#123;</span><br><span class="line">            break; &#x2F;&#x2F; 如果发现因子,则不是素数</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      if(j &gt; (i&#x2F;j)) &#123;</span><br><span class="line">         fmt.Printf(&quot;%d  是素数\n&quot;, i);</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>break</p>
-</blockquote>
-<p>break 语句用于在完成正常执行之前突然终止 for 循环,之后程序将会在 for 循环下一行代码开始执行。简单说就是整个for循环都结束了。</p>
-<blockquote>
-<p>continue</p>
-</blockquote>
-<p>continue 语句用来跳出 for 循环中当前循环.在 continue 语句后的所有的 for 循环语句都不会在本次循环中执行.循环体会在一下次循环中继续执行。简单说就是for循环当前对应值的循环体内容终止执行，但for循环会继续匹配下一个值。</p>
-<blockquote>
-<p>goto</p>
-</blockquote>
-<p>Go 语言的 goto 语句可以<strong>无条件地转移到过程中指定的行</strong>.</p>
-<p>goto 语句通常与条件语句配合使用.可用来实现条件转移, 构成循环,跳出循环体等功能.</p>
-<p><strong>但是,在结构化程序设计中一般不主张使用 goto 语句, 以免造成程序流程的混乱,使理解和调试程序都产生困难.</strong></p>
-<p><strong>直接看示例：</strong></p>
-<p>在变量 a 等于 15 的时候跳过本次循环并回到循环的开始语句 LOOP 处：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">   &#x2F;* 定义局部变量 *&#x2F;</span><br><span class="line">   var a int &#x3D; 10</span><br><span class="line"></span><br><span class="line">   &#x2F;* 循环 *&#x2F;</span><br><span class="line">   LOOP: for a &lt; 20 &#123;</span><br><span class="line">      if a &#x3D;&#x3D; 15 &#123;</span><br><span class="line">         &#x2F;* 跳过迭代 *&#x2F;</span><br><span class="line">         a &#x3D; a + 1</span><br><span class="line">         goto LOOP</span><br><span class="line">      &#125;</span><br><span class="line">      fmt.Printf(&quot;a的值为 : %d\n&quot;, a)</span><br><span class="line">      a++     </span><br><span class="line">   &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>解析:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">goto 和 LOOP配合使用在for循环中是比较经典的案例。上面的例子，a&#x3D;a+1后a&#x3D;15,跳转到LOOP处,for循环条件判断位置进行判断。</span><br><span class="line">结果:</span><br><span class="line">a的值为 : 10</span><br><span class="line">a的值为 : 11</span><br><span class="line">a的值为 : 12</span><br><span class="line">a的值为 : 13</span><br><span class="line">a的值为 : 14</span><br><span class="line">a的值为 : 16</span><br><span class="line">a的值为 : 17</span><br><span class="line">a的值为 : 18</span><br><span class="line">a的值为 : 19</span><br></pre></td></tr></table></figure>
-
-<p>但是，语法:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">goto label;</span><br><span class="line">..</span><br><span class="line">.</span><br><span class="line">label: statement;</span><br></pre></td></tr></table></figure>
-
-<p>说明，LOOP你可以随意变换其他值(比如A、LO…)。下面也是一种使用例子:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">   &#x2F;* 定义局部变量 *&#x2F;</span><br><span class="line">   var a int &#x3D; 10</span><br><span class="line"></span><br><span class="line">   &#x2F;* 循环 *&#x2F;</span><br><span class="line">   for a &lt; 20 &#123;</span><br><span class="line">      if a &#x3D;&#x3D; 15 &#123;</span><br><span class="line">         &#x2F;* 跳过迭代 *&#x2F;</span><br><span class="line">         a &#x3D; a + 1</span><br><span class="line">         goto A</span><br><span class="line">      &#125;</span><br><span class="line">      fmt.Printf(&quot;a的值为 : %d\n&quot;, a)</span><br><span class="line">      a++</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   A : fmt.Println(&quot;对，就是你&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>结果:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">a的值为 : 10</span><br><span class="line">a的值为 : 11</span><br><span class="line">a的值为 : 12</span><br><span class="line">a的值为 : 13</span><br><span class="line">a的值为 : 14</span><br><span class="line">对，就是你</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;没错，跳到A执行后，for循环终止了。</span><br></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">GO入门</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/08/16/Go-%E6%8E%A7%E5%88%B6%E7%BB%93%E6%9E%84for%E5%BE%AA%E7%8E%AFloop/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-GO-控制结构if-else" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/08/16/GO-%E6%8E%A7%E5%88%B6%E7%BB%93%E6%9E%84if-else/">GO 控制结构if-else</a>
-    </h1>
-  
-
-        
-        <a href="/2021/08/16/GO-%E6%8E%A7%E5%88%B6%E7%BB%93%E6%9E%84if-else/" class="archive-article-date">
-  	<time datetime="2021-08-16T02:26:38.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-08-16</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>简单例子:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">if condition1 &#123;</span><br><span class="line">	&#x2F;&#x2F; do something	</span><br><span class="line">&#125; else if condition2 &#123;</span><br><span class="line">	&#x2F;&#x2F; do something else	</span><br><span class="line">&#125; else &#123;</span><br><span class="line">	&#x2F;&#x2F; catch-all or default</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>注意:</strong></p>
-<p>1.即使当代码块之间只有一条语句时,大括号也不可被省略。</p>
-<p>2.关键字 if 和 else 之后的<strong>左</strong>大括号 <code>&#123;</code> 必须和关键字在同一行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if x&#123;</span><br><span class="line">&#125;</span><br><span class="line">else &#123;	&#x2F;&#x2F; 无效的</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>&nbsp;</p>
-<blockquote>
-<p>使用方式</p>
-</blockquote>
-<p>当 if 结构内有 break,continue,goto 或者 return 语句时,Go 代码的常见写法是省略 else 部分.无论满足哪个条件都会返回 x 或者 y 时,一般使用以下写法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if condition &#123;</span><br><span class="line">	return x</span><br><span class="line">&#125;</span><br><span class="line">return y</span><br></pre></td></tr></table></figure>
-
-<p><strong>注意事项</strong> 不要同时在 if-else 结构的两个分支里都使用 return 语句,这将导致编译报错 <code>function ends without a return statement</code>（您可以认为这是一个编译器的 Bug 或者特性）.（ <strong>译者注：该问题已经在 Go 1.1 中被修复或者说改进</strong> ）</p>
-<blockquote>
-<p>一些有用的例子</p>
-</blockquote>
-<p>1.判断一个字符串是否为空：</p>
-<ul>
-<li><code>if str == &quot;&quot; &#123; ... &#125;</code></li>
-<li><code>if len(str) == 0 &#123;...&#125;</code> (个人习惯)</li>
-</ul>
-<p>2.判断运行 Go 程序的操作系统类型,这可以通过常量 <code>runtime.GOOS</code> 来判断.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if runtime.GOOS &#x3D;&#x3D; &quot;windows&quot;	 &#123;</span><br><span class="line">    .	..</span><br><span class="line">&#125; else &#123; &#x2F;&#x2F; Unix-like</span><br><span class="line">    .	..</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这段代码一般被放在 init() 函数中执行.这儿还有一段示例来演示如何根据操作系统来决定输入结束的提示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var prompt &#x3D; &quot;Enter a digit, e.g. 3 &quot;+ &quot;or %s to quit.&quot;</span><br><span class="line"></span><br><span class="line">func init() &#123;</span><br><span class="line">    if runtime.GOOS &#x3D;&#x3D; &quot;windows&quot; &#123;</span><br><span class="line">        prompt &#x3D; fmt.Sprintf(prompt, &quot;Ctrl+Z, Enter&quot;)		</span><br><span class="line">    &#125; else &#123; &#x2F;&#x2F;Unix-like</span><br><span class="line">        prompt &#x3D; fmt.Sprintf(prompt, &quot;Ctrl+D&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>3.函数 <code>Abs()</code> 用于返回一个整型数字的绝对值:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">func Abs(x int) int &#123;</span><br><span class="line">    if x &lt; 0 &#123;</span><br><span class="line">        return -x</span><br><span class="line">    &#125;</span><br><span class="line">    return x	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>4.<code>isGreater</code> 用于比较两个整型数字的大小:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">func isGreater(x, y int) bool &#123;</span><br><span class="line">    if x &gt; y &#123;</span><br><span class="line">        return true	</span><br><span class="line">    &#125;</span><br><span class="line">    return false</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>if-else包含一个初始化语句</p>
-</blockquote>
-<p>例如:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">val :&#x3D; 10</span><br><span class="line">if val &gt; max &#123;</span><br><span class="line">	&#x2F;&#x2F; do something</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>也可以这样写</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if val :&#x3D; 10; val &gt; max &#123;</span><br><span class="line">	&#x2F;&#x2F; do something</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>注意:<strong>使用简短方式 <code>:=</code> 声明的变量的作用域只存在于 if 结构中</strong>（在 if 结构的<strong>大括号之间</strong>,如果使用 if-else 结构则在 else 代码块中变量也会存在)。 如果<strong>变量在 if 结构之前就已经存在</strong>,那么在 if 结构中,该<strong>变量原来的值会被覆盖</strong>.最简单的解决方案就是<strong>不要在初始化语句中声明变量</strong>.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	var first int &#x3D; 10</span><br><span class="line">	var cond int</span><br><span class="line"></span><br><span class="line">  &#x2F;&#x2F;基础款，声明变量赋予好值，再进行if判断</span><br><span class="line">	if first &lt;&#x3D; 0 &#123;</span><br><span class="line">		fmt.Printf(&quot;first is less than or equal to 0\n&quot;)</span><br><span class="line">	&#125; else if first &gt; 0 &amp;&amp; first &lt; 5 &#123;</span><br><span class="line">		fmt.Printf(&quot;first is between 0 and 5\n&quot;)</span><br><span class="line">	&#125; else &#123;</span><br><span class="line">		fmt.Printf(&quot;first is 5 or greater\n&quot;)</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	&#x2F;&#x2F;声明变量，在if判断中，先赋值再判断。这个cond赋予的值会覆盖上面的声明变量。</span><br><span class="line">	if cond &#x3D; 5; cond &gt; 10 &#123;</span><br><span class="line">		fmt.Printf(&quot;cond is greater than 10\n&quot;)</span><br><span class="line">	&#125; else &#123;</span><br><span class="line">		fmt.Printf(&quot;cond is not greater than 10\n&quot;)</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	fmt.Println(cond) &#x2F;&#x2F;等于5</span><br><span class="line">	</span><br><span class="line">	&#x2F;&#x2F;在if判断中，声明变量赋值再判断。</span><br><span class="line">	if cond2 :&#x3D; 5; cond2 &gt; 10 &#123;</span><br><span class="line">		fmt.Printf(&quot;cond2 is greater than 10\n&quot;)</span><br><span class="line">	&#125; else &#123;</span><br><span class="line">		fmt.Printf(&quot;cond2 is not greater than 10\n&quot;)</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	fmt.Println(cond2) &#x2F;&#x2F;报错，未声明cond2。因为if中声明的变量的作用域只存在于if结构中。</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>输出：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">first is 5 or greater</span><br><span class="line">cond is not greater than 10</span><br></pre></td></tr></table></figure>
-
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">GO入门</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/08/16/GO-%E6%8E%A7%E5%88%B6%E7%BB%93%E6%9E%84if-else/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-GO-包package和import" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/08/16/GO-%E5%8C%85package%E5%92%8Cimport/">GO 包package和import</a>
-    </h1>
-  
-
-        
-        <a href="/2021/08/16/GO-%E5%8C%85package%E5%92%8Cimport/" class="archive-article-date">
-  	<time datetime="2021-08-16T02:17:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-08-16</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>什么是package</p>
-</blockquote>
-<p>package用于对我们的程序进行*<strong>分类*</strong>,以便易于维护. 每个go文件都属于某个包. 每个Go应用程序必须具有<code>main</code>包。包名称应以小写字母书写. 如果更改并重新编译package,则必须重新编译使用此package的所有代码程序！</p>
-<blockquote>
-<p>Import 别名导入</p>
-</blockquote>
-<p> <code>import mongo &quot;mywebapp/libs/mongodb/db&quot;</code></p>
-<blockquote>
-<p>Import 省略package名导入</p>
-</blockquote>
-<p>这里的点.符号表示,对包 lib 的调用直接省略包名,您我以后就是一家人,不分彼此,您的东西就像我就的一样,随便用.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line">import . &quot;github.com&#x2F;libragen&#x2F;felix&#x2F;lib&quot;</span><br><span class="line">func main() &#123;</span><br><span class="line">	SayHello() &#x2F;&#x2F;如果没有.忽略包名,那么需要lib.SayHello()。不过这样可能要注意函数名或变量名是否会冲突，个人不推荐</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>Import  执行初始化工作导入</p>
-</blockquote>
-<p><code>import _ &quot;github.com/libragen/felix/lib&quot;</code></p>
-<p>形象解释:这里说的是我还不准备现在使用您们家的东西,但得提前告诉一声.您先做好准备,先准备好饭菜,等我来就行,也有可能我压根就不来.</p>
-<p>具体解释:特殊符号“_” <strong>仅仅</strong>会导致 lib 执行初始化工作,如初始化全局变量,<strong>调用 init 函数</strong>。而正常导入一个包的时候，该包的init和其他函数都会被导入。</p>
-<blockquote>
-<p> package和文件的关系</p>
-</blockquote>
-<p><strong>一个文件夹下只能有一个package.</strong></p>
-<p>import后面的其实是<code>GOPATH</code>开始的相对目录路径,包括最后一段.</p>
-<ul>
-<li>但由于一个目录下只能有一个<code>package</code>,所以<code>import</code>一个路径就等于是<code>import</code>了这个路径下的包.</li>
-<li>注意,这里指的是“直接包含”的go文件. 如果有子目录,那么子目录的父目录是完全两个包.</li>
-<li>比如您实现了一个计算器<code>package</code>,名叫calc,位于calc目录下; 但又想给别人一个使用范例,于是在<code>calc</code>下可以建个<code>example</code>子目录（<code>calc/example/</code>）, 这个子目录里有个<code>example.go（calc/example/example.go）</code>. 此时,<code>example.go</code>可以是main包,里面还可以有个main函数.<br>&nbsp;<br>&nbsp;</li>
-</ul>
-<p><strong>一个<code>package</code>的文件不能在多个文件夹下.</strong></p>
-<ul>
-<li>如果多个文件夹下有重名的<code>package</code>,它们其实是彼此无关的package.</li>
-<li>如果一个<code>go</code>文件需要同时使用不同目录下的同名<code>package</code>,需要在<code>import</code>这些目录时为每个目录指定一个package的<strong>别名</strong>.</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">GO入门</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/08/16/GO-%E5%8C%85package%E5%92%8Cimport/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-GO-数据类型" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/08/16/GO-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">GO 数据类型(入门篇必读)</a>
-    </h1>
-  
-
-        
-        <a href="/2021/08/16/GO-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" class="archive-article-date">
-  	<time datetime="2021-08-16T02:12:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-08-16</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>为什么是必读？因为这边会给出这个系列的参考/出处文章地址</p>
-</blockquote>
-<p><a target="_blank" rel="noopener" href="https://mojotv.cn/">https://mojotv.cn/</a></p>
-<blockquote>
-<p> 变量声明语法</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">var a int &#x2F;&#x2F;声明一个int类型的变量</span><br><span class="line"></span><br><span class="line">var b struct &#123; &#x2F;&#x2F;声明一个结构体</span><br><span class="line">    Name string</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var a &#x3D; 8 &#x2F;&#x2F;声明变量的同时赋值,编译器自动推导其数据类型</span><br><span class="line"></span><br><span class="line">var a int &#x3D; 8 &#x2F;&#x2F;声明变量的同时赋值</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;声明变量的同时赋值更习惯用&quot;:&#x3D;&quot;，但注意全局变量不可以用&quot;:&#x3D;&quot;</span><br><span class="line">a :&#x3D; 8</span><br></pre></td></tr></table></figure>
-
-<p><strong>go可使用var关键字声明全局变量,但是:=这种方式是不能用在全局变量中的.:=只能用在函数体内部.</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var (</span><br><span class="line">    a int</span><br><span class="line">    b bool</span><br><span class="line">    xx,yy,dd string&#x3D;&quot;xx&quot;,&quot;yy&quot;,&quot;dd&quot;</span><br><span class="line">    &#x2F;&#x2F;这里省略变量类型也是可以的.</span><br><span class="line">    zz,aa&#x3D;&quot;zz&quot;,&quot;aa&quot;        &#x2F;&#x2F;注意用&quot;&#x3D;&quot;，不能用&quot;:&#x3D;&quot;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-
-<p><strong>go函数体内的变量是如果被声明了,那么必须使用,不然会报错。注:全局变量声明未使用不会报错</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;已声明,但如果不想使用可以加上_&#x3D;varName,表示为已抛弃的变量.</span><br><span class="line">var a&#x3D;1</span><br><span class="line">&#x2F;&#x2F;标识为已抛弃的变量.</span><br><span class="line">_&#x3D;a  </span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>变量初始化</p>
-</blockquote>
-<p><strong>Go 语言在声明变量时会默认给变量赋个当前类型的<code>空值</code>/<code>零值</code></strong></p>
-<p>在方法中声明一个临时变量并赋初值</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;推荐,会更新值的格式自动声明变量类型</span><br><span class="line">tmpStr :&#x3D;&quot;&quot;</span><br></pre></td></tr></table></figure>
-
-<p>当一个变量或者新值被创建时, 如果没有为其明确指定初始值,go语言会自动初始化其值为此类型对应的零值。</p>
-<table>
-<thead>
-<tr>
-<th align="center">类型</th>
-<th align="center"><strong>零值</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">数值类型</td>
-<td align="center">0</td>
-</tr>
-<tr>
-<td align="center">布尔类型</td>
-<td align="center">false</td>
-</tr>
-<tr>
-<td align="center">字符串</td>
-<td align="center">“”（空字符串）</td>
-</tr>
-<tr>
-<td align="center">slice</td>
-<td align="center">nil</td>
-</tr>
-<tr>
-<td align="center">map</td>
-<td align="center">nil</td>
-</tr>
-<tr>
-<td align="center">指针</td>
-<td align="center">nil</td>
-</tr>
-<tr>
-<td align="center">函数</td>
-<td align="center">nil</td>
-</tr>
-<tr>
-<td align="center">接口</td>
-<td align="center">nil</td>
-</tr>
-<tr>
-<td align="center">信道</td>
-<td align="center">nil</td>
-</tr>
-</tbody></table>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">GO入门</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/08/16/GO-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Hexo博客中插入音乐" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/08/03/Hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E9%9F%B3%E4%B9%90/">Hexo博客中插入音乐</a>
-    </h1>
-  
-
-        
-        <a href="/2021/08/03/Hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E9%9F%B3%E4%B9%90/" class="archive-article-date">
-  	<time datetime="2021-08-03T07:07:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-08-03</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="成品"><a href="#成品" class="headerlink" title="成品"></a>成品</h3><p>具体成功已体现在<code>网络掩码</code>文章底部。</p>
-<h3 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h3><p>一款html5音乐播放器：Aplayer。把Aplayer加入hexo需要用到hexo-tag-aplayer插件。</p>
-<p>切换到hexo目录，运行：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save hexo-tag-aplayer</span><br></pre></td></tr></table></figure>
-
-<p>安装完成后，在需要添加音乐的地方加上：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% aplayer &quot;歌曲名称&quot; &quot;作者&quot; &quot;音乐_url&quot; &quot;封面图片_url&quot; &quot;autoplay&quot; %&#125;</span><br></pre></td></tr></table></figure>
-
-<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/6e41e3191963">文章链接</a></p>
-<h3 id="网易云外链的处理"><a href="#网易云外链的处理" class="headerlink" title="网易云外链的处理"></a>网易云外链的处理</h3><p>网易云提供的外链连接无法成功播放，所以找到一篇解决的文章。</p>
-<p>例如：杨钰莹的心雨，网址是：<code>http://music.163.com/#/song?id=317151</code></p>
-<p>很明显，ID是317151</p>
-<p>那么，这首歌的真实地址就是：<code>http://music.163.com/song/media/outer/url?id=317151.mp3</code></p>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/MirageFox/p/7995929.html">文章链接</a></p>
-<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>mac端(<code>win端没有测试过</code>)控制不了音量大小，只能空过电脑或耳机条件。</p>
-
-        <div id="aplayer-tJmCKDzt" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
-            <pre class="aplayer-lrc-content"></pre>
-        </div>
-        <script>
-          var ap = new APlayer({
-            element: document.getElementById("aplayer-tJmCKDzt"),
-            narrow: false,
-            autoplay: false,
-            showlrc: false,
-            music: {
-              title: "U",
-              author: "许杨玉琢",
-              url: "https://music.163.com/song/media/outer/url?id=1475649128.mp3",
-              pic: "/yyzka.jpeg",
-              lrc: ""
-            }
-          });
-          window.aplayers || (window.aplayers = []);
-          window.aplayers.push(ap);
-        </script>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">随笔</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/08/03/Hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E9%9F%B3%E4%B9%90/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-网络掩码" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/08/03/%E7%BD%91%E7%BB%9C%E6%8E%A9%E7%A0%81/">网络掩码</a>
-    </h1>
-  
-
-        
-        <a href="/2021/08/03/%E7%BD%91%E7%BB%9C%E6%8E%A9%E7%A0%81/" class="archive-article-date">
-  	<time datetime="2021-08-03T02:31:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-08-03</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="ip地址的组成（网络位-主机位）"><a href="#ip地址的组成（网络位-主机位）" class="headerlink" title="ip地址的组成（网络位+主机位）"></a>ip地址的组成（网络位+主机位）</h3><p><strong>IP地址采用分层结构；</strong></p>
-<p>IP地址是由网络号（net ID）与主机号（host ID）两部分组成的。</p>
-<p><strong>根据不同的取值范围，IP地址可以分为五类</strong>；IP地址中的前5位用于标识IP地址的类别：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">A类地址的第一位为0；  127 &#x3D;&gt; 0(128)1(64)1(32)1(16) 1(8)1(4)1(2)1(1)</span><br><span class="line">网络位7(8-1)位，主机号24位(32-7-1 &#x3D; 24)</span><br><span class="line"></span><br><span class="line">B类地址的前两位为10； 191 &#x3D;&gt; 1(128)0(64)1(32)1(16) 1(8)1(4)1(2)1(1)</span><br><span class="line">网络位14(8+8-2)位，主机号16位(32-14-2 &#x3D; 16)</span><br><span class="line"></span><br><span class="line">C类地址的前三位为110；223 &#x3D;&gt; 1(128)1(64)0(32)1(16) 1(8)1(4)1(2)1(1)</span><br><span class="line">网络位21(8+8+8-3)位，主机号位(32-21-3 &#x3D; 8)</span><br><span class="line"></span><br><span class="line">D类地址的前四位为1110；</span><br><span class="line">E类地址的前五位为11110；</span><br></pre></td></tr></table></figure>
-<p><img src="/2021/08/03/%E7%BD%91%E7%BB%9C%E6%8E%A9%E7%A0%81/wl_1.png" alt="png"></p>
-<p>实际大多通过<code>子网掩码</code>来区分网络位和主机位，子网掩码跟IP地址一一对应，子网掩码为1的是网络位，为0的是主机位。<br>如：192.168.1.2 掩码255.255.255.0 。网络位192.168.1 主机位是2</p>
-<p>举个例子：比如172.16.2.160/255.255.255.0</p>
-<p>这个IP地址的【网络号】就是172.16.2.0 主机号为   0.0.0.160 </p>
-<blockquote>
-<p>划分子网情况</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">如：172.16.2.160&#x2F;255.255.255.192(IP地址&#x2F;掩码)</span><br><span class="line"></span><br><span class="line">1010   1100   0001   0000   0000   0010   1010   0000   (二进制)</span><br><span class="line"></span><br><span class="line">1111   1111   1111   1111   1111   1111   1100   0000  （子网掩码）</span><br><span class="line"></span><br><span class="line">------------------------------------------相&quot;与&quot;(理解成相乘）</span><br><span class="line"></span><br><span class="line">1010   1100   0001   0000   0000   0010   1000   0000（172.16.2.128这就是子网号）</span><br><span class="line"></span><br><span class="line">1010   1100   0001   0000   0000   0010   1000   0001（172.16.2.129是第一个主机）</span><br><span class="line"></span><br><span class="line">1010   1100   0001   0000   0000   0010   1011   1110（172.16.2.190最后一个主机）</span><br><span class="line"></span><br><span class="line">1010   1100   0001   0000   0000   0010   1011   1111   广播地址  172.16.2.191 </span><br><span class="line"></span><br><span class="line">个人的理解:</span><br><span class="line">通过ip二进制和子网掩码二进制&quot;与&quot;可以发现，子网掩码二进制 1 的部分代表&quot;网络位&quot;, 0 的部分代表&quot;主机位&quot;，</span><br><span class="line">上面的例子可以看出&quot;主机位&quot;有6位，那么最后一段8位前两位是定的10，所以&quot;第一个主机位&quot;是1000 0001，&quot;最后一个主机位&quot;是1011 1110，因为还要留一个&quot;广播地址&quot;1011 1111。 </span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>子网掩码的作用：</p>
-</blockquote>
-<ol>
-<li>将一类ip地址（也就是只确定的网络号的ip）划分为更加小的子网络(<code>通常得到一个c类ip,如：212.26.220.0最后一组是主机号（最大255），用子网掩码分成更小的网段</code>）</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">因为掩码的值是连续的1，那么子网掩码的值也就是有规律的：</span><br><span class="line">比如</span><br><span class="line">1000 0000 ---&gt; 128</span><br><span class="line">1100 0000 ---&gt; 192</span><br><span class="line">1110 0000 ---&gt; 224</span><br><span class="line">1111 0000 ---&gt; 240</span><br><span class="line">1111 1000 ---&gt; 248</span><br><span class="line">1111 1100 ---&gt; 252</span><br><span class="line">1111 1110 ---&gt; 254</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>将相邻的网络地址合并成同一逻辑网络</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">两个C类IP地址215.60.30.0与215.60.31.0与子网掩码255.255.254.0</span><br><span class="line">11010111.00111100.00011110.00000000--&gt;215.60.30.0</span><br><span class="line">11010111.00111100.00011111.00000000--&gt;215.60.31.0</span><br><span class="line">11111111.11111111.11111110.10000000--&gt;255.255.254.0&#x2F;&#x2F;掩码</span><br><span class="line">11010111.00111100.00011110.00000000--&gt;215.60.30.0&#x2F;&#x2F;都是该网段</span><br></pre></td></tr></table></figure>
-
-<p>注意：一个错误的理解：子网掩码主要目的是增加了ip数量！！！其实并没有增加！！！（<code>也不能说没有增加，比如相同的ip不同子网掩码，实际公网是不存在相同的ip,如果说是两个局域网这种情况，不知道算不算增加了</code>）</p>
-<p>补充：</p>
-<ul>
-<li><p>只知道ip地址那么只能知道是属于哪一类ip。或者认为没有子网络，比如c类ip，那么前3组是网络号，后面一组是主机号</p>
-</li>
-<li><p>只有知道子网掩码和ip，才能知道具体的网段和主机号</p>
-</li>
-<li><p>相同子网掩码未必是同一网段ip,同一网段的ip必然有相同的子网掩码。</p>
-</li>
-</ul>
-<blockquote>
-<p>“IP地址/ 数字” 是什么意思？例如 192.168.5.12 / 21</p>
-</blockquote>
-<p>数字是子网掩码位（数），说明子网掩码由21个1组成，即 子网掩码是：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">11111111 11111111 11111000 00000000  ，也就是255.255.248.0</span><br></pre></td></tr></table></figure>
-
-<p><a target="_blank" rel="noopener" href="http://t.zoukankan.com/straybirds-p-5319604.html">文章链接</a></p>
-<h3 id="子网掩码-网络掩码-的位数"><a href="#子网掩码-网络掩码-的位数" class="headerlink" title="子网掩码(网络掩码)的位数"></a>子网掩码(网络掩码)的位数</h3><p>255.255.255.0  =&gt; / 24</p>
-<p>1111 1111 1111 1111 1111 1111 0000 0000  = 24（总长32，1算，0不算）</p>
-<h4 id="已知IP地址和子网掩码-如何快速计算是否在同一网段-仍待验证"><a href="#已知IP地址和子网掩码-如何快速计算是否在同一网段-仍待验证" class="headerlink" title="已知IP地址和子网掩码,如何快速计算是否在同一网段(仍待验证)"></a>已知IP地址和子网掩码,如何快速计算是否在同一网段(仍待验证)</h4><p>下面哪些IP位于同一子网中？</p>
-<ul>
-<li>192.168.78.36/29</li>
-<li>192.168.78.42/29</li>
-<li>192.168.78.41/29</li>
-<li>192.168.78.45/29</li>
-<li>192.168.78.48/29</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">通过上面子网掩码29位，我们可以知道 网络位是29位，主机位3位。所以，判断是否同一网段，看&quot;网络位&quot;是否相同。</span><br><span class="line">因为前面都是相同的，所以看最后一段的数字二进制8位扣除3位&quot;主机位&quot;后是否相同。</span><br><span class="line"></span><br><span class="line">36 (2 +4)                      0010 0100   &#x3D;&gt;  0010 0 (扣除3位主机位)</span><br><span class="line"></span><br><span class="line">42  (32 + 8 + 2)             0010 1010    &#x3D;&gt; 0010 1</span><br><span class="line"></span><br><span class="line">41  (32 + 8 + 1)              0010 1001    &#x3D;&gt; 0010 1</span><br><span class="line"></span><br><span class="line">45  (32 + 8 + 4 +1)         0010 1101    &#x3D;&gt;  0010 1</span><br><span class="line"></span><br><span class="line">48  (32 + 16)                  0011  0000   &#x3D;&gt; 0011  0</span><br><span class="line"></span><br><span class="line">可以看出 42 41 45在同一网段</span><br><span class="line"></span><br><span class="line">那么快速的方法</span><br><span class="line">主机位3位： 2^3 &#x3D; 8</span><br><span class="line">36&#x2F;8 &#x3D; 4</span><br><span class="line">42&#x2F;8 &#x3D; 5</span><br><span class="line">41&#x2F;8 &#x3D; 5</span><br><span class="line">45&#x2F;8 &#x3D; 5</span><br><span class="line">48&#x2F;8 &#x3D; 6</span><br></pre></td></tr></table></figure>
-
-<p>下面哪些IP位于同一子网中？</p>
-<ul>
-<li>192.168.165.24/255.255.254.0 和 192.168.164.78/255.255.254.0</li>
-<li>192.168.165.24/255.255.255.255 和 192.168.164.78/255.255.255.255</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">第一组计算:</span><br><span class="line">255.255.254.0        2^9  &#x3D;  256</span><br><span class="line"></span><br><span class="line">16524 &#x2F; 256 &#x3D; 64.5</span><br><span class="line"></span><br><span class="line">16478 &#x2F; 256  &#x3D; 64.3</span><br><span class="line"></span><br><span class="line">商64，相同</span><br><span class="line"></span><br><span class="line">第二组计算:</span><br><span class="line">255.255.255.255  2^8 &#x3D; 128</span><br><span class="line"></span><br><span class="line">16524&#x2F;128 &#x3D; 129</span><br><span class="line"></span><br><span class="line">16478&#x2F;128 &#x3D; 128.7</span><br><span class="line"></span><br><span class="line">商129和128，不相同</span><br></pre></td></tr></table></figure>
-
-<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/VmXgt6usAfPKyfmsAM_UZg">文章地址-还有其他知识点哦</a></p>
-<h3 id="IP地址、子网掩码、网段、网关的关系"><a href="#IP地址、子网掩码、网段、网关的关系" class="headerlink" title="IP地址、子网掩码、网段、网关的关系"></a>IP地址、子网掩码、网段、网关的关系</h3><p>IP地址、子网掩码、网络地址、广播地址、网段、网关的关系,例：</p>
-<table>
-<thead>
-<tr>
-<th>name</th>
-<th>终端A</th>
-<th>终端B</th>
-<th>终端C</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>IP地址</td>
-<td>192.168.1.10</td>
-<td>192.168.1.23</td>
-<td>192.168.1.40</td>
-</tr>
-<tr>
-<td>子网掩码</td>
-<td>255.255.255.224</td>
-<td>255.255.255.224</td>
-<td>255.255.255.224</td>
-</tr>
-<tr>
-<td>网络地址</td>
-<td>192.168.1.0</td>
-<td>192.168.1.0</td>
-<td>192.168.1.32</td>
-</tr>
-<tr>
-<td>广播地址</td>
-<td>192.168.1.31</td>
-<td>192.168.1.31</td>
-<td>192.168.1.63</td>
-</tr>
-<tr>
-<td>网段</td>
-<td>192.168.1.0~192.168.1.31</td>
-<td>192.168.1.0~192.168.1.31</td>
-<td>192.168.1.31~192.168.1.63</td>
-</tr>
-<tr>
-<td>网关</td>
-<td>192.168.1.1</td>
-<td>192.168.1.1</td>
-<td>192.168.1.32</td>
-</tr>
-</tbody></table>
-<blockquote>
-<p>总结：</p>
-</blockquote>
-<ul>
-<li>网络地址=IP地址&amp;子网掩码</li>
-<li>广播地址=IP地址|（！子网掩码）</li>
-<li>网段：网络地址相同的IP地址属于同一网段，即同一子网。</li>
-<li>网关：同一网段（子网）间终端可直接通信，如终端A和终端B；不在同一网段（子网）的终端不能直接通信，需要通过网关才能通信，如终端A和终端C。</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41324483/article/details/100179816">文章地址</a></p>
-
-        <div id="aplayer-uUbbxQQc" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
-            <pre class="aplayer-lrc-content"></pre>
-        </div>
-        <script>
-          var ap = new APlayer({
-            element: document.getElementById("aplayer-uUbbxQQc"),
-            narrow: false,
-            autoplay: true,
-            showlrc: false,
-            music: {
-              title: "Giri Giri",
-              author: "许杨玉琢",
-              url: "https://music.163.com/song/media/outer/url?id=1865305744.mp3",
-              pic: "/yyzka.jpeg",
-              lrc: ""
-            }
-          });
-          window.aplayers || (window.aplayers = []);
-          window.aplayers.push(ap);
-        </script>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">网络</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/08/03/%E7%BD%91%E7%BB%9C%E6%8E%A9%E7%A0%81/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-哈希算法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/16/%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/">哈希算法</a>
-    </h1>
-  
-
-        
-        <a href="/2021/07/16/%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/" class="archive-article-date">
-  	<time datetime="2021-07-16T02:58:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-07-16</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>为什么开启这一篇呢？因为后面要对gopush进行讲解。</p>
-<h3 id="一致性哈希算法-图片网上资源，联系可删，描述均为自己观点"><a href="#一致性哈希算法-图片网上资源，联系可删，描述均为自己观点" class="headerlink" title="一致性哈希算法(图片网上资源，联系可删，描述均为自己观点)"></a>一致性哈希算法(图片网上资源，联系可删，描述均为自己观点)</h3><blockquote>
-<p>0~2^32-1 可以理解为一个圆的外环均匀分布为2^32个点 =&gt; key</p>
-</blockquote>
-<p><img src="/2021/07/16/%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/hx1.jpg" alt="jpg"></p>
-<blockquote>
-<p>在圆上分布均匀分布4个节点(node)</p>
-</blockquote>
-<p><img src="/2021/07/16/%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/hx2.jpg" alt="jpg"></p>
-<blockquote>
-<p>查找方式</p>
-</blockquote>
-<p><img src="/2021/07/16/%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/hx3.jpg" alt="jpg"></p>
-<blockquote>
-<p>删除节点影响</p>
-</blockquote>
-<p><img src="/2021/07/16/%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/hx4.jpg" alt="jpg"></p>
-<blockquote>
-<p>添加节点影响</p>
-</blockquote>
-<p><img src="/2021/07/16/%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/hx5.jpg" alt="jpg"></p>
-<blockquote>
-<p>节点少的影响</p>
-</blockquote>
-<p><img src="/2021/07/16/%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/hx6.jpg" alt="jpg"></p>
-<blockquote>
-<p>虚拟节点</p>
-</blockquote>
-<p><img src="/2021/07/16/%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/hx7.jpg" alt="jpg"></p>
-<h3 id="哈希函数"><a href="#哈希函数" class="headerlink" title="哈希函数"></a>哈希函数</h3><p>定义:记录的存储位置 = f(关键字)</p>
-<p>第一代：SHA-1(1993),MD5(1992),CRC(1975),Lookup3(2006)<br>第二代：MurmurHash(2008)<br>第三代：CityHash,SpookyHash(2011)</p>
-<h3 id="通过key获取comet-node节点"><a href="#通过key获取comet-node节点" class="headerlink" title="通过key获取comet-node节点"></a>通过key获取comet-node节点</h3><p>MurmurHash 是一种非加密型哈希函数，适用于一般的哈希检索操作。与其它流行的哈希函数相比，对于规律性较强的key，MurmurHash的随机分布特征表现更良好。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; init consistent hashing circle</span><br><span class="line">func (k *Ketama) initCircle2(node []string) &#123;</span><br><span class="line">	h :&#x3D; NewMurmur3C()</span><br><span class="line">	for _, str :&#x3D; range node &#123;</span><br><span class="line">		for i :&#x3D; 0; i &lt; k.vnode; i++ &#123;</span><br><span class="line">			vnode :&#x3D; fmt.Sprintf(&quot;%s#%d&quot;, str, i)</span><br><span class="line">			h.Write([]byte(vnode))</span><br><span class="line">			vpos :&#x3D; uint(h.Sum32())</span><br><span class="line">			k.nodes &#x3D; append(k.nodes, vpos)</span><br><span class="line">			k.nodesMapping[vpos] &#x3D; str</span><br><span class="line">			h.Reset()</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	sort.Sort(UIntSlice(k.nodes))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id><a href="#" class="headerlink" title></a></h3>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">gopush</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/07/16/%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
     </nav>
   
 
@@ -1542,6 +1343,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">细节</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">docker</a>
               </li>
             
             <div class="clearfix"></div>
