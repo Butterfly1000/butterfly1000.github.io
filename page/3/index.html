@@ -202,6 +202,108 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-接口超时优化代码案例记录" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/07/13/%E6%8E%A5%E5%8F%A3%E8%B6%85%E6%97%B6%E4%BC%98%E5%8C%96%E4%BB%A3%E7%A0%81%E6%A1%88%E4%BE%8B%E8%AE%B0%E5%BD%95/">接口超时优化代码案例记录</a>
+    </h1>
+  
+
+        
+        <a href="/2021/07/13/%E6%8E%A5%E5%8F%A3%E8%B6%85%E6%97%B6%E4%BC%98%E5%8C%96%E4%BB%A3%E7%A0%81%E6%A1%88%E4%BE%8B%E8%AE%B0%E5%BD%95/" class="archive-article-date">
+  	<time datetime="2021-07-13T02:01:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-07-13</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>语言:PHP</strong></p>
+<p><strong>接口超时问题</strong>是一个比较常见的场景，当接口中包含有较多的<strong>数据库查询语句</strong>,并且涉及到<strong>循环执行</strong>这些查询语句时，执行时间就会变大很多，初期可能因为新表数据量少还在接受范围，当后期数据量变大后，可能就会消耗极的时间，甚至是超时。</p>
+<h3 id="方法一-延长可执行时间"><a href="#方法一-延长可执行时间" class="headerlink" title="方法一:延长可执行时间"></a>方法一:延长可执行时间</h3><p>对面这个问题，我们可以延长可执行时间，</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set_time_limit(<span class="number">30</span>); <span class="comment">//设置程序执行时间为30s</span></span><br></pre></td></tr></table></figure>
+
+<p>但这种方式,对用户其实特别不友好。除了一些特殊场景外，并不建议无限制的延长可执行时间。特别是<strong>不要</strong>将时间设置为<code>set_time_limit(0)</code>无限时长，这样一旦遇到死循环情况，执行就不会结束，可能会导致大量进程堆积，极大的消耗CPU。</p>
+<h3 id="方法二-消息队列"><a href="#方法二-消息队列" class="headerlink" title="方法二:消息队列"></a>方法二:消息队列</h3><p>通过<strong>消息队列</strong>的方式，将请求<strong>插入队列</strong>(可以借助Redis等缓存)，直接返回结果。再脚本通过获取<strong>队列信息</strong>执行需要的操作。</p>
+<ul>
+<li>优点：这样返回的速度会极快，而且内容也可以有效执行。</li>
+<li>缺点：脚本如果执行失败，但之前请求已经返回成功。</li>
+<li>优化： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 脚本完成时通过请求**回调接口**告知执行结果;(当然,脚本执行过程中的日志记录也很重要)</span><br><span class="line">2. 前端收到接口返回成功信息时，展示给用户的内容&quot;友好&quot;调整，例如执行完成、已执行。前端提供查看结果页，及时更新状态;</span><br><span class="line">3. 如果明确执行的时间是较长的，前端可以适当做一些等待动画，让整个完成等待时间有一定延长，对后续用户查看结果是友好的.</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="方法三-php-接口提前响应返回，然后继续执行后台逻辑"><a href="#方法三-php-接口提前响应返回，然后继续执行后台逻辑" class="headerlink" title="方法三:php 接口提前响应返回，然后继续执行后台逻辑"></a>方法三:php 接口提前响应返回，然后继续执行后台逻辑</h3><p>php 程序(以 php5.6 版本进行演示) 是可以在接口中，进行一些异步操作的， 不过写法有点特殊。</p>
+<h4 id="1-ob-end-clean"><a href="#1-ob-end-clean" class="headerlink" title="1. ob_end_clean()"></a>1. ob_end_clean()</h4><p>这个是清除之前的缓冲内容，这是必需的，如果之前的缓存不为空的话，里面可能有 http 头或者其它内容，导致后面的内容不能及时的输出</p>
+<h4 id="2-header-“Connection-close”"><a href="#2-header-“Connection-close”" class="headerlink" title="2. header(“Connection: close”)"></a>2. header(“Connection: close”)</h4><p>告诉浏览器，连接关闭了，这样浏览器就不用等待服务器的响应。</p>
+<h4 id="3-header-“HTTP-1-1-200-OK”"><a href="#3-header-“HTTP-1-1-200-OK”" class="headerlink" title="3. header(“HTTP/1.1 200 OK”)"></a>3. header(“HTTP/1.1 200 OK”)</h4><p>发送 200 状态码，要不然可能浏览器会重试，特别是有代理的情况下</p>
+<h4 id="4-ob-start"><a href="#4-ob-start" class="headerlink" title="4. ob_start()"></a>4. ob_start()</h4><p>开启当前代码缓冲</p>
+<h4 id="5-ob-end-flush"><a href="#5-ob-end-flush" class="headerlink" title="5. ob_end_flush()"></a>5. ob_end_flush()</h4><p>输出当前缓冲</p>
+<h4 id="6-flush"><a href="#6-flush" class="headerlink" title="6. flush()"></a>6. flush()</h4><p>输出PHP缓冲</p>
+<h4 id="7-ignore-user-abort-true"><a href="#7-ignore-user-abort-true" class="headerlink" title="7. ignore_user_abort(true)"></a>7. ignore_user_abort(true)</h4><p>在关闭连接后，继续运行php脚本</p>
+<h4 id="8-set-time-limit-0"><a href="#8-set-time-limit-0" class="headerlink" title="8. set_time_limit(0)"></a>8. set_time_limit(0)</h4><p>no time limit，不设置超时时间（根据实际情况使用）</p>
+<h4 id="9-fastcgi-finish-request"><a href="#9-fastcgi-finish-request" class="headerlink" title="9. fastcgi_finish_request()"></a>9. fastcgi_finish_request()</h4><p>这个在有用 fpm 的时候，会用到， 也是将提前返回响应，然后接下来的逻辑后台执行。</p>
+<p>封装函数:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 异步的成功返回函数</span><br><span class="line">public function returnSuccessJsonDataAsync($otherReturnData &#x3D; [], $timeout &#x3D; 60, $allowCors &#x3D; true)&#123;</span><br><span class="line">    $msgData &#x3D; [&#39;code&#39; &#x3D;&gt; 1, &#39;msg&#39; &#x3D;&gt; &#39;Success&#39;];</span><br><span class="line">    if(empty($otherReturnData))&#123;</span><br><span class="line">        $data &#x3D; $msgData;</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        $data &#x3D; array_merge($msgData, $otherReturnData);</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;&#x2F; 接下来提前告诉 浏览器返回， 其他的后台允许</span><br><span class="line">    ob_end_clean();</span><br><span class="line">    &#x2F;&#x2F;告诉浏览器，连接关闭了，这样浏览器就不用等待服务器的响应</span><br><span class="line">    header(&quot;Connection: close&quot;);</span><br><span class="line">    header(&quot;HTTP&#x2F;1.1 200 OK&quot;);</span><br><span class="line">    ob_start();</span><br><span class="line">    $str &#x3D; json_encode($data);</span><br><span class="line">    header(&#39;Content-type: application&#x2F;json&#39;);</span><br><span class="line">    header(&#39;Content-Length: &#39; . strlen($str));</span><br><span class="line">    </span><br><span class="line">    &#x2F;&#x2F; 如果允许跨域，那么就设置跨域头</span><br><span class="line">    if($allowCors)&#123;</span><br><span class="line">        $origin &#x3D; Yii::$app-&gt;request-&gt;getHeaders()-&gt;get(&#39;Origin&#39;);</span><br><span class="line">        header(&quot;Access-Control-Allow-Origin: &#123;$origin&#125;&quot;);</span><br><span class="line">        header(&#39;Access-Control-Allow-Credentials: true&#39;);</span><br><span class="line">        header(&#39;Access-Control-Allow-Methods: POST, GET, OPTIONS&#39;);</span><br><span class="line">        header(&#39;Access-Control-Allow-Headers: origin, content-type&#39;);</span><br><span class="line">        header(&#39;Access-Control-Max-Age: 86400&#39;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    echo $str;</span><br><span class="line"></span><br><span class="line">    ob_end_flush();</span><br><span class="line">    if(ob_get_length())&#123;</span><br><span class="line">        ob_flush();</span><br><span class="line">    &#125;</span><br><span class="line">    flush();</span><br><span class="line">    &#x2F;&#x2F; yii或yaf默认不会立即输出，加上此句即可（前提是用的fpm）</span><br><span class="line">    if (function_exists(&quot;fastcgi_finish_request&quot;)) &#123;</span><br><span class="line">        fastcgi_finish_request(); &#x2F;&#x2F; 响应完成, 立即返回到前端,关闭连接</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;******** background process starts here ********&#x2F;</span><br><span class="line">    &#x2F;&#x2F;在关闭连接后，继续运行php脚本</span><br><span class="line">    ignore_user_abort(true);</span><br><span class="line">    &#x2F;&#x2F;no time limit，不设置超时时间（根据实际情况使用）</span><br><span class="line">    set_time_limit($timeout);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/superhosts/article/details/42292053">深入理解ob_flush和flush的区别(ob_flush()与flush()使用方法)</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.php.cn/php-weizijiaocheng-370354.html">php：flush()和ob_flush(),ob_end_flush()用法区别详解</a></p>
+<h3 id="方法四-异步并行-引入swoole或用go"><a href="#方法四-异步并行-引入swoole或用go" class="headerlink" title="方法四:异步并行,引入swoole或用go"></a>方法四:异步并行,引入swoole或用go</h3>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">优化案例</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/07/13/%E6%8E%A5%E5%8F%A3%E8%B6%85%E6%97%B6%E4%BC%98%E5%8C%96%E4%BB%A3%E7%A0%81%E6%A1%88%E4%BE%8B%E8%AE%B0%E5%BD%95/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Go-解决go的fatal-error-concurrent-map-writes-map非并发安全" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1065,82 +1167,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2021/03/10/%E5%9B%A0%E9%80%89%E7%A7%80%E8%80%8C%E5%BC%95%E5%8F%91%E7%9A%84%E6%80%9D%E8%80%83/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-推荐一款画流程图工具" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/03/10/%E6%8E%A8%E8%8D%90%E4%B8%80%E6%AC%BE%E7%94%BB%E6%B5%81%E7%A8%8B%E5%9B%BE%E5%B7%A5%E5%85%B7/">推荐一款画流程图工具</a>
-    </h1>
-  
-
-        
-        <a href="/2021/03/10/%E6%8E%A8%E8%8D%90%E4%B8%80%E6%AC%BE%E7%94%BB%E6%B5%81%E7%A8%8B%E5%9B%BE%E5%B7%A5%E5%85%B7/" class="archive-article-date">
-  	<time datetime="2021-03-10T05:41:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-03-10</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>现在市面上的流程图画图工具很多，包括线上的也很多，这里不做比较，仅推荐自己感觉不错的一款<strong>免费</strong>工具(并非广告)。</p>
-<p><a target="_blank" rel="noopener" href="https://www.processon.com/">Processon</a></p>
-<p>喜欢的小伙伴赶紧去试试吧~</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">最后记录一下特殊密码:晴朗  md5  qq+x</span><br></pre></td></tr></table></figure>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">工具推荐</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/03/10/%E6%8E%A8%E8%8D%90%E4%B8%80%E6%AC%BE%E7%94%BB%E6%B5%81%E7%A8%8B%E5%9B%BE%E5%B7%A5%E5%85%B7/">展开全文 >></a>
         </p>
       
 
