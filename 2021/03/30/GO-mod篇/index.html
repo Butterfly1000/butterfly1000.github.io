@@ -8,13 +8,15 @@
   <link rel="dns-prefetch" href="http://example.com">
   <title>GO mod篇 | Hero or Joker</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="article">
+  <meta name="description" content="三分钟掌握Go mod常用与高级操作链接 go mod 使用链接  更多内容   跳转到  pprof记录  123https:&#x2F;&#x2F;pkg.go.dev&#x2F;github.com&#x2F;revel&#x2F;modules&#x2F;pprof#section-readmehttps:&#x2F;&#x2F;pkg.go.dev&#x2F;net&#x2F;http&amp;">
+<meta property="og:type" content="article">
 <meta property="og:title" content="GO mod篇">
 <meta property="og:url" content="http://example.com/2021/03/30/GO-mod%E7%AF%87/index.html">
 <meta property="og:site_name" content="Hero or Joker">
+<meta property="og:description" content="三分钟掌握Go mod常用与高级操作链接 go mod 使用链接  更多内容   跳转到  pprof记录  123https:&#x2F;&#x2F;pkg.go.dev&#x2F;github.com&#x2F;revel&#x2F;modules&#x2F;pprof#section-readmehttps:&#x2F;&#x2F;pkg.go.dev&#x2F;net&#x2F;http&amp;">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-03-30T11:36:55.000Z">
-<meta property="article:modified_time" content="2021-04-26T12:41:36.432Z">
+<meta property="article:modified_time" content="2021-10-19T02:36:07.073Z">
 <meta property="article:author" content="Kj">
 <meta property="article:tag" content="GO">
 <meta name="twitter:card" content="summary">
@@ -67,6 +69,8 @@
 				<li><a href="/tags/GO/">GO</a></li>
 	        
 				<li><a href="/tags/GO%E5%85%A5%E9%97%A8/">GO入门</a></li>
+	        
+				<li><a href="/tags/Redis/">Redis</a></li>
 	        
 				<li><a href="/tags/%E7%BD%91%E7%BB%9C/">网络</a></li>
 	        
@@ -152,6 +156,8 @@
 			
 				
 			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -164,31 +170,33 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 7.6923076923076925%"><a href="/">主页</a></li>
+					<li style="width: 7.142857142857143%"><a href="/">主页</a></li>
 		        
-					<li style="width: 7.6923076923076925%"><a href="/tags/%E9%9A%8F%E7%AC%94/">随笔</a></li>
+					<li style="width: 7.142857142857143%"><a href="/tags/%E9%9A%8F%E7%AC%94/">随笔</a></li>
 		        
-					<li style="width: 7.6923076923076925%"><a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/">知识点</a></li>
+					<li style="width: 7.142857142857143%"><a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/">知识点</a></li>
 		        
-					<li style="width: 7.6923076923076925%"><a href="/tags/mysql/">mysql</a></li>
+					<li style="width: 7.142857142857143%"><a href="/tags/mysql/">mysql</a></li>
 		        
-					<li style="width: 7.6923076923076925%"><a href="/tags/GO/">GO</a></li>
+					<li style="width: 7.142857142857143%"><a href="/tags/GO/">GO</a></li>
 		        
-					<li style="width: 7.6923076923076925%"><a href="/tags/GO%E5%85%A5%E9%97%A8/">GO入门</a></li>
+					<li style="width: 7.142857142857143%"><a href="/tags/GO%E5%85%A5%E9%97%A8/">GO入门</a></li>
 		        
-					<li style="width: 7.6923076923076925%"><a href="/tags/%E7%BD%91%E7%BB%9C/">网络</a></li>
+					<li style="width: 7.142857142857143%"><a href="/tags/Redis/">Redis</a></li>
 		        
-					<li style="width: 7.6923076923076925%"><a href="/tags/gopush/">gopush</a></li>
+					<li style="width: 7.142857142857143%"><a href="/tags/%E7%BD%91%E7%BB%9C/">网络</a></li>
 		        
-					<li style="width: 7.6923076923076925%"><a href="/tags/Docker/">Docker</a></li>
+					<li style="width: 7.142857142857143%"><a href="/tags/gopush/">gopush</a></li>
 		        
-					<li style="width: 7.6923076923076925%"><a href="/tags/MQTT/">MQTT</a></li>
+					<li style="width: 7.142857142857143%"><a href="/tags/Docker/">Docker</a></li>
 		        
-					<li style="width: 7.6923076923076925%"><a href="/tags/%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/">优化案例</a></li>
+					<li style="width: 7.142857142857143%"><a href="/tags/MQTT/">MQTT</a></li>
 		        
-					<li style="width: 7.6923076923076925%"><a href="/tags/%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/">工具推荐</a></li>
+					<li style="width: 7.142857142857143%"><a href="/tags/%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/">优化案例</a></li>
 		        
-					<li style="width: 7.6923076923076925%"><a href="/tags/%E7%BB%86%E8%8A%82/">细节</a></li>
+					<li style="width: 7.142857142857143%"><a href="/tags/%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/">工具推荐</a></li>
+		        
+					<li style="width: 7.142857142857143%"><a href="/tags/%E7%BB%86%E8%8A%82/">细节</a></li>
 		        
 				</ul>
 			</nav>
@@ -223,7 +231,16 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <h2 id="三分钟掌握Go-mod常用与高级操作"><a href="#三分钟掌握Go-mod常用与高级操作" class="headerlink" title="三分钟掌握Go mod常用与高级操作"></a>三分钟掌握Go mod常用与高级操作</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/103534192">链接</a></p>
+<h2 id="go-mod-使用"><a href="#go-mod-使用" class="headerlink" title="go mod 使用"></a>go mod 使用</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/dhcn/p/11321376.html">链接</a></p>
+<blockquote>
+<p>更多内容 </p>
+</blockquote>
+<p><a href="./GO%E5%8C%85%E7%AE%A1%E7%90%86%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F.md">跳转到</a></p>
+<blockquote>
+<p>pprof记录</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;pkg.go.dev&#x2F;github.com&#x2F;revel&#x2F;modules&#x2F;pprof#section-readme</span><br><span class="line"></span><br><span class="line">https:&#x2F;&#x2F;pkg.go.dev&#x2F;net&#x2F;http&#x2F;pprof</span><br></pre></td></tr></table></figure>
       
 
       
@@ -309,7 +326,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2021 Kj
+    		&copy; 2022 Kj
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -437,6 +454,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">docker</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Redis</a>
               </li>
             
             <div class="clearfix"></div>

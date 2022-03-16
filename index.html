@@ -65,6 +65,8 @@
 	        
 				<li><a href="/tags/GO%E5%85%A5%E9%97%A8/">GO入门</a></li>
 	        
+				<li><a href="/tags/Redis/">Redis</a></li>
+	        
 				<li><a href="/tags/%E7%BD%91%E7%BB%9C/">网络</a></li>
 	        
 				<li><a href="/tags/gopush/">gopush</a></li>
@@ -149,6 +151,8 @@
 			
 				
 			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -161,31 +165,33 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 7.6923076923076925%"><a href="/">主页</a></li>
+					<li style="width: 7.142857142857143%"><a href="/">主页</a></li>
 		        
-					<li style="width: 7.6923076923076925%"><a href="/tags/%E9%9A%8F%E7%AC%94/">随笔</a></li>
+					<li style="width: 7.142857142857143%"><a href="/tags/%E9%9A%8F%E7%AC%94/">随笔</a></li>
 		        
-					<li style="width: 7.6923076923076925%"><a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/">知识点</a></li>
+					<li style="width: 7.142857142857143%"><a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/">知识点</a></li>
 		        
-					<li style="width: 7.6923076923076925%"><a href="/tags/mysql/">mysql</a></li>
+					<li style="width: 7.142857142857143%"><a href="/tags/mysql/">mysql</a></li>
 		        
-					<li style="width: 7.6923076923076925%"><a href="/tags/GO/">GO</a></li>
+					<li style="width: 7.142857142857143%"><a href="/tags/GO/">GO</a></li>
 		        
-					<li style="width: 7.6923076923076925%"><a href="/tags/GO%E5%85%A5%E9%97%A8/">GO入门</a></li>
+					<li style="width: 7.142857142857143%"><a href="/tags/GO%E5%85%A5%E9%97%A8/">GO入门</a></li>
 		        
-					<li style="width: 7.6923076923076925%"><a href="/tags/%E7%BD%91%E7%BB%9C/">网络</a></li>
+					<li style="width: 7.142857142857143%"><a href="/tags/Redis/">Redis</a></li>
 		        
-					<li style="width: 7.6923076923076925%"><a href="/tags/gopush/">gopush</a></li>
+					<li style="width: 7.142857142857143%"><a href="/tags/%E7%BD%91%E7%BB%9C/">网络</a></li>
 		        
-					<li style="width: 7.6923076923076925%"><a href="/tags/Docker/">Docker</a></li>
+					<li style="width: 7.142857142857143%"><a href="/tags/gopush/">gopush</a></li>
 		        
-					<li style="width: 7.6923076923076925%"><a href="/tags/MQTT/">MQTT</a></li>
+					<li style="width: 7.142857142857143%"><a href="/tags/Docker/">Docker</a></li>
 		        
-					<li style="width: 7.6923076923076925%"><a href="/tags/%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/">优化案例</a></li>
+					<li style="width: 7.142857142857143%"><a href="/tags/MQTT/">MQTT</a></li>
 		        
-					<li style="width: 7.6923076923076925%"><a href="/tags/%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/">工具推荐</a></li>
+					<li style="width: 7.142857142857143%"><a href="/tags/%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/">优化案例</a></li>
 		        
-					<li style="width: 7.6923076923076925%"><a href="/tags/%E7%BB%86%E8%8A%82/">细节</a></li>
+					<li style="width: 7.142857142857143%"><a href="/tags/%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/">工具推荐</a></li>
+		        
+					<li style="width: 7.142857142857143%"><a href="/tags/%E7%BB%86%E8%8A%82/">细节</a></li>
 		        
 				</ul>
 			</nav>
@@ -201,6 +207,561 @@
           </div>
           <div id="js-content" class="content-ll">
             
+  
+    <article id="post-P2P通信原理与实现" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/03/16/P2P%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E7%8E%B0/">P2P通信原理与实现</a>
+    </h1>
+  
+
+        
+        <a href="/2022/03/16/P2P%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E7%8E%B0/" class="archive-article-date">
+  	<time datetime="2022-03-16T03:04:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-03-16</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>当今互联网到处存在着一些中间件(Middle Boxes),如NAT和防火墙,导致两个(不在同一内网)中的客户端无法直接通信。</p>
+<p>目前部署的中间件多都是在C/S架构(client/server)上设计的,其中相对隐匿的<strong>客户机</strong>主动向周知的<strong>服务端</strong>(拥有静态IP地址和DNS名称)发起链接请求. 大多数中间件实现了一种<strong>非对称的通讯模型</strong>,即内网中的主机可以初始化对外的链接,而外网的主机却不能初始化对内网的链接, 除非经过中间件管理员特殊配置。</p>
+<blockquote>
+<p>前言</p>
+</blockquote>
+<p>在中间件为常见的NAPT的情况下（也是本文主要讨论的）,内网中的<strong>客户端</strong>没有单独的公网IP地址, 而是通过NAPT转换,和其他同一内网用户共享一个公网IP. 这种内网主机隐藏在中间件后的不可访问性对于一些客户端软件如浏览器来说并不是一个问题,因为其只需要初始化对外的链接,从某方面来看反而还对隐私保护有好处。</p>
+<p>然而在P2P应用中, 内网主机（客户端）需要对另外的终端（Peer）直接建立链接,但是发起者和响应者可能在<strong>不同的中间件</strong>后面, 两者都没有公网IP地址. 而外部对NAT公网IP和端口主动的链接或数据都会因内网未请求被丢弃掉. 本文讨论的就是如何跨越NAT<strong>实现内网主机</strong>直接通讯的问题。</p>
+<p>内网主机，即局域网中的机器；外网主机，经互联网访问局域网的机器。</p>
+<blockquote>
+<p>一些术语</p>
+</blockquote>
+<h3 id="防火墙-Firewall"><a href="#防火墙-Firewall" class="headerlink" title="防火墙(Firewall)"></a>防火墙(Firewall)</h3><p>防火墙主要限制内网和公网的通讯,通常<strong>丢弃</strong>未经许可的数据包. 防火墙会检测(但是不修改)试图进入内网数据包的IP地址和TCP/UDP端口信息.</p>
+<h3 id="网络地址转换器-NAT"><a href="#网络地址转换器-NAT" class="headerlink" title="网络地址转换器(NAT)"></a>网络地址转换器(NAT)</h3><p>NAT不止检查进入数据包的头部,而且对其进行修改,从而实现<strong>同一内网中不同主机共用更少的公网IP</strong>（通常是一个）.</p>
+<p>网络地址转换（Network Address Translation，缩写为NAT），也叫做网络掩蔽或者IP掩蔽（IP masquerading），是一种在IP数据包通过路由器或防火墙时<strong>重写来源IP地址或目的IP地址</strong>的技术。这种技术被普遍使用在<strong>有多台主机但只通过一个公有IP地址</strong>访问因特网的私有网络中。根据规范，路由器是不能这样工作的，但它的确是一个方便且得到了广泛应用的技术。当然，NAT也让主机之间的通信变得复杂，导致了通信效率的降低。</p>
+<p>Nat的类型分为<strong>基本NAT(Basic NAT)</strong> 和 **网络地址-端口转换器(NAPT)**。</p>
+<h4 id="基本NAT-Basic-NAT"><a href="#基本NAT-Basic-NAT" class="headerlink" title="基本NAT(Basic NAT)"></a>基本NAT(Basic NAT)</h4><p>基本NAT会将内网主机的IP地址映射为一个公网IP,不改变其TCP/UDP端口号. 基本NAT通常只有在当NAT有<strong>公网IP池</strong>的时候才有用.</p>
+<p>它实现比较简单，仅支持地址转换，不支持端口映射。Basic NAT要维护一个无端口号NAT表，结构如下：</p>
+<table>
+<thead>
+<tr>
+<th>内网IP</th>
+<th>外网IP</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>192.168.1.155</td>
+<td>219.152.168.222</td>
+</tr>
+<tr>
+<td>192.168.1.159</td>
+<td>219.152.168.223</td>
+</tr>
+<tr>
+<td>192.168.1.151</td>
+<td>219.152.168.224</td>
+</tr>
+</tbody></table>
+<h4 id="网络地址-端口转换器-NAPT"><a href="#网络地址-端口转换器-NAPT" class="headerlink" title="网络地址-端口转换器(NAPT)"></a>网络地址-端口转换器(NAPT)</h4><p>到目前为止最常见的即为NAPT,其检测并修改出入数据包的<strong>IP地址和端口号</strong>,从而允许多个内网主机同时共享一个公网IP地址.</p>
+<ol>
+<li><p>全锥形NAT(Full Cone NAT)</p>
+<p>初始状态时，Client与Server1、Client与Server2都没有通讯过。</p>
+<p>当Client通过NAT向Server1发送一个packet后，NAT会生成如下一行映射。</p>
+</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Client主机地址：端口</th>
+<th>NAT公网地址:端口</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>192.168.1.5:5000</td>
+<td>210.21.12.140:8000</td>
+</tr>
+</tbody></table>
+<p>这边看到，<strong>内网的ip和端口</strong>已经和<strong>公网的ip和端口</strong>对应了。</p>
+<p>​        在全锥型网络下，后续当Server1要发送数据到Client时，Server1首先将数据送到       NAT（210.21.12.140:8000），NAT接收到该报文，会将该报文转发给Client（192.168.1.5:5000）。<br>​         在全锥型网络下，Server2要发送数据给Client，Server2也是需要先将数据发送到NAT（210.21.12.140:8000），NAT接收到该报文，会将该报文转发给Client（192.168.1.5:5000）。</p>
+<p>因为NAT上已经有了192.168.1.5:5000到210.21.12.140:8000的映射。  </p>
+<p>注：这边的关键点是client主机的内网和公网的IP和端口的对应。</p>
+<ol start="2">
+<li><p>受限锥形NAT(Restricted Cone NAT)</p>
+<p>初始状态时，Client与Server1、Client与Server2都没有通讯过。</p>
+<p>当Client通过NAT向Server1发送一个packet后，NAT中会生成如下一行映射（注意，这里增加了一项IP地址的限制）。</p>
+<table>
+<thead>
+<tr>
+<th>Client主机地址：端口</th>
+<th>NAT公网地址:端口</th>
+<th>Server主机地址：端口</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>192.168.1.5:5000</td>
+<td>210.21.12.140:8000</td>
+<td>210.15.27.166</td>
+</tr>
+</tbody></table>
+<p>在受限圆锥型NAT下，Server1要发送数据到Client时，Server1首先将数据送到NAT（210.21.12.140:8000），NAT接收到该报文，会将该报文转发给Client（192.168.1.5:5000）。<br>并且Server1主机的<strong>任何端口号</strong>数据，都可以将数据送到NAT（210.21.12.140:8000），NAT都会将该报文转给Client（192.168.1.5:5000）。</p>
+<p>但是Server2主机无法与Client主机进行通讯。因为Client从来没有和Server2通信过，NAT将拒绝Server2试图与Client连接的动作。</p>
+</li>
+<li><p>端口受限锥形NAT(Port-Restricted Cone NAT)</p>
+<p>端口受限锥形NAT也类似,只当外部数据包的<strong>IP地址和端口号都匹</strong>配内网主机发送过的地址和端口号时才进行转发。</p>
+</li>
+</ol>
+<p>​        初始状态时，Client与Server1、Client与Server2都没有通讯过。</p>
+<p>​        当Client通过NAT向Server1发送一个packet后，NAT中会生成如下一行映射（注意，这里增加了IP+port限制）。</p>
+<table>
+<thead>
+<tr>
+<th>Client主机地址：端口</th>
+<th>NAT公网地址:端口</th>
+<th>Server主机地址：端口</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>192.168.1.5:5000</td>
+<td>210.21.12.140:8000</td>
+<td>210.15.27.166:80</td>
+</tr>
+</tbody></table>
+<p>​        在端口受限圆锥型NAT下，Server2无法与Client通信，因为Client从来没有和Server2通信过。<br>​        并且Server1也只能用它的210.15.27.166:80与Client的192.168.1.5:5000通信，因为Client也从来没有和Server1的<strong>其他端口</strong>通信过。<br>​       备注：家用路由器大部分都属于端口受限圆锥型NAT。</p>
+<ol start="4">
+<li>对称NAT(Symmetric NAT)</li>
+</ol>
+<p>对称NAT正好相反,不在所有公网-内网对的会话中维持一个固定的端口绑定. 其为每个新的会话开辟一个新的端口。</p>
+<p>​        初始状态时，Client与Server1、Client与Server2都没有通讯过。</p>
+<p>​        当Client通过NAT向Server1发送一个packet后，NAT中会生成如下一行映射   </p>
+<table>
+<thead>
+<tr>
+<th>Client主机地址：端口</th>
+<th>NAT公网地址:端口</th>
+<th>Server主机地址：端口</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>192.168.1.5:5000</td>
+<td>210.21.12.140:8000</td>
+<td>210.15.27.166:80</td>
+</tr>
+</tbody></table>
+<p>​        接下来Client要使用相同的端口和Server2通信，将会在NAT中生成如下映射表。 </p>
+<table>
+<thead>
+<tr>
+<th>Client主机地址：端口</th>
+<th>NAT公网地址:端口</th>
+<th>Server主机地址：端口</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>192.168.1.5:5000</td>
+<td>210.21.12.140:8000</td>
+<td>210.15.27.166:80</td>
+</tr>
+<tr>
+<td>192.168.1.5:5000</td>
+<td>210.21.12.140:8001</td>
+<td>210.15.27.140:80</td>
+</tr>
+</tbody></table>
+<p>​        Server1只能用它的210.15.27.166:80通过NAT的 210.21.12.140:8000与Client的192.168.1.5:5000通信。<br>​        Server2也只能用它的210.15.27.140:80通过NAT的210.21.12.140:8001与Client的192.168.1.5:5000通信，<br>​        Server1或者Server2的其他端口则均不能和Client的192.168.1.5:5000通信。</p>
+<ul>
+<li>Cone Nat和 对称NAT 差别</li>
+</ul>
+<p>Cone Nat 中Client内网ip及端口映射Nat的公网ip及端口是一对一关系。</p>
+<p>对称NAT  中Client内网ip及端口映射Nat的公网ip及端口是一对多关系。</p>
+<blockquote>
+<p>P2P通信技术</p>
+</blockquote>
+<p>根据客户端的不同,客户端之间进行P2P传输的方法也略有不同,这里介绍了现有的穿越中间件进行P2P通信的几种技术.</p>
+<h3 id="中继（Relaying）"><a href="#中继（Relaying）" class="headerlink" title="中继（Relaying）"></a>中继（Relaying）</h3><p>这是最可靠但也是最低效的一种P2P通信实现. 其原理是通过一个有公网IP的服务器中间人对两个内网客户端的通信数据进行中继和转发. 如下图所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">                       Server S</span><br><span class="line">                          |</span><br><span class="line">                          |</span><br><span class="line">   +----------------------+----------------------+</span><br><span class="line">   |                                             |</span><br><span class="line"> NAT A                                         NAT B</span><br><span class="line">   |                                             |</span><br><span class="line">   |                                             |</span><br><span class="line">Client A                                      Client B</span><br></pre></td></tr></table></figure>
+
+<p><strong>客户端A和客户端B不直接通信,而是先都与服务端S建立链接,然后再通过S和对方建立的通路来中继传递的数据</strong>。这钟方法的缺陷很明显, 当链接的客户端变多之后,会显著增加服务器的负担,完全没体现出P2P的优势. 但这种方法的好处是能保证成功,因此在实践中也常作为一种备选方案。</p>
+<h3 id="逆向链接（Connection-reversal）"><a href="#逆向链接（Connection-reversal）" class="headerlink" title="逆向链接（Connection reversal）"></a>逆向链接（Connection reversal）</h3><p>第二种方法在当两个端点中有一个不存在中间件的时候有效. 例如,客户端A在NAT之后而客户端B拥有全局IP地址,如下图：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">                            Server S</span><br><span class="line">                        18.181.0.31:1235</span><br><span class="line">                               |</span><br><span class="line">                               |</span><br><span class="line">        +----------------------+----------------------+</span><br><span class="line">        |                                             |</span><br><span class="line">      NAT A                                           |</span><br><span class="line">155.99.25.11:62000                                    |</span><br><span class="line">        |                                             |</span><br><span class="line">        |                                             |</span><br><span class="line">     Client A                                      Client B</span><br><span class="line">  10.0.0.1:1234                               138.76.29.7:1234　</span><br></pre></td></tr></table></figure>
+
+<p>客户端A内网地址为10.0.0.1,且应用程序正在使用TCP端口1234。<strong>A和服务器S</strong>建立了一个链接,服务器的IP地址为18.181.0.31,监听1235端口. NAT A给客户端A分配了TCP端口62000,地址为NAT的公网IP地址155.99.25.11, 作为客户端A对外当前会话的临时IP和端口. 因此S认为客户端A就是155.99.25.11:62000. 而B由于有公网地址,所以对S来说B就是138.76.29.7:1234.</p>
+<p>当客户端B想要发起一个对客户端A的P2P链接时,要么链接A的外网地址155.99.25.11:62000,要么链接A的内网地址10.0.0.1:1234,然而两种方式链接都会失败。链接10.0.0.1:1234失败自不用说,为什么链接155.99.25.11:62000也会失败呢？来自B的TCP SYN握手请求到达NAT A的时候会被拒绝,<strong>因为对NAT A来说只有外出的链接才是允许的</strong>。 在直接链接A失败之后,B可以通过S向A中继一个链接请求,从而<strong>从A方向</strong>“逆向“地建立起A-B之间的点对点链接。</p>
+<p>很多当前的P2P系统都实现了这种技术,但其局限性也是很明显的,只有当其中一方有公网IP时链接才能建立. 越来越多的情况下, 通信的双方都在NAT之后,因此就要用到我们下面介绍的第三种技术了.</p>
+<h3 id="UDP打洞（UDP-hole-punching）"><a href="#UDP打洞（UDP-hole-punching）" class="headerlink" title="UDP打洞（UDP hole punching）"></a>UDP打洞（UDP hole punching）</h3><p>第三种P2P通信技术,被广泛采用的,名为“P2P打洞“. P2P打洞技术<strong>依赖于通常防火墙和Cone NAT允许正当的P2P应用程序</strong>在中间件中打洞且与对方建立直接链接的特性。</p>
+<p>下面主要考虑两种常见的场景,以及应用程序如何设计去完美地处理这些情况，</p>
+<ul>
+<li>第一种场景代表了大多数情况,即两个需要直接链接的客户端处在两个不同的NAT之后； </li>
+<li>第二种场景是两个客户端在同一个NAT之后,但客户端自己可能并不知道(比如同一ISP下面的不同子网)。</li>
+</ul>
+<blockquote>
+<p>端点在不同的NAT之后</p>
+</blockquote>
+<p>假设客户端A和客户端B的地址都是内网地址,且在不同的NAT后面。A、B上运行的P2P应用程序和服务器S都使用了UDP端口1234,A和B分别初始化了 与Server的UDP通信,地址映射如图所示:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">                            Server S</span><br><span class="line">                        18.181.0.31:1234</span><br><span class="line">                               |</span><br><span class="line">                               |</span><br><span class="line">        +----------------------+----------------------+</span><br><span class="line">        |                                             |</span><br><span class="line">      NAT A                                         NAT B</span><br><span class="line">155.99.25.11:62000                            138.76.29.7:31000</span><br><span class="line">        |                                             |</span><br><span class="line">        |                                             |</span><br><span class="line">     Client A                                      Client B</span><br><span class="line">  10.0.0.1:1234                                 10.1.1.3:1234</span><br></pre></td></tr></table></figure>
+
+<p>现在假设客户端A打算与客户端B直接建立一个UDP通信会话. 如果A直接给B的公网地址138.76.29.7:31000发送UDP数据,NAT B将很可能会无视进入的数据 (除非是Full Cone NAT),因为源地址和端口与S不匹配,而最初只与S建立过会话. B往A直接发信息也类似。</p>
+<p>假设A开始给B的公网地址发送UDP数据的同时,给服务器S发送一个中继请求,要求B开始给A的公网地址发送UDP信息。A往B的输出信息会导致NAT A打开 一个A的内网地址与与B的外网地址之间的新通讯会话,B往A亦然。 一旦新的UDP会话在两个方向都打开之后,客户端A和客户端B就能直接通讯, 而无须再通过引导服务器S了。</p>
+<p>上面这段话其实不太明白,可以看看这段话</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">（1）ClientA请求Server。</span><br><span class="line">（2）ClientB请求Server。</span><br><span class="line">（3）Server把ClientA的公网IP和端口信息发给ClientB,NAT B打开 一个B的内网地址与与A的外网地址之间的新通讯会话。</span><br><span class="line">（4）Server把ClientB的公网IP和端口信息发给ClientA,NAT A打开 一个A的内网地址与与B的外网地址之间的新通讯会话。</span><br><span class="line">（5）ClientA发送信息给ClientB发消息。（A信任B）</span><br><span class="line">（6）ClinetB发送信息给ClientA发消息。（B信任A）</span><br><span class="line">（7）连接已经建立。两者可以直接通信了。</span><br></pre></td></tr></table></figure>
+
+<p>UDP打洞技术有许多有用的性质. 一旦一个的P2P链接建立,链接的双方都能反过来作为“引导服务器”来帮助其他中间件后的客户端进行打洞, 极大减少了服务器的负载. 应用程序不需要知道中间件具体是什么（如果有的话）,因为以上的过程在没有中间件或者有多个中间件的情况下 也一样能建立通信链路。</p>
+<blockquote>
+<p>端点在相同的NAT之后</p>
+</blockquote>
+<p>现在考虑这样一种情景,两个客户端A和B正好在同一个NAT之后（而且可能他们自己并不知道）,因此在同一个内网网段之内. 客户端A和服务器S建立了一个UDP会话,NAT为此分配了公网端口62000,B同样和S建立会话,分配到了端口62001,如下图：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">                          Server S</span><br><span class="line">                      18.181.0.31:1234</span><br><span class="line">                             |</span><br><span class="line">                             |</span><br><span class="line">                            NAT</span><br><span class="line">                   A-S 155.99.25.11:62000</span><br><span class="line">                   B-S 155.99.25.11:62001</span><br><span class="line">                             |</span><br><span class="line">      +----------------------+----------------------+</span><br><span class="line">      |                                             |</span><br><span class="line">   Client A                                      Client B</span><br><span class="line">10.0.0.1:1234                                 10.1.1.3:1234</span><br></pre></td></tr></table></figure>
+
+<p>假设A和B使用了上节介绍的UDP打洞技术来建立P2P通路,那么会发生什么呢？首先A和B会得到由S观测到的对方的公网IP和端口号,然后给对方的地址发送信息。</p>
+<p>两个客户端只有在NAT允许内网主机对内网其他主机发起UDP会话的时候才能正常通信,我们把这种情况称之为”回环传输“(loopback transmission),因为从内部 到达NAT的数据会被“回送”到内网中而不是转发到外网。 例如,当A发送一个UDP数据包给B的公网地址时,数据包最初有源IP地址和端口地址10.0.0.1:1234和 目的地址155.99.25.11:62001,NAT收到包后,将其转换为源155.99.25.11:62000（A的公网地址）和目的10.1.1.3:1234,然后再转发给B。即便NAT支持 回环传输,这种转换和转发在此情况下也是没必要的,且有可能会增加A与B的对话延时和加重NAT的负担。</p>
+<p>对于这个情况,优化方案是很直观的. 当A和B最初通过S交换地址信息时,他们应该包含自身的IP地址和端口号（从自己看）,同时也包含从服务器看的自己的 地址和端口号. 然后客户端同时开始从对方已知的两个的地址中同时开始互相发送数据,并使用第一个成功通信的地址作为对方地址。如果两个客户端在同一个 NAT后,发送到对方内网地址的数据最有可能先到达,从而可以<strong>建立一条不经过NAT的通信链路</strong>；如果两个客户端在不同的NAT之后,发送给对方内网地址的数据包 根本就到达不了对方,但仍然可以通过公网地址来建立通路. 值得一提的是,虽然这些数据包通过某种方式验证,但是在不同NAT的情况下完全有可能会导致A往B 发送的信息发送到其他A内网网段中无关的结点上去的。</p>
+<blockquote>
+<p>端点在多级NAT之后</p>
+</blockquote>
+<p>在一些拓朴结构中,可能会存在多级NAT设备,在这种情况下,如果没有关于拓朴的具体信息, 两个Peer要建立“最优”的P2P链接是不可能的,下面来说为什么. 以下图为例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">                          Server S</span><br><span class="line">                        18.181.0.31:1234</span><br><span class="line">                               |</span><br><span class="line">                               |</span><br><span class="line">                             NAT X</span><br><span class="line">                     A-S 155.99.25.11:62000</span><br><span class="line">                     B-S 155.99.25.11:62001</span><br><span class="line">                               |</span><br><span class="line">                               |</span><br><span class="line">        +----------------------+----------------------+</span><br><span class="line">        |                                             |</span><br><span class="line">      NAT A                                         NAT B</span><br><span class="line">192.168.1.1:30000                             192.168.1.2:31000</span><br><span class="line">        |                                             |</span><br><span class="line">        |                                             |</span><br><span class="line">     Client A                                      Client B</span><br><span class="line">  10.0.0.1:1234                                 10.1.1.3:1234</span><br></pre></td></tr></table></figure>
+
+<p>假设NAT X是一个网络提供商ISP部署的工业级NAT,其下子网共用一个公网地址155.99.25.11,NAT A和NAT B分别是其下不同用户的网关部署的NAT. 只有服务器S 和NAT X有全局的路由地址. Client A在NAT A的子网中,同时Client B在NAT B的子网中,每经过一级NAT都要进行一次网络地址转换.</p>
+<p>现在假设A和B打算建立直接P2P链接,用一般的方法（通过Server S来打洞）自然是没问题的,那能不能优化呢？一种想当然的优化办法是A直接把信息发送给NAT B的 内网地址192.168.1.2:31000,且B通过NAT B把信息发送给A的路由地址192.168.1.1:30000,不幸的是,A和B都没有办法得知这两个目的地址,因为S只看见了客户端 ‵全局‵地址155.99.25.11. 退一步说,即便A和B通过某种方法得知了那些地址,我们也无法保证他们是可用的. 因为ISP分配的子网地址可能和NAT A B分配的子网地址 域相冲突. 因此客户端没有其他选择,只能使用S来进行打洞并进行回环传输.</p>
+<h2 id="固定端口绑定"><a href="#固定端口绑定" class="headerlink" title="固定端口绑定"></a>固定端口绑定</h2><p>UDP打洞技术有一个主要的条件：只有当两个NAT都是Cone NAT（或者非NAT的防火墙）时才能工作. 因为其维持了一个给定的（内网IP,内网UDP）二元组 和（公网IP, 公网UDP）二元组固定的端口绑定,只要该UDP端口还在使用中,就不会变化。如果像对称NAT一样,给每个新会话分配一个新的公网端口,就 会导致UDP应用程序无法使用跟外部端点已经打通了的通信链路. 由于Cone NAT是当今最广泛使用的,尽管有一小部分的对称NAT是不支持打洞的,UDP打洞 技术也还是被广泛采纳应用。</p>
+<h1 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h1><p>一般的网络编程,都是客户端比服务端要难,因为要处理与服务器的通信同时还要处理来自用户的事件；对于P2P客户端来说更是如此,因为P2P客户端不止作 为客户端,同时也作为对等连接的服务器端. 这里的大体思路是,输入命令传输给服务器之后,接收来自服务器的反馈,并执行相应代码. 例如A想要与B建立 通信链路,先给服务器发送punch命令以及给B发送数据,服务器接到命令后给B发送punch_requst信息以及A的端点信息,B收到之后向A发送数据打通通路,然 后A与B就可以进行P2P通信了. 经测试,打通通路后即便把服务器关闭,A与B也能正常通信.</p>
+<p>一个UDP打洞的例子见<a target="_blank" rel="noopener" href="https://github.com/evilpan/P2P-Over-MiddleBoxes-Demo">P2P-Over-MiddleBoxes-Demo</a></p>
+<h1 id="TCP打洞-TCP-Hole-Punching"><a href="#TCP打洞-TCP-Hole-Punching" class="headerlink" title="TCP打洞(TCP Hole Punching)"></a>TCP打洞(TCP Hole Punching)</h1><p>关于TCP打洞,有一点需要提的是,因为TCP是基于连接的,所以任何未经连接而发送的数据都会被丢弃,这导致在recv的时候是无法直接从peer端读取数据. 其实这对UDP也一样,如果对UDP的socket进行了connect,其也会忽略连接之外的数据,详见<code>connect(2)</code>.</p>
+<p>所以,如果我们要进行TCP打洞,通常需要重用本地的endpoint来发起新的TCP连接,这样才能将已经打开的NAT利用起来. 具体来说,则是要设置socket的 <code>SO_REUSEADDR</code>或<code>SO_REUSEPORT</code>属性,根据系统不同,其实现也不尽一致. 一般来说,TCP打洞的步骤如下：</p>
+<ul>
+<li>A 发送 SYN 到 B(出口地址,下同）,从而创建NAT A的一组映射</li>
+<li>B 发送 SYN 到 A, 创建NAT B的一组映射</li>
+<li>根据时序不同,两个SYN中有一个会被对方的NAT丢弃,另一个成功通过NAT</li>
+<li>通过NAT的SYN报文被其中一方收到,即返回SYNACK, 完成握手</li>
+<li>至此,TCP的打洞成功,获得一个不依赖于服务器的链接</li>
+</ul>
+<p>参考文章：</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/CrystalShaw/article/details/80677966">NAT类型及工作原理</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.pianshen.com/article/9679170640/">计算机网络：NAT基本原理</a></p>
+<p><a target="_blank" rel="noopener" href="https://evilpan.com/2015/10/31/p2p-over-middle-box/">P2P通信原理与实现</a></p>
+<p>[UDP打洞（成功打洞）](</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">网络</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/03/16/P2P%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E7%8E%B0/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-R系列-2" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/11/24/R%E7%B3%BB%E5%88%97-2/">R系列-2</a>
+    </h1>
+  
+
+        
+        <a href="/2021/11/24/R%E7%B3%BB%E5%88%97-2/" class="archive-article-date">
+  	<time datetime="2021-11-24T11:53:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-11-24</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/11/24/R%E7%B3%BB%E5%88%97-2/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-R系列-1" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/11/24/R%E7%B3%BB%E5%88%97-1/">R系列-1</a>
+    </h1>
+  
+
+        
+        <a href="/2021/11/24/R%E7%B3%BB%E5%88%97-1/" class="archive-article-date">
+  	<time datetime="2021-11-24T11:47:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-11-24</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>缓存雪崩 (大量key失效，导致大量访问，犹如雪崩)</p>
+</blockquote>
+<p>在<code>高并发</code>场景下，大量缓存key在<code>同一时间失效</code>，造成大量请求直接落在数据库上，导致数据库宕机。</p>
+<p>解决方案:</p>
+<ul>
+<li>随机设置key失效时间，避免大量key集体失效。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setRedis（Key，value，time + Math.random() * 10000）；</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>若是集群部署，可将热点数据均匀分布在不同的Redis库中也能够避免key全部失效问题</li>
+<li>不设置过期时间</li>
+<li>跑定时任务，在缓存失效前刷进新的缓存</li>
+</ul>
+<blockquote>
+<p>缓存穿透(绕过redis，实现穿透)</p>
+</blockquote>
+<p><code>redis缓存</code>和<code>数据库</code>中没有相关数据(例用户直接携带<code>id&lt;=0</code>的参数不断发起请求)，redis中没有这样的数据，<code>无法进行拦截</code>，直接被穿透到<code>数据库</code>，导致数据库压力过大宕机。</p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><ul>
+<li>对不存在的数据缓存到redis中，设置key，value值为null(不管是数据未null还是系统bug问题)，并设置一个短期过期时间段，避免过期时间过长影响正常用户使用。</li>
+<li>拉黑该IP地址</li>
+<li>对参数进行校验，不合法参数进行拦截<code>(认为最有效的之一)</code></li>
+<li>布隆过滤器 将所有可能存在的数据哈希到一个足够大的bitmap(位图)中，一个一定不存在的数据会被 这个bitmap拦截掉，从而避免了对底层存储系统的查询压力。<code>(认为最有效的之一)</code></li>
+</ul>
+<blockquote>
+<p>缓存击穿 (对一个点高频打击，然后穿透)</p>
+</blockquote>
+<p><code>某一个</code>热点key，在不停地扛着高并发，当这个热点key在<code>失效的一瞬间</code>，持续的高并发访问就<code>击破缓存</code>直接访问数据库，导致数据库宕机。</p>
+<h3 id="解决方案-1"><a href="#解决方案-1" class="headerlink" title="解决方案"></a>解决方案</h3><ul>
+<li><p>设置热点数据”永不过期”</p>
+</li>
+<li><p>加上互斥锁：上面的现象是多个线程同时去查询数据库的这条数据，那么我们可以在第一个查询数据的请求上使用一个互斥锁来锁住它</p>
+<p>其他的线程走到这一步拿不到锁就等着，等第一个线程查询到了数据，然后将数据放到redis缓存起来。后面的线程进来发现已经有缓存了，就直接走缓存</p>
+</li>
+</ul>
+<h2 id="最后总结"><a href="#最后总结" class="headerlink" title="最后总结"></a>最后总结</h2><p>雪崩是<code>大面积</code>的key缓存失效；穿透是redis里<code>不存在</code>这个缓存key；击穿是redis<code>某一个热点</code>key突然失效，最终的受害者都是数据库。</p>
+<h2 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h2><p><code>未雨绸缪</code>：将redis、MySQL等搭建成高可用的集群，防止单点。</p>
+<p><code>亡羊补牢</code>：服务中进行限流 + 降级，防止MySQL被打崩溃。</p>
+<p><code>重振旗鼓</code>：Redis 持久化 RDB+AOF，宕机重启，自动从磁盘上加载数据，快速恢复缓存数据</p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6872536898003271687">原文链接</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Redis</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/11/24/R%E7%B3%BB%E5%88%97-1/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-go的一些认知使用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/27/go%E7%9A%84%E4%B8%80%E4%BA%9B%E8%AE%A4%E7%9F%A5%E4%BD%BF%E7%94%A8/">go的一些认知使用</a>
+    </h1>
+  
+
+        
+        <a href="/2021/10/27/go%E7%9A%84%E4%B8%80%E4%BA%9B%E8%AE%A4%E7%9F%A5%E4%BD%BF%E7%94%A8/" class="archive-article-date">
+  	<time datetime="2021-10-27T09:17:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-27</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="本篇观点不一定正确，目前仅供个人使用"><a href="#本篇观点不一定正确，目前仅供个人使用" class="headerlink" title="本篇观点不一定正确，目前仅供个人使用"></a>本篇观点不一定正确，目前仅供个人使用</h2><blockquote>
+<p>数组和切片区别</p>
+</blockquote>
+<p>数组是固定的，但切片有扩展性<code>append</code></p>
+<blockquote>
+<p>切片和map</p>
+</blockquote>
+<p>其实map可以当做一个类型，可以存储字符串</p>
+<blockquote>
+<p>map嵌套</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">a :&#x3D; map[string]map[string]string&#123;&#125;</span><br><span class="line">b,ok :&#x3D; a[&quot;name&quot;]</span><br><span class="line">if !ok &#123;</span><br><span class="line">    b :&#x3D; make(map[string]string)</span><br><span class="line">    a[&quot;name&quot;] &#x3D; b</span><br><span class="line">    b[&quot;xiaoming&quot;] &#x3D; &quot;go&quot;</span><br><span class="line">    b[&quot;xiaodong&quot;] &#x3D; &quot;why&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>struct 继承和重组</p>
+</blockquote>
+<p>结构体，对象。可以通过指针关联方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;blog.csdn.net&#x2F;z226688&#x2F;article&#x2F;details&#x2F;108963110</span><br></pre></td></tr></table></figure>
+
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">GO入门</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/10/27/go%E7%9A%84%E4%B8%80%E4%BA%9B%E8%AE%A4%E7%9F%A5%E4%BD%BF%E7%94%A8/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
   
     <article id="post-扩展管理工具composer" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
@@ -703,7 +1264,33 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="git"><a href="#git" class="headerlink" title="git"></a>git</h2><p>Go.mod是 <strong>Golang1.11版本</strong> 新引入的官方包管理工具用于解决之前没有地方记录依赖包具体版本的问题。</p>
+        <h2 id="早期的GO包管理-了解"><a href="#早期的GO包管理-了解" class="headerlink" title="早期的GO包管理(了解)"></a>早期的GO包管理(了解)</h2><p>早期根本没有所谓的包管理，项目依赖一塌糊涂。那么这样会出现什么问题？</p>
+<blockquote>
+<p>在没有包管理方案之前，项目依赖于 GOPATH，带来一些不便之处</p>
+</blockquote>
+<ul>
+<li>多项目难以管理。试想一下，A 项目和 B 项目 同时依赖于一个 C 项目，但是依赖于 C 项目的不同版本，如何解决，只能通过多 GOPATH 设置。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">go命令依赖一个重要的环境变量：$GOPATH</span><br><span class="line">GOPATH允许多个目录，当有多个目录时，请注意分隔符，多个目录的时候Windows是分号;，Linux系统是冒号:</span><br><span class="line">[设置Golang的GOPATH](https:&#x2F;&#x2F;blog.csdn.net&#x2F;chenjh213&#x2F;article&#x2F;details&#x2F;51381024)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>项目的依赖只能够手动 go get 下载到 GOPATH 中，如果换一台服务器开发项目，光是包依赖都得弄半天。</p>
+</li>
+<li><p>如果是本地想搭建对应的项目，还无法知道之前包的版本，只能通过当初项目创建时间进行<code>git tag</code>切换对应版本。</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git tag #展示全部tag</span><br><span class="line">git checkout  release-v1.0.0 #切换到tag分支</span><br><span class="line"></span><br><span class="line">无关-记录</span><br><span class="line">git tag release-v1.0.1 #打上tag</span><br><span class="line">git push --tag #推送</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>一些解决方案</p>
+</blockquote>
+<ul>
+<li><p>godep，glide，go verdor 这些都是曾经出现过的包管理解决方案。</p>
+</li>
+<li><p>将所有依赖包都上传到一个公共的线上文件夹(类似vendor)，然后从上面直接拷贝。</p>
+</li>
+</ul>
+<h2 id="现在的GO包管理-go版本-gt-1-11"><a href="#现在的GO包管理-go版本-gt-1-11" class="headerlink" title="现在的GO包管理(go版本 &gt;= 1.11)"></a>现在的GO包管理(go版本 &gt;= 1.11)</h2><p>Go.mod是 <strong>Golang1.11版本</strong> 新引入的官方包管理工具用于解决之前没有地方记录依赖包具体版本的问题。</p>
 <p><em>前导</em></p>
 <p>Go.mod其实就是一个Modules官方定义为：</p>
 <p>Modules是相关Go包的集合，是源代码交换和版本控制的单元。go命令直接支持使用Modules，包括记录和解析对其他模块的依赖性。Modules替换旧的基于GOPATH的方法，来指定使用哪些源文件。</p>
@@ -711,8 +1298,6 @@
 <p><strong>go mod的使用：</strong></p>
 <p>一个很关键的地方在于环境变量GO111MODULE的设置,GO111MODULE有三个值：off, on和auto（默认值）</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1.GO111MODULE&#x3D;off，go命令行将不会支持module功能，寻找依赖包的方式将会沿用旧版本那种通过vendor目录或GOPATH模式来查找。</span><br><span class="line"></span><br><span class="line">2.GO111MODULE&#x3D;on，go命令行会使用modules，而一点也不会去GOPATH目录下查找。</span><br><span class="line"></span><br><span class="line">3.GO111MODULE&#x3D;auto，默认值，go命令行将会根据当前目录来决定是否启用module功能。</span><br><span class="line">这种情况下可以分为两种情形：</span><br><span class="line">当前目录在GOPATH&#x2F;src之外且该目录包含go.mod文件</span><br><span class="line">当前文件在包含go.mod文件的目录下面。</span><br><span class="line">Go mod 的命令使用help查看</span><br></pre></td></tr></table></figure>
-
-
 
 <p>如何在项目中使用？</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#cd xxx &#x2F;&#x2F;进入项目</span><br><span class="line">#go mod init  &#x2F;&#x2F;初始化项目</span><br><span class="line">#ps</span><br><span class="line">在当前目录下生成一个go.mod文件，通过这个文件管理包</span><br></pre></td></tr></table></figure>
@@ -733,7 +1318,7 @@
 
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">module app #项目名</span><br><span class="line"></span><br><span class="line">go 1.13</span><br><span class="line"></span><br><span class="line">require (</span><br><span class="line">	gorm.io&#x2F;driver&#x2F;mysql v1.1.2 &#x2F;&#x2F; indirect</span><br><span class="line">	gorm.io&#x2F;gorm v1.21.15 &#x2F;&#x2F; indirect</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">replace github.com&#x2F;qiniu&#x2F;bytes &#x3D;&gt; gitlab.airdroid.com&#x2F;zhuoh&#x2F;bytes v0.0.0-20191012100200-92558a444c07</span><br></pre></td></tr></table></figure>
 
-<h2 id><a href="#" class="headerlink" title></a></h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/jkwanga/article/details/106288345">原文链接</a></p>
+<h2 id="参考原文"><a href="#参考原文" class="headerlink" title="参考原文"></a>参考原文</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/jkwanga/article/details/106288345">原文链接</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/d04b36fbdcd6#comments">原文链接</a></p>
 
       
 
@@ -787,518 +1372,6 @@
 
 
   
-    <article id="post-Docker-部署gitlab" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/">Docker-部署gitlab</a>
-    </h1>
-  
-
-        
-        <a href="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/" class="archive-article-date">
-  	<time datetime="2021-10-02T14:16:10.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="一、前提条件"><a href="#一、前提条件" class="headerlink" title="一、前提条件"></a>一、前提条件</h3><p>1.存在docker<br>2.服务器可以联网（外网）<br>3.服务器内存至少4G（内存不够会出现502错误）</p>
-<p>内存不足502错误如下图所示：</p>
-<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g1.png"></p>
-<h3 id="二、安装"><a href="#二、安装" class="headerlink" title="二、安装"></a>二、安装</h3><p>安装环境:Centos7</p>
-<p>1.查找GitLab镜像</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker search gitlab</span><br></pre></td></tr></table></figure>
-
-<p>2.拉取gitlab docker镜像</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull gitlab&#x2F;gitlab-ce:latest</span><br></pre></td></tr></table></figure>
-
-<p>3.运行GitLab并运行容器</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">docker run \</span><br><span class="line">-itd \</span><br><span class="line">-p 9980:80 \</span><br><span class="line">-p 9922:22 \</span><br><span class="line">-v &#x2F;usr&#x2F;local&#x2F;gitlab-test&#x2F;etc:&#x2F;etc&#x2F;gitlab \</span><br><span class="line">-v &#x2F;usr&#x2F;local&#x2F;gitlab-test&#x2F;log:&#x2F;var&#x2F;log&#x2F;gitlab \</span><br><span class="line">-v &#x2F;usr&#x2F;local&#x2F;gitlab-test&#x2F;opt:&#x2F;var&#x2F;opt&#x2F;gitlab \</span><br><span class="line">--restart always \</span><br><span class="line">--privileged&#x3D;true \</span><br><span class="line">--name gitlab-test \</span><br><span class="line">gitlab&#x2F;gitlab-ce</span><br></pre></td></tr></table></figure>
-<p>成功会返回的容器ID哦！！<br>　　<br>命令解释：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">-i 以交互模式运行容器，通常与 -t 同时使用命令解释：</span><br><span class="line"></span><br><span class="line">-t 为容器重新分配一个伪输入终端，通常与 -i 同时使用</span><br><span class="line"></span><br><span class="line">-d 后台运行容器，并返回容器ID</span><br><span class="line"></span><br><span class="line">-p 9980:80 将容器内80端口映射至宿主机9980端口，这是访问gitlab的端口</span><br><span class="line"></span><br><span class="line">-p 9922:22 将容器内22端口映射至宿主机9922端口，这是访问ssh的端口</span><br><span class="line"></span><br><span class="line">-v &#x2F;usr&#x2F;local&#x2F;gitlab-test&#x2F;etc:&#x2F;etc&#x2F;gitlab 将容器&#x2F;etc&#x2F;gitlab目录挂载到宿主机&#x2F;usr&#x2F;local&#x2F;gitlab-test&#x2F;etc目录下，若宿主机内此目录不存在将会自动创建，其他两个挂载同这个一样</span><br><span class="line"></span><br><span class="line">--restart always 容器自启动</span><br><span class="line"></span><br><span class="line">--privileged&#x3D;true 让容器获取宿主机root权限</span><br><span class="line"></span><br><span class="line">--name gitlab-test 设置容器名称为gitlab-test</span><br><span class="line"></span><br><span class="line">gitlab&#x2F;gitlab-ce 镜像的名称，这里也可以写镜像ID</span><br></pre></td></tr></table></figure>
-
-<p><strong>重点：接下来的配置请在容器内进行修改，不要在挂载到宿主机的文件上进行修改。否则可能出现配置更新不到容器内，或者是不能即时更新到容器内，导致gitlab启动成功，但是无法访问</strong></p>
-<p>4.进入容器内</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it gitlab-test &#x2F;bin&#x2F;bash</span><br></pre></td></tr></table></figure>
-
-<p>5.修改gitlab.rb</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 打开文件</span><br><span class="line">vi &#x2F;etc&#x2F;gitlab&#x2F;gitlab.rb</span><br><span class="line"> </span><br><span class="line"># 这个文件是全注释掉了的，所以直接在首行添加如下配置</span><br><span class="line">  </span><br><span class="line"># gitlab访问地址，可以写域名。如果端口不写的话默认为80端口 （图片上拼写错误，正确的是external_url）</span><br><span class="line">external_url &#39;http:&#x2F;&#x2F;192.168.201.5:9980&#39;</span><br><span class="line"># ssh主机ip</span><br><span class="line">gitlab_rails[&#39;gitlab_ssh_host&#39;] &#x3D; &#39;192.168.201.5&#39;</span><br><span class="line"># ssh连接端口</span><br><span class="line">gitlab_rails[&#39;gitlab_shell_ssh_port&#39;] &#x3D; 9922</span><br></pre></td></tr></table></figure>
-
-<p>6.修改gitlab.yml</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 打开文件</span><br><span class="line">vi &#x2F;opt&#x2F;gitlab&#x2F;embedded&#x2F;service&#x2F;gitlab-rails&#x2F;config&#x2F;gitlab.yml</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g2.png"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># 配置解释：</span><br><span class="line"> </span><br><span class="line"># host：访问的IP  192.168.201.5</span><br><span class="line"> </span><br><span class="line"># port：访问的端口  9980</span><br><span class="line"> </span><br><span class="line"># 以上两个和gitlab.rb内external_url的配置保持一致</span><br><span class="line"> </span><br><span class="line"># ssh_host：ssh主机ip，和gitlab.rb内gitlab_rails[&#39;gitlab_ssh_host&#39;]保持一致</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 配置二：找到gitlab_shell标签下的ssh_port，将其修改为9922</span><br><span class="line">#（和gitlab.rb内gitlab_rails[&#39;gitlab_shell_ssh_port&#39;] 保持一致）</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g3.png"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># 保存并退出:wq</span><br></pre></td></tr></table></figure>
-
-<p>7.让修改后的配置生效</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitlab-ctl reconfigure</span><br></pre></td></tr></table></figure>
-
-<p>8.重启gitlab</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitlab-ctl restart</span><br></pre></td></tr></table></figure>
-
-<p>9.退出容器</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exit</span><br></pre></td></tr></table></figure>
-
-<p>10.在游览器输入如下地址，访问gitlab（eaxternal_url配置的就是这个）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:192.168.201.5:9980</span><br></pre></td></tr></table></figure>
-
-<p>如果访问不成功的话：</p>
-<p>（1）   进入容器查看gitlab.rb和gitlab.yml文件是否配置成功</p>
-<p>（2）   查看防火墙是否开放9980、9922端口</p>
-<p>11.依然访问不成功！！</p>
-<p>确认防火墙firewall 和 iptables 都没有阻止端口。gitlab也运行成功，但是无法访问！！</p>
-<p>查看端口,确实有监听9980和9922端口</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -lntp</span><br></pre></td></tr></table></figure>
-
-<p>但是telnet还是被拒绝</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">telnet 192.168.201.5 9980</span><br></pre></td></tr></table></figure>
-
-<p>查看了了日志，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ docker logs -f -t  --tail&#x3D;100 gitlab-test | grep &quot;failed&quot;</span><br><span class="line"></span><br><span class="line">021&#x2F;09&#x2F;27 16:47:03 [crit] 929#0: *54 connect() to unix:&#x2F;var&#x2F;opt&#x2F;gitlab&#x2F;gitlab-workhorse&#x2F;sockets&#x2F;socket failed (2: No such file or directory) while connecting</span><br><span class="line">to upstream, client: 127.0.0.1, server: 756dc32e9be4, request: &quot;GET &#x2F;help HTTP&#x2F;1.1&quot;, upstream: &quot;http:&#x2F;&#x2F;unix:&#x2F;var&#x2F;opt&#x2F;gitlab&#x2F;gitlab-work</span><br><span class="line"></span><br><span class="line">实时查看gitlab的输出日志(也能找到上面错误)</span><br><span class="line">gitlab-ctl tail</span><br><span class="line"></span><br><span class="line">查看gitlab当前的启动状态(正常)</span><br><span class="line">gitlab-ctl status</span><br></pre></td></tr></table></figure>
-
-<p>于是网上搜了方法,docker 镜像启动成功但是无法访问</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">解决办法：</span><br><span class="line"></span><br><span class="line">vi &#x2F;etc&#x2F;sysctl.conf 或者</span><br><span class="line"></span><br><span class="line">vi &#x2F;usr&#x2F;lib&#x2F;sysctl.d&#x2F;00-system.conf 添加如下代码： net.ipv4.ip_forward&#x3D;1</span><br><span class="line"></span><br><span class="line">重启network服务</span><br><span class="line"></span><br><span class="line">systemctl restart network 查看是否修改成功</span><br><span class="line"></span><br><span class="line">sysctl net.ipv4.ip_forward 如果返回为“net.ipv4.ip_forward &#x3D; 1”则表示成功了</span><br></pre></td></tr></table></figure>
-<p>但因为原本就是”net.ipv4.ip_forward = 1”，所以也不是这个原因。</p>
-<p>还提升了虚拟机内存，但同样无法访问。</p>
-<p>最后，发现了gitlab对8080端口是有需求的，所以kill -9相关进程后，发现可以访问了(还是要等待一段时间)。</p>
-<p>12.第一次访问默认是root账户，会需要修改密码（密码至少8位数，出现如下界面就基本上部署成功了）</p>
-<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g4.png"></p>
-<p>13.输入新密码后进行登录</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root&#x2F;gitlab123456</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g5.png"></p>
-<p>14.登录后界面如下图，创建一个新项目</p>
-<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g6.png"></p>
-<p>15.输入信息，创建项目</p>
-<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g7.png"></p>
-<p>16.检查这里两处的ip的端口是否是你配置的</p>
-<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g8.png"></p>
-<p>如果这里两处的端口和ip和配置的不一样，再次进入容器检查gitlab.yml文件</p>
-<p>如下图显示：</p>
-<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g9.png"></p>
-<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g10.png"></p>
-<p>若不一样，将其修改为你的配置，然后:wq，再进行下面的操作</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gitlab-ctl reconfigure</span><br><span class="line">gitlab-ctl restart</span><br></pre></td></tr></table></figure>
-
-<p>17.安装到此结束</p>
-<h3 id="三、关闭用户注册"><a href="#三、关闭用户注册" class="headerlink" title="三、关闭用户注册"></a>三、关闭用户注册</h3><p>1.使用root用户登录gitlab</p>
-<p>2.点击【Admin Area】</p>
-<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g11.png"></p>
-<p>3.点击【Settings】</p>
-<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g12.png"></p>
-<p>4.点击Sign-in restrictions这一栏的【Expand】</p>
-<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g13.png"></p>
-<p>5.取消勾选</p>
-<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g14.png"></p>
-<p>6.往下滑动，找到保存按钮，点击保存</p>
-<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g15.png"></p>
-<p>7.进入登录界面，发现注册的窗口已经消失了</p>
-<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g16.png"></p>
-<h3 id="四、邮件配置"><a href="#四、邮件配置" class="headerlink" title="四、邮件配置"></a>四、邮件配置</h3><h3 id="五、自动备份配置"><a href="#五、自动备份配置" class="headerlink" title="五、自动备份配置"></a>五、自动备份配置</h3><h3 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h3><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/diaomina/p/12830449.html">docker部署gitlab</a></p>
-<h3 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h3><p>虽然，这几篇文章没有真正帮助到点，但也给了启迪。让我关掉已占用的8080端口，在此附上链接。</p>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/zuxing/articles/9329152.html">docker安装配置gitlab详细过程</a></p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/xiayuandongcn/article/details/119871356">centos7 gitlab14搭建完成后，无法访问的问题处理（“error“:“badgateway: failed to receive response: dial unix /var/opt）</a> 这篇有帮助，但未实践成功。因为直接kill了8080端口占用进程。</p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/wangxicoding/article/details/43738137">我所遇到的GitLab 502问题的解决</a></p>
-<p>比较实用的几篇</p>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/kofsony/p/11103852.html">docker启动,重启,关闭命令</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/kreo/p/4368811.html">CentOS7安装iptables防火墙</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/zl1991/p/10531726.html">docker 端口映射 及外部无法访问问题</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">docker</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Docker-入门篇" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/02/Docker-%E5%85%A5%E9%97%A8%E7%AF%87/">Docker入门教程</a>
-    </h1>
-  
-
-        
-        <a href="/2021/10/02/Docker-%E5%85%A5%E9%97%A8%E7%AF%87/" class="archive-article-date">
-  	<time datetime="2021-10-02T13:39:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="安装Docker"><a href="#安装Docker" class="headerlink" title="安装Docker"></a>安装Docker</h2><h3 id="安装环境"><a href="#安装环境" class="headerlink" title="安装环境"></a>安装环境</h3><p>此处在Centos7进行安装，可以使用以下命令查看CentOS版本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsb_release -a</span><br></pre></td></tr></table></figure>
-
-<p>在 CentOS 7安装docker要求系统为64位、系统内核版本为 3.10 以上，可以使用以下命令查看</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname -r</span><br></pre></td></tr></table></figure>
-
-<h3 id="用yum源安装"><a href="#用yum源安装" class="headerlink" title="用yum源安装"></a>用yum源安装</h3><p><strong>查看是否已安装docker列表</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum list installed | grep docker</span><br></pre></td></tr></table></figure>
-
-<p><strong>安装docker</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install docker</span><br></pre></td></tr></table></figure>
-
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/kingsonfu/p/11576797.html">linux 安装docker</a></p>
-<h3 id="查找docker安装路径"><a href="#查找docker安装路径" class="headerlink" title="查找docker安装路径"></a>查找docker安装路径</h3><p>Linux系统下查找安装包所在目录的方法,rpm查找安装包路径</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Linux rpm 命令用于管理套件</span><br><span class="line">参数说明：</span><br><span class="line">-a 　查询所有套件。</span><br><span class="line">-l 　显示套件的文件列表。</span><br><span class="line">-q 　使用询问模式，当遇到任何问题时，rpm指令会先询问用户</span><br><span class="line"></span><br><span class="line">rpm -qa | grep docker</span><br><span class="line"></span><br><span class="line">rpm -ql docker-ce-19.03.13-3.el7.x86_64</span><br><span class="line"></span><br><span class="line">which</span><br><span class="line">使用指令&quot;which&quot;查看&quot;nginx&quot;的绝对路径，输入如下命令</span><br><span class="line">which nginx</span><br><span class="line"></span><br><span class="line">whereis</span><br><span class="line">使用 whereis 命令，能够方便的定位到文件系统中可执行文件的位置</span><br><span class="line">whereis nginx</span><br></pre></td></tr></table></figure>
-
-<h3 id="查看是否安装成功"><a href="#查看是否安装成功" class="headerlink" title="查看是否安装成功"></a>查看是否安装成功</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># docker version 或者# docker info</span><br></pre></td></tr></table></figure>
-
-<h3 id="Docker-需要用户具有-sudo-权限，为了避免每次命令都输入sudo，可以把用户加入-Docker-用户组"><a href="#Docker-需要用户具有-sudo-权限，为了避免每次命令都输入sudo，可以把用户加入-Docker-用户组" class="headerlink" title="Docker 需要用户具有 sudo 权限，为了避免每次命令都输入sudo，可以把用户加入 Docker 用户组"></a>Docker 需要用户具有 sudo 权限，为了避免每次命令都输入<code>sudo</code>，可以把用户加入 Docker 用户组</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo usermod -aG docker $USER</span><br></pre></td></tr></table></figure>
-
-<h3 id="Docker-运行命令"><a href="#Docker-运行命令" class="headerlink" title="Docker 运行命令"></a>Docker 运行命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># systemctl 命令的用法</span><br><span class="line">$ sudo systemctl start docker </span><br></pre></td></tr></table></figure>
-
-<h2 id="image文件"><a href="#image文件" class="headerlink" title="image文件"></a>image文件</h2><p><strong>Docker 把应用程序及其依赖，打包在 image 文件里面。</strong></p>
-<p>只有通过这个文件，才能生成 Docker 容器。<strong>image 文件可以看作是容器的模板</strong>。Docker 根据 image 文件<strong>生成</strong>容器的实例。同一个 image 文件，可以生成多个同时运行的容器实例。</p>
-<p>image 是二进制文件。实际开发中，一个 image 文件往往通过继承另一个 image 文件，加上一些个性化设置而生成。举例来说，你可以在 Ubuntu 的 image 基础上，往里面加入 Apache 服务器，形成你的 image。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 列出本机的所有 image 文件。</span><br><span class="line">$ docker image ls# 删除 image 文件$ docker image rm [imageName]</span><br></pre></td></tr></table></figure>
-
-<p>image 文件是通用的，一台机器的 image 文件拷贝到另一台机器，照样可以使用。一般来说，为了节省时间，我们应该尽量使用别人制作好的 image 文件，而不是自己制作。即使要定制，也应该基于别人的 image 文件进行加工，而不是从零开始制作。</p>
-<p>为了方便共享，image 文件制作完成后，可以上传到网上的仓库。Docker 的官方仓库 <a target="_blank" rel="noopener" href="https://hub.docker.com/">Docker Hub</a> 是最重要、最常用的 image 仓库。此外，出售自己制作的 image 文件也是可以的。</p>
-<blockquote>
-<p>将 image 文件从仓库抓取到本地</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker image pull library&#x2F;hello-world</span><br></pre></td></tr></table></figure>
-
-<p>上面代码中，<code>docker image pull</code>是抓取 image 文件的命令。<code>library/hello-world</code>是 image 文件在仓库里面的位置，其中<code>library</code>是 image 文件所在的组，<code>hello-world</code>是 image 文件的名字。</p>
-<p>由于 <strong>Docker 官方提供</strong> 的 image 文件，都放在<a target="_blank" rel="noopener" href="https://hub.docker.com/r/library/"><code>library</code></a>组里面，所以它的是默认组，<strong>可以省略</strong>。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker image pull hello-world</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>查看 image 文件</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker image ls</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>运行这个 image 文件生成容器实例并运行</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker container run hello-world</span><br></pre></td></tr></table></figure>
-
-<p>注意，<code>docker container run</code>命令具有自动抓取 image 文件的功能。如果发现本地没有指定的 image 文件，就会从仓库自动抓取。因此，前面的<code>docker image pull</code>命令并不是必需的步骤。</p>
-<blockquote>
-<p>手动终止容器运行</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker container kill [containID]</span><br></pre></td></tr></table></figure>
-
-<h2 id="容器文件"><a href="#容器文件" class="headerlink" title="容器文件"></a>容器文件</h2><p><strong>image 文件生成的容器实例，本身也是一个文件，称为容器文件。</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 列出本机正在运行的容器</span><br><span class="line">$ docker container ls</span><br><span class="line">或</span><br><span class="line">$ docker ps</span><br><span class="line"></span><br><span class="line"># 列出本机所有容器，包括终止运行的容器</span><br><span class="line">$ docker container ls --all</span><br></pre></td></tr></table></figure>
-
-<p>终止运行的容器文件，依然会占据硬盘空间，可以使用<a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/container_rm/"><code>docker container rm</code></a>命令删除。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker container rm [containerID]</span><br></pre></td></tr></table></figure>
-
-<h2 id="Dockerfile-文件"><a href="#Dockerfile-文件" class="headerlink" title="Dockerfile 文件"></a>Dockerfile 文件</h2><p>学会使用 image 文件以后，接下来的问题就是，如何可以生成 image 文件？如果你要推广自己的软件，势必要自己制作 image 文件。</p>
-<p>这就需要用到 Dockerfile 文件。它是一个文本文件，用来配置 image。Docker 根据 该文件生成二进制的 image 文件。</p>
-<p>下面通过一个实例，演示如何编写 Dockerfile 文件。</p>
-<h2 id="实例：制作自己的-Docker-容器"><a href="#实例：制作自己的-Docker-容器" class="headerlink" title="实例：制作自己的 Docker 容器"></a>实例：制作自己的 Docker 容器</h2><p>这部分内容就不做抄录了，附上参考和转载文章地址 <a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2018/02/docker-tutorial.html">Docker 入门教程</a> 和 <a target="_blank" rel="noopener" href="https://www.ruanyifeng.com/blog/2018/02/docker-wordpress-tutorial.html">Docker 微服务教程</a>,</p>
-<h2 id="image-仓库的镜像网址"><a href="#image-仓库的镜像网址" class="headerlink" title="image 仓库的镜像网址"></a>image 仓库的镜像网址</h2><p>本教程需要从仓库下载 image 文件，但是国内访问 Docker 的官方仓库很慢，还经常断线，所以要把仓库网址改成国内的镜像站。这里推荐使用官方镜像 registry.docker-cn.com 。下面是我的 Debian 系统的默认仓库修改方法，其他系统的修改方法参考官方文档。</p>
-<p>打开/etc/default/docker文件（需要sudo权限），在文件的底部加上一行。</p>
-<p>DOCKER_OPTS=”–registry-mirror=<a target="_blank" rel="noopener" href="https://registry.docker-cn.com&quot;/">https://registry.docker-cn.com&quot;</a><br>然后，重启 Docker 服务。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo service docker restart</span><br></pre></td></tr></table></figure>
-<p>现在就会自动从镜像仓库下载 image 文件了。</p>
-<h2 id="github镜像"><a href="#github镜像" class="headerlink" title="github镜像"></a>github镜像</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;hub.fastgit.org&#x2F;</span><br></pre></td></tr></table></figure>
-
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">docker</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/10/02/Docker-%E5%85%A5%E9%97%A8%E7%AF%87/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-关于git撤回内容的思考" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/09/01/%E5%85%B3%E4%BA%8Egit%E6%92%A4%E5%9B%9E%E5%86%85%E5%AE%B9%E7%9A%84%E6%80%9D%E8%80%83/">关于git撤回内容的思考</a>
-    </h1>
-  
-
-        
-        <a href="/2021/09/01/%E5%85%B3%E4%BA%8Egit%E6%92%A4%E5%9B%9E%E5%86%85%E5%AE%B9%E7%9A%84%E6%80%9D%E8%80%83/" class="archive-article-date">
-  	<time datetime="2021-09-01T11:36:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-09-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="本地"><a href="#本地" class="headerlink" title="本地"></a>本地</h2><p>如果是在本地就直接用Reset</p>
-<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/c2ec5f06cf1a">Git Reset 三种模式</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">知识点</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/09/01/%E5%85%B3%E4%BA%8Egit%E6%92%A4%E5%9B%9E%E5%86%85%E5%AE%B9%E7%9A%84%E6%80%9D%E8%80%83/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-限制ip接口案例" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/09/01/%E9%99%90%E5%88%B6ip%E6%8E%A5%E5%8F%A3%E6%A1%88%E4%BE%8B/">限制ip接口案例</a>
-    </h1>
-  
-
-        
-        <a href="/2021/09/01/%E9%99%90%E5%88%B6ip%E6%8E%A5%E5%8F%A3%E6%A1%88%E4%BE%8B/" class="archive-article-date">
-  	<time datetime="2021-09-01T01:51:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-09-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="为什么要开细节类"><a href="#为什么要开细节类" class="headerlink" title="为什么要开细节类"></a>为什么要开细节类</h2><p>因为有很多东西，很细微，但又很实用。就会放在细节类。该类的目的是做个记录，既然简单。</p>
-<h2 id="限制ip接口案例"><a href="#限制ip接口案例" class="headerlink" title="限制ip接口案例"></a>限制ip接口案例</h2><blockquote>
-<p>场景</p>
-</blockquote>
-<p>需要针对相同ip用户每分访问接口次数的做限制，防止用户恶意刷。</p>
-<blockquote>
-<p>代码</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * 接口 ip 限制</span><br><span class="line"> * @param $miniutes 分钟数</span><br><span class="line"> * @param $times 次数</span><br><span class="line"> * @param $api 接口唯一标识</span><br><span class="line"> * @return bool</span><br><span class="line"> *&#x2F;</span><br><span class="line">public function apiIpLimit($miniutes, $times, $api)</span><br><span class="line">&#123;</span><br><span class="line">    $ip &#x3D; Request::getClientIP(); &#x2F;&#x2F;获取用户ip</span><br><span class="line"></span><br><span class="line">    if ($ip) &#123;</span><br><span class="line">        $key &#x3D; $api . &quot;_&quot; . $ip;</span><br><span class="line"></span><br><span class="line">        $num &#x3D; Yii::$app-&gt;cookie-&gt;get($key);</span><br><span class="line">        $num &#x3D; $num ? $num + 1 : 1; &#x2F;&#x2F;请求次数加1</span><br><span class="line">        if ($num &gt; $times) &#123;</span><br><span class="line">            Yii::getLogger()-&gt;log($key . &quot; exceed limit&quot;, Logger::LEVEL_ERROR);</span><br><span class="line">            return false; &#x2F;&#x2F;超过限制次数直接返回，不重置过期时间</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Yii::$app-&gt;cookie-&gt;set($key, $num, $miniutes * 60); &#x2F;&#x2F;未超过限制次数，更新访问次数，并重置过期时间为一分钟</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h2><blockquote>
-<p>情景</p>
-</blockquote>
-<p>假设每分钟限制8次请求</p>
-<blockquote>
-<p>代码逻辑是否符合需求</p>
-</blockquote>
-<p>上面的代码案例并不是完全依照<code>每分钟限制8次请求</code>逻辑处理，因为有重置过期时间。</p>
-<p>假设第6，7，8次请求都间隔了40s。按逻辑，第6次和第8次中间间隔了80s，超过一分钟了，但因为访问接口，未超过限制次数时会重置<code>过期时间</code>为60s的因素，第6次访问和第8次访问被累加在同一个次数累计中。</p>
-<blockquote>
-<p>代码合理性</p>
-</blockquote>
-<p>从合理性上，我觉得是合理的。但逻辑解释应该是<strong>相同ip距离上一次访问时间不超过一分钟，计入次数累计，当次数累计超过限制次数将会返回错误，时间1min</strong></p>
-<p>当然，如果要按目前逻辑实现也很简单，可以存储值<code>num_day</code>(累计次数+当天日期<code>(最小单位:天)</code>)，然后重置的时间设置为<code>当前时间戳-第一次的时间戳</code>。</p>
-<blockquote>
-<p>优化点</p>
-</blockquote>
-<p>首先ip这块用户可以通过vpn等手段切换不同ip。</p>
-<p>其次，限制次数是设置在cookie用户是可以删除的。</p>
-<p>建议：限制用户每天可以请求多少次，记录在redis之类的服务端缓存。</p>
-<h2 id="限制用户每天可以请求多少次"><a href="#限制用户每天可以请求多少次" class="headerlink" title="限制用户每天可以请求多少次"></a>限制用户每天可以请求多少次</h2><blockquote>
-<p>检验</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 邀请邮件 校验: 每天(utc时区)限制50封</span><br><span class="line">if ($this-&gt;getApiRequestLimitByDay(50, &#39;bizInviteEmail&#39;) &#x3D;&#x3D;&#x3D; false) &#123;</span><br><span class="line">    Response::echoResult(ErrCode::$ACCOUNT_LIMIT_ERR);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>累计次数</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$this-&gt;setApiRequestLimitByDay(&#39;bizInviteEmail&#39;, $accountId); &#x2F;&#x2F;发送邮件后更新用户当天发邮件次数</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>方法</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * 获取接口是否超出每日访问次数限制</span><br><span class="line"> * @param $times 次数</span><br><span class="line"> * @param $api 限制内容唯一标识</span><br><span class="line"> * @param string $accountId 用户主账号id</span><br><span class="line"> * @return bool</span><br><span class="line"> *&#x2F;</span><br><span class="line">public function getApiRequestLimitByDay($times, $api, $accountId &#x3D; &quot;&quot;)</span><br><span class="line">&#123;</span><br><span class="line">    if(empty($accountId)) &#123;</span><br><span class="line">        $accountId &#x3D; \Yii::$app-&gt;bizUser-&gt;accountId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if ($accountId) &#123;</span><br><span class="line">        $day &#x3D; date(&#39;Y_m_d&#39;,time());</span><br><span class="line">        $key &#x3D; $api . &quot;_&quot; . $accountId . &quot;_&quot; . $day;</span><br><span class="line"></span><br><span class="line">        $redis &#x3D; Factory::getUserRedisClient();</span><br><span class="line">        $num &#x3D; $redis-&gt;get($key);</span><br><span class="line">        $num &#x3D; $num ? $num + 1 : 1;</span><br><span class="line"></span><br><span class="line">        if ($num &gt; $times) &#123;</span><br><span class="line">            Yii::getLogger()-&gt;log($key . &quot; exceed limit&quot;, Logger::LEVEL_ERROR);</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;**</span><br><span class="line"> * 更新(累加)接口每日访问次数</span><br><span class="line"> * @param $api 限制内容唯一标识</span><br><span class="line"> * @param string $accountId 用户主账号id</span><br><span class="line"> *&#x2F;</span><br><span class="line">public function setApiRequestLimitByDay($api, $accountId &#x3D; &quot;&quot;)</span><br><span class="line">&#123;</span><br><span class="line">    if(empty($accountId)) &#123;</span><br><span class="line">        $accountId &#x3D; \Yii::$app-&gt;bizUser-&gt;accountId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if ($accountId) &#123;</span><br><span class="line">        $day &#x3D; date(&#39;Y_m_d&#39;,time());</span><br><span class="line">        $key &#x3D; $api . &quot;_&quot; . $accountId . &quot;_&quot; . $day;</span><br><span class="line"></span><br><span class="line">        $redis &#x3D; Factory::getUserRedisClient();</span><br><span class="line">        $num &#x3D; $redis-&gt;get($key);</span><br><span class="line">        $num &#x3D; $num ? $num + 1 : 1;</span><br><span class="line"></span><br><span class="line">        try &#123;</span><br><span class="line">            $redis-&gt;setex($key, 86400, $num); &#x2F;&#x2F;保存一天后过期</span><br><span class="line">        &#125; catch (\Exception $e) &#123;</span><br><span class="line">            LogService::logError(&quot;set $ownerId $key exception : &quot; . $e-&gt;getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">细节</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/09/01/%E9%99%90%E5%88%B6ip%E6%8E%A5%E5%8F%A3%E6%A1%88%E4%BE%8B/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
@@ -1313,7 +1386,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2021 Kj
+    		&copy; 2022 Kj
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -1441,6 +1514,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">docker</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Redis</a>
               </li>
             
             <div class="clearfix"></div>

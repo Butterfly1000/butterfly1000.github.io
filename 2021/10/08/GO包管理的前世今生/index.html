@@ -8,15 +8,15 @@
   <link rel="dns-prefetch" href="http://example.com">
   <title>GO包管理的前世今生 | Hero or Joker</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="gitGo.mod是 Golang1.11版本 新引入的官方包管理工具用于解决之前没有地方记录依赖包具体版本的问题。 前导 Go.mod其实就是一个Modules官方定义为： Modules是相关Go包的集合，是源代码交换和版本控制的单元。go命令直接支持使用Modules，包括记录和解析对其他模块的依赖性。Modules替换旧的基于GOPATH的方法，来指定使用哪些源文件。 Modules和传统">
+  <meta name="description" content="早期的GO包管理(了解)早期根本没有所谓的包管理，项目依赖一塌糊涂。那么这样会出现什么问题？  在没有包管理方案之前，项目依赖于 GOPATH，带来一些不便之处   多项目难以管理。试想一下，A 项目和 B 项目 同时依赖于一个 C 项目，但是依赖于 C 项目的不同版本，如何解决，只能通过多 GOPATH 设置。  123go命令依赖一个重要的环境变量：$GOPATHGOPATH允许多个目录，当有">
 <meta property="og:type" content="article">
 <meta property="og:title" content="GO包管理的前世今生">
 <meta property="og:url" content="http://example.com/2021/10/08/GO%E5%8C%85%E7%AE%A1%E7%90%86%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F/index.html">
 <meta property="og:site_name" content="Hero or Joker">
-<meta property="og:description" content="gitGo.mod是 Golang1.11版本 新引入的官方包管理工具用于解决之前没有地方记录依赖包具体版本的问题。 前导 Go.mod其实就是一个Modules官方定义为： Modules是相关Go包的集合，是源代码交换和版本控制的单元。go命令直接支持使用Modules，包括记录和解析对其他模块的依赖性。Modules替换旧的基于GOPATH的方法，来指定使用哪些源文件。 Modules和传统">
+<meta property="og:description" content="早期的GO包管理(了解)早期根本没有所谓的包管理，项目依赖一塌糊涂。那么这样会出现什么问题？  在没有包管理方案之前，项目依赖于 GOPATH，带来一些不便之处   多项目难以管理。试想一下，A 项目和 B 项目 同时依赖于一个 C 项目，但是依赖于 C 项目的不同版本，如何解决，只能通过多 GOPATH 设置。  123go命令依赖一个重要的环境变量：$GOPATHGOPATH允许多个目录，当有">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-10-08T03:13:59.000Z">
-<meta property="article:modified_time" content="2021-10-08T06:44:26.043Z">
+<meta property="article:modified_time" content="2021-11-24T11:34:40.181Z">
 <meta property="article:author" content="Kj">
 <meta property="article:tag" content="GO">
 <meta name="twitter:card" content="summary">
@@ -69,6 +69,8 @@
 				<li><a href="/tags/GO/">GO</a></li>
 	        
 				<li><a href="/tags/GO%E5%85%A5%E9%97%A8/">GO入门</a></li>
+	        
+				<li><a href="/tags/Redis/">Redis</a></li>
 	        
 				<li><a href="/tags/%E7%BD%91%E7%BB%9C/">网络</a></li>
 	        
@@ -154,6 +156,8 @@
 			
 				
 			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -166,31 +170,33 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 7.6923076923076925%"><a href="/">主页</a></li>
+					<li style="width: 7.142857142857143%"><a href="/">主页</a></li>
 		        
-					<li style="width: 7.6923076923076925%"><a href="/tags/%E9%9A%8F%E7%AC%94/">随笔</a></li>
+					<li style="width: 7.142857142857143%"><a href="/tags/%E9%9A%8F%E7%AC%94/">随笔</a></li>
 		        
-					<li style="width: 7.6923076923076925%"><a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/">知识点</a></li>
+					<li style="width: 7.142857142857143%"><a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/">知识点</a></li>
 		        
-					<li style="width: 7.6923076923076925%"><a href="/tags/mysql/">mysql</a></li>
+					<li style="width: 7.142857142857143%"><a href="/tags/mysql/">mysql</a></li>
 		        
-					<li style="width: 7.6923076923076925%"><a href="/tags/GO/">GO</a></li>
+					<li style="width: 7.142857142857143%"><a href="/tags/GO/">GO</a></li>
 		        
-					<li style="width: 7.6923076923076925%"><a href="/tags/GO%E5%85%A5%E9%97%A8/">GO入门</a></li>
+					<li style="width: 7.142857142857143%"><a href="/tags/GO%E5%85%A5%E9%97%A8/">GO入门</a></li>
 		        
-					<li style="width: 7.6923076923076925%"><a href="/tags/%E7%BD%91%E7%BB%9C/">网络</a></li>
+					<li style="width: 7.142857142857143%"><a href="/tags/Redis/">Redis</a></li>
 		        
-					<li style="width: 7.6923076923076925%"><a href="/tags/gopush/">gopush</a></li>
+					<li style="width: 7.142857142857143%"><a href="/tags/%E7%BD%91%E7%BB%9C/">网络</a></li>
 		        
-					<li style="width: 7.6923076923076925%"><a href="/tags/Docker/">Docker</a></li>
+					<li style="width: 7.142857142857143%"><a href="/tags/gopush/">gopush</a></li>
 		        
-					<li style="width: 7.6923076923076925%"><a href="/tags/MQTT/">MQTT</a></li>
+					<li style="width: 7.142857142857143%"><a href="/tags/Docker/">Docker</a></li>
 		        
-					<li style="width: 7.6923076923076925%"><a href="/tags/%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/">优化案例</a></li>
+					<li style="width: 7.142857142857143%"><a href="/tags/MQTT/">MQTT</a></li>
 		        
-					<li style="width: 7.6923076923076925%"><a href="/tags/%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/">工具推荐</a></li>
+					<li style="width: 7.142857142857143%"><a href="/tags/%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/">优化案例</a></li>
 		        
-					<li style="width: 7.6923076923076925%"><a href="/tags/%E7%BB%86%E8%8A%82/">细节</a></li>
+					<li style="width: 7.142857142857143%"><a href="/tags/%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/">工具推荐</a></li>
+		        
+					<li style="width: 7.142857142857143%"><a href="/tags/%E7%BB%86%E8%8A%82/">细节</a></li>
 		        
 				</ul>
 			</nav>
@@ -225,7 +231,33 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="git"><a href="#git" class="headerlink" title="git"></a>git</h2><p>Go.mod是 <strong>Golang1.11版本</strong> 新引入的官方包管理工具用于解决之前没有地方记录依赖包具体版本的问题。</p>
+        <h2 id="早期的GO包管理-了解"><a href="#早期的GO包管理-了解" class="headerlink" title="早期的GO包管理(了解)"></a>早期的GO包管理(了解)</h2><p>早期根本没有所谓的包管理，项目依赖一塌糊涂。那么这样会出现什么问题？</p>
+<blockquote>
+<p>在没有包管理方案之前，项目依赖于 GOPATH，带来一些不便之处</p>
+</blockquote>
+<ul>
+<li>多项目难以管理。试想一下，A 项目和 B 项目 同时依赖于一个 C 项目，但是依赖于 C 项目的不同版本，如何解决，只能通过多 GOPATH 设置。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">go命令依赖一个重要的环境变量：$GOPATH</span><br><span class="line">GOPATH允许多个目录，当有多个目录时，请注意分隔符，多个目录的时候Windows是分号;，Linux系统是冒号:</span><br><span class="line">[设置Golang的GOPATH](https:&#x2F;&#x2F;blog.csdn.net&#x2F;chenjh213&#x2F;article&#x2F;details&#x2F;51381024)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>项目的依赖只能够手动 go get 下载到 GOPATH 中，如果换一台服务器开发项目，光是包依赖都得弄半天。</p>
+</li>
+<li><p>如果是本地想搭建对应的项目，还无法知道之前包的版本，只能通过当初项目创建时间进行<code>git tag</code>切换对应版本。</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git tag #展示全部tag</span><br><span class="line">git checkout  release-v1.0.0 #切换到tag分支</span><br><span class="line"></span><br><span class="line">无关-记录</span><br><span class="line">git tag release-v1.0.1 #打上tag</span><br><span class="line">git push --tag #推送</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>一些解决方案</p>
+</blockquote>
+<ul>
+<li><p>godep，glide，go verdor 这些都是曾经出现过的包管理解决方案。</p>
+</li>
+<li><p>将所有依赖包都上传到一个公共的线上文件夹(类似vendor)，然后从上面直接拷贝。</p>
+</li>
+</ul>
+<h2 id="现在的GO包管理-go版本-gt-1-11"><a href="#现在的GO包管理-go版本-gt-1-11" class="headerlink" title="现在的GO包管理(go版本 &gt;= 1.11)"></a>现在的GO包管理(go版本 &gt;= 1.11)</h2><p>Go.mod是 <strong>Golang1.11版本</strong> 新引入的官方包管理工具用于解决之前没有地方记录依赖包具体版本的问题。</p>
 <p><em>前导</em></p>
 <p>Go.mod其实就是一个Modules官方定义为：</p>
 <p>Modules是相关Go包的集合，是源代码交换和版本控制的单元。go命令直接支持使用Modules，包括记录和解析对其他模块的依赖性。Modules替换旧的基于GOPATH的方法，来指定使用哪些源文件。</p>
@@ -233,8 +265,6 @@
 <p><strong>go mod的使用：</strong></p>
 <p>一个很关键的地方在于环境变量GO111MODULE的设置,GO111MODULE有三个值：off, on和auto（默认值）</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1.GO111MODULE&#x3D;off，go命令行将不会支持module功能，寻找依赖包的方式将会沿用旧版本那种通过vendor目录或GOPATH模式来查找。</span><br><span class="line"></span><br><span class="line">2.GO111MODULE&#x3D;on，go命令行会使用modules，而一点也不会去GOPATH目录下查找。</span><br><span class="line"></span><br><span class="line">3.GO111MODULE&#x3D;auto，默认值，go命令行将会根据当前目录来决定是否启用module功能。</span><br><span class="line">这种情况下可以分为两种情形：</span><br><span class="line">当前目录在GOPATH&#x2F;src之外且该目录包含go.mod文件</span><br><span class="line">当前文件在包含go.mod文件的目录下面。</span><br><span class="line">Go mod 的命令使用help查看</span><br></pre></td></tr></table></figure>
-
-
 
 <p>如何在项目中使用？</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#cd xxx &#x2F;&#x2F;进入项目</span><br><span class="line">#go mod init  &#x2F;&#x2F;初始化项目</span><br><span class="line">#ps</span><br><span class="line">在当前目录下生成一个go.mod文件，通过这个文件管理包</span><br></pre></td></tr></table></figure>
@@ -255,7 +285,7 @@
 
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">module app #项目名</span><br><span class="line"></span><br><span class="line">go 1.13</span><br><span class="line"></span><br><span class="line">require (</span><br><span class="line">	gorm.io&#x2F;driver&#x2F;mysql v1.1.2 &#x2F;&#x2F; indirect</span><br><span class="line">	gorm.io&#x2F;gorm v1.21.15 &#x2F;&#x2F; indirect</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">replace github.com&#x2F;qiniu&#x2F;bytes &#x3D;&gt; gitlab.airdroid.com&#x2F;zhuoh&#x2F;bytes v0.0.0-20191012100200-92558a444c07</span><br></pre></td></tr></table></figure>
 
-<h2 id><a href="#" class="headerlink" title></a></h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/jkwanga/article/details/106288345">原文链接</a></p>
+<h2 id="参考原文"><a href="#参考原文" class="headerlink" title="参考原文"></a>参考原文</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/jkwanga/article/details/106288345">原文链接</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/d04b36fbdcd6#comments">原文链接</a></p>
 
       
 
@@ -342,7 +372,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2021 Kj
+    		&copy; 2022 Kj
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -470,6 +500,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">docker</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Redis</a>
               </li>
             
             <div class="clearfix"></div>
