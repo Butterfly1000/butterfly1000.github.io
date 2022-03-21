@@ -210,6 +210,114 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-GO-包package和import" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/08/16/GO-%E5%8C%85package%E5%92%8Cimport/">GO 包package和import</a>
+    </h1>
+  
+
+        
+        <a href="/2021/08/16/GO-%E5%8C%85package%E5%92%8Cimport/" class="archive-article-date">
+  	<time datetime="2021-08-16T02:17:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-08-16</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>什么是package</p>
+</blockquote>
+<p>package用于对我们的程序进行*<strong>分类*</strong>,以便易于维护. 每个go文件都属于某个包. 每个Go应用程序必须具有<code>main</code>包。包名称应以小写字母书写. 如果更改并重新编译package,则必须重新编译使用此package的所有代码程序！</p>
+<blockquote>
+<p>Import 别名导入</p>
+</blockquote>
+<p> <code>import mongo &quot;mywebapp/libs/mongodb/db&quot;</code></p>
+<blockquote>
+<p>Import 省略package名导入</p>
+</blockquote>
+<p>这里的点.符号表示,对包 lib 的调用直接省略包名,您我以后就是一家人,不分彼此,您的东西就像我就的一样,随便用.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line">import . &quot;github.com&#x2F;libragen&#x2F;felix&#x2F;lib&quot;</span><br><span class="line">func main() &#123;</span><br><span class="line">	SayHello() &#x2F;&#x2F;如果没有.忽略包名,那么需要lib.SayHello()。不过这样可能要注意函数名或变量名是否会冲突，个人不推荐</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Import  执行初始化工作导入</p>
+</blockquote>
+<p><code>import _ &quot;github.com/libragen/felix/lib&quot;</code></p>
+<p>形象解释:这里说的是我还不准备现在使用您们家的东西,但得提前告诉一声.您先做好准备,先准备好饭菜,等我来就行,也有可能我压根就不来.</p>
+<p>具体解释:特殊符号“_” <strong>仅仅</strong>会导致 lib 执行初始化工作,如初始化全局变量,<strong>调用 init 函数</strong>。而正常导入一个包的时候，该包的init和其他函数都会被导入。</p>
+<blockquote>
+<p> package和文件的关系</p>
+</blockquote>
+<p><strong>一个文件夹下只能有一个package.</strong></p>
+<p>import后面的其实是<code>GOPATH</code>开始的相对目录路径,包括最后一段.</p>
+<ul>
+<li>但由于一个目录下只能有一个<code>package</code>,所以<code>import</code>一个路径就等于是<code>import</code>了这个路径下的包.</li>
+<li>注意,这里指的是“直接包含”的go文件. 如果有子目录,那么子目录的父目录是完全两个包.</li>
+<li>比如您实现了一个计算器<code>package</code>,名叫calc,位于calc目录下; 但又想给别人一个使用范例,于是在<code>calc</code>下可以建个<code>example</code>子目录（<code>calc/example/</code>）, 这个子目录里有个<code>example.go（calc/example/example.go）</code>. 此时,<code>example.go</code>可以是main包,里面还可以有个main函数.<br>&nbsp;<br>&nbsp;</li>
+</ul>
+<p><strong>一个<code>package</code>的文件不能在多个文件夹下.</strong></p>
+<ul>
+<li>如果多个文件夹下有重名的<code>package</code>,它们其实是彼此无关的package.</li>
+<li>如果一个<code>go</code>文件需要同时使用不同目录下的同名<code>package</code>,需要在<code>import</code>这些目录时为每个目录指定一个package的<strong>别名</strong>.</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">GO入门</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/08/16/GO-%E5%8C%85package%E5%92%8Cimport/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-GO-数据类型" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1309,89 +1417,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2021/05/18/MYSQL%E6%9F%A5%E8%AF%A2-%E5%AD%98%E5%9C%A8%E4%B8%80%E4%B8%AA%E8%A1%A8%E8%80%8C%E4%B8%8D%E5%9C%A8%E5%8F%A6%E4%B8%80%E4%B8%AA%E8%A1%A8%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-GO-time篇" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/04/26/GO-time%E7%AF%87/">GO time篇</a>
-    </h1>
-  
-
-        
-        <a href="/2021/04/26/GO-time%E7%AF%87/" class="archive-article-date">
-  	<time datetime="2021-04-26T12:24:38.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-04-26</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="go-Time篇"><a href="#go-Time篇" class="headerlink" title="go Time篇"></a>go Time篇</h3><p>当前日期 time.Now().Format(“2006-01-02”)</p>
-<p>当前时间 time.Now().Format(“2006-01-02 15:04:05”)</p>
-<p>年月日 year, mon, day := time.Now().UTC().Date()      mon格式为month需要转换</p>
-<p>也可以单独获取</p>
-<p>加一天 time.Parse(“2006-01-02 15:04:05”, date).AddDate(0, 0, 1).Format(“2006-01-02 15:04:05”)</p>
-<p>减一天 time.Parse(“2006-01-02 15:04:05”, date).AddDate(0, 0, -1).Format(“2006-01-02 15:04:05”)</p>
-<p>0 0 1 前面两个零分别代表年，月    date初始日期</p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/wschq/article/details/80114036">golang包time用法详解</a></p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41004440/article/details/89252653">golang map 获取某个值</a></p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_39524842/article/details/111890157">https://blog.csdn.net/weixin_39524842/article/details/111890157</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">GO</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/04/26/GO-time%E7%AF%87/">展开全文 >></a>
         </p>
       
 
