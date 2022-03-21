@@ -208,6 +208,150 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-ICE协议下NAT穿越的实现（STUN-TURN）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/03/20/ICE%E5%8D%8F%E8%AE%AE%E4%B8%8BNAT%E7%A9%BF%E8%B6%8A%E7%9A%84%E5%AE%9E%E7%8E%B0%EF%BC%88STUN-TURN%EF%BC%89/">ICE协议下NAT穿越的实现（STUN&amp;TURN）</a>
+    </h1>
+  
+
+        
+        <a href="/2022/03/20/ICE%E5%8D%8F%E8%AE%AE%E4%B8%8BNAT%E7%A9%BF%E8%B6%8A%E7%9A%84%E5%AE%9E%E7%8E%B0%EF%BC%88STUN-TURN%EF%BC%89/" class="archive-article-date">
+  	<time datetime="2022-03-20T02:55:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-03-20</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>这一篇感觉写得真好。</p>
+<p>NAT是什么？看上一篇《P2P通信原理与实现》</p>
+<blockquote>
+<p>NAT的副作用以及解决方案</p>
+</blockquote>
+<p>国内移动无线网络运营商在链路上一段时间内没有数据通讯后, 会淘汰NAT表中的对应项, 造成链路中断。</p>
+<h5 id="这是NAT带来的第一个副作用：NAT超时"><a href="#这是NAT带来的第一个副作用：NAT超时" class="headerlink" title="这是NAT带来的第一个副作用：NAT超时:"></a>这是NAT带来的第一个副作用：NAT超时:</h5><p>而国内的运营商一般NAT超时的时间为5分钟，所以通常我们TCP长连接的心跳设置的时间间隔为3-5分钟。</p>
+<h5 id="而第二个副作用就是：我们这边文章要提到的NAT墙。"><a href="#而第二个副作用就是：我们这边文章要提到的NAT墙。" class="headerlink" title="而第二个副作用就是：我们这边文章要提到的NAT墙。"></a>而第二个副作用就是：我们这边文章要提到的NAT墙。</h5><p>NAT会有一个机制，所有外界对内网的请求，到达NAT的时候，都会被NAT所丢弃，这样如果我们处于一个NAT设备后面，我们将无法得到任何外界的数据。</p>
+<p>但是这种机制有一个解决方案：就是如果我们A主动往B发送一条信息，这样A就在自己的NAT上打了一个B的洞。这样A的这条消息到达B的NAT的时候，虽然被丢掉了，但是如果B这个时候在给A发信息，到达A的NAT的时候，就可以从A之前打的那个洞中，发送给到A手上了。</p>
+<p>简单来讲，就是<strong>如果A和B要进行通信，那么得事先A发一条信息给B，B发一条信息给A。这样提前在各自的NAT上打了对方的洞，这样下一次A和B之间就可以进行通信了。</strong></p>
+<blockquote>
+<p> 四种NAT类型，看上一篇《P2P通信原理与实现》后就完全能理解下面这段话了。</p>
+</blockquote>
+<p>RFC3489 中将 NAT 的实现分为四大类：</p>
+<ol>
+<li>Full Cone NAT                          （完全锥形 NAT）</li>
+<li>Restricted Cone NAT                 （限制锥形 NAT ，可以理解为 IP 限制，Port不限制）</li>
+<li>Port Restricted Cone NAT          （端口限制锥形 NAT，IP+Port 限制）</li>
+<li>Symmetric NAT                        （对称 NAT）</li>
+</ol>
+<p>其中完全最上层的完全锥形NAT的穿透性最好，而最下层的对称形NAT的安全性最高。</p>
+<p>简单来讲讲这4种类型的NAT代表什么：</p>
+<ul>
+<li>如果一个NAT是Full Cone NAT，那么无论什么IP地址访问，都不会被NAT墙掉（这种基本很少）。</li>
+<li>Restricted Cone NAT，仅仅是经过打洞的IP能穿越NAT，但是不限于Port。</li>
+<li>Port Restricted Cone NAT，仅仅是经过打洞的IP+端口号能穿越NAT。</li>
+<li>Symmetric NAT 这种也是仅仅是经过打洞的IP+端口号能穿越NAT，但是它有一个最大的和Cone类型的NAT的区别，它对外的公网Port是不停的变化的：<br>比如A是一个对称NAT，那么A给B发信息，经过NAT映射到一个Port:10000，A给C发信息，经过NAT映射到一个Port:10001，这样会导致一个问题，我们服务器根本无法协调进行NAT打洞。</li>
+</ul>
+<p>至于为什么无法协调打洞，下面我们会从STUN和TURN的工作原理来讲。</p>
+<blockquote>
+<h4 id="STUN和TURN的实现"><a href="#STUN和TURN的实现" class="headerlink" title="STUN和TURN的实现"></a>STUN和TURN的实现</h4></blockquote>
+<h5 id="1-STUN-Server主要做了两件事："><a href="#1-STUN-Server主要做了两件事：" class="headerlink" title="1.STUN Server主要做了两件事："></a>1.STUN Server主要做了两件事：</h5><ul>
+<li>接受客户端的请求，并且把客户端的公网IP、Port封装到ICE Candidate中。</li>
+</ul>
+<ul>
+<li>通过一个复杂的机制，<strong>得到客户端的NAT类型</strong>。</li>
+</ul>
+<p>完成了这些STUN Server就会这些基本信息发送回客户端，然后根据NAT类型，来判断是否需要TURN服务器协调进行下一步工作。</p>
+<p>我们来讲讲这两步具体做了什么吧：<br>第一件事就不用说了，其实就是得到客户端的请求，把源IP和Port拿到，添加到ICE Candidate中。</p>
+<h6 id="来讲讲第二件事，STUN是如何判断NAT的类型的："><a href="#来讲讲第二件事，STUN是如何判断NAT的类型的：" class="headerlink" title="来讲讲第二件事，STUN是如何判断NAT的类型的："></a>来讲讲第二件事，STUN是如何判断NAT的类型的：</h6><p>假设B是客户端，C是STUN服务器，C有两个IP分别为IP1和IP2（至于为什么要两个IP，接着往下看）：</p>
+<h6 id="STEP1-判断客户端是否在NAT后："><a href="#STEP1-判断客户端是否在NAT后：" class="headerlink" title="STEP1.判断客户端是否在NAT后："></a>STEP1.判断客户端是否在NAT后：</h6><p>B向C的<strong>IP1的port1端口</strong>发送一个UDP 包。C收到这个包后，会把它收到包的<strong>源</strong>IP和port写到UDP包中，然后把此包通过IP1和port1发还给B。</p>
+<p>这边还给B包中的IP和port也就是B的NAT的外网 IP和port，也就是说你在STEP1中就得到了B的NAT的外网IP。</p>
+<p>熟悉NAT工作原理的朋友可以知道，C返回给B的这个UDP包B一定收到**(因为由B主动先发送给C，B的NAT已经记录下了C的IP和端口)**。如果在你的应用中，向一个STUN服务器发送数据包后，你没有收到STUN的任何回应包，那只有两种可能：1、STUN服务器不存在，或者你弄错了port。2、你的NAT拒绝一切UDP包从外部向内部通过。</p>
+<p>当B收到此UDP后，把此UDP中的IP和自己的IP做比较，如果是一样的，就说明自己是在<strong>公网</strong>，下步NAT将去探测防火墙类型，这边不做介绍。如果不一样，说明有NAT的存在，系统进行STEP2的操作。</p>
+<h6 id="STEP2-判断是否处于Full-Cone-Nat下："><a href="#STEP2-判断是否处于Full-Cone-Nat下：" class="headerlink" title="STEP2.判断是否处于Full Cone Nat下："></a>STEP2.判断是否处于Full Cone Nat下：</h6><p>B向C的IP1发送一个UDP包，请求C通过另外一个IP2和PORT（不同与SETP1的IP1）向B返回一个UDP数据包（现在知道为什么C要有两个IP了吧，虽然还不理解为什么，呵呵）。</p>
+<p>我们来分析一下，如果B收到了这个数据包，那说明什么？说明NAT来着不拒，不对数据包进行任何过滤，这也就是STUN标准中的full cone NAT。遗憾的是，Full Cone Nat太少了，这也意味着你能收到这个数据包的可能性不大。如果没收到，那么系统进行STEP3的操作。</p>
+<h6 id="STEP3-判断是否处于对称NAT下："><a href="#STEP3-判断是否处于对称NAT下：" class="headerlink" title="STEP3.判断是否处于对称NAT下："></a>STEP3.判断是否处于对称NAT下：</h6><p>B向C的IP2的port2发送一个数据包，C收到数据包后，把它收到包的源IP和port写到UDP包中，然后通过自己的IP2和port2把此包发还给B。</p>
+<p>和step1一样，B肯定能收到这个回应UDP包。此包中的port是我们最关心的数据，下面我们来分析：<br>如果这个port和step1中的port一样，那么可以肯定这个NAT是个CONE NAT，否则是对称NAT。道理很简单：根据对称NAT的规则，当目的地址的IP和port有任何一个改变，那么NAT都会重新分配一个port使用，而在step3中，和step1对应，我们改变了IP和port。因此，如果是对称NAT,那这两个port肯定是不同的。</p>
+<p>如果在你的应用中，到此步的时候PORT是不同的，那么这个它就是处在一个对称NAT下了。如果相同，那么只剩下了restrict cone 和port restrict cone。系统用step4探测是是那一种。</p>
+<h6 id="STEP4-判断是处于Restrict-Cone-NAT还是Port-Restrict-NAT之下："><a href="#STEP4-判断是处于Restrict-Cone-NAT还是Port-Restrict-NAT之下：" class="headerlink" title="STEP4.判断是处于Restrict Cone NAT还是Port Restrict NAT之下："></a>STEP4.判断是处于Restrict Cone NAT还是Port Restrict NAT之下：</h6><p>B向C的IP2的一个端口PD发送一个数据请求包，要求C用IP2和不同于PD的port返回一个数据包给B。</p>
+<p>我们来分析结果：如果B收到了，那也就意味着只要IP相同，即使port不同，NAT也允许UDP包通过。显然这是Restrict Cone NAT。如果没收到，没别的好说，Port Restrict NAT.</p>
+<h6 id="到这里STUN-Server一共通过这4步，判断出客户端处于什么类型的NAT下，"><a href="#到这里STUN-Server一共通过这4步，判断出客户端处于什么类型的NAT下，" class="headerlink" title="到这里STUN Server一共通过这4步，判断出客户端处于什么类型的NAT下，"></a>到这里STUN Server一共通过这4步，判断出客户端处于什么类型的NAT下，</h6><h6 id="然后去做后续的处理：这4步都会返回给客户端它的公网IP、Port和NAT类型，除此之外："><a href="#然后去做后续的处理：这4步都会返回给客户端它的公网IP、Port和NAT类型，除此之外：" class="headerlink" title="然后去做后续的处理：这4步都会返回给客户端它的公网IP、Port和NAT类型，除此之外："></a>然后去做后续的处理：这4步都会返回给客户端它的公网IP、Port和NAT类型，除此之外：</h6><ul>
+<li>如果B处于公网或者Full Cone Nat下，STUN不做其他的了，因为其他客户端可以直接和A进行通信。</li>
+<li>如果B处于Restrict Cone或者Port Restrict NAT下，STUN还会协调TURN进行NAT打洞。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">B请求STUN服务器，</span><br><span class="line">STUN服务器返回ICE NAT类型给B;</span><br><span class="line">STUN服务器协调打洞TURN服务器;</span><br><span class="line">TURN服务器命令A给B打洞，B给A打洞；</span><br><span class="line">B和A通信</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>如果A处于对称NAT下，那么点对点连接下，NAT是无法进行打洞的。所以为了通信，只能采取最后的手段了，就是转成C/S架构了，STUN会协调TURN进行消息转发（中继）。</li>
+</ul>
+<h5 id="2-TURN-Server也主要做了两件事："><a href="#2-TURN-Server也主要做了两件事：" class="headerlink" title="2.TURN Server也主要做了两件事："></a>2.TURN Server也主要做了两件事：</h5><ul>
+<li><h6 id="为NAT打洞："><a href="#为NAT打洞：" class="headerlink" title="为NAT打洞："></a>为NAT打洞：</h6></li>
+</ul>
+<p>如果A和B要互相通信，那么TURN Server，会命令A和B互相发一条信息，这样各自的NAT就留下了对方的洞，下次他们就可以之间进行通信了。</p>
+<ul>
+<li><h6 id="为对称NAT提供消息转发："><a href="#为对称NAT提供消息转发：" class="headerlink" title="为对称NAT提供消息转发："></a>为对称NAT提供消息转发：</h6></li>
+</ul>
+<p>当A或者B其中一方是对称NAT时，那么给这一方发信息，就只能通过TURN Server来转发了。</p>
+<h4 id="最后补充一下，为什么对称NAT无法打洞："><a href="#最后补充一下，为什么对称NAT无法打洞：" class="headerlink" title="最后补充一下，为什么对称NAT无法打洞："></a>最后补充一下，为什么对称NAT无法打洞：</h4><p>假如A、B进行通信，而B处于对称NAT之下，那么A与B通信，STUN拿到A，B的公网地址和端口号都为10000，然后去协调TURN打洞，那么TURN去命令A发信息给B，则A就在NAT打了个B的洞，但是这个B的洞是端口号为10000的洞，但是下次B如果给A发信息，因为B是对称NAT，它给每个新的IP发送信息时，都重新对应一个公网端口，所以给A发送请求可能是公网10001端口，但是A只有B的10000端口被打洞过，所以B的请求就被丢弃了。<br>显然Server是无法协调客户端打洞的，因为协调客户端打得洞仅仅是上次对端为Server发送端口的洞，并不适用于另一个请求。</p>
+<h5 id="最后的最后再补充一点，就是NAT打的洞也是具有时效性的，如果NAT超时了，那么还是需要重新打洞的。"><a href="#最后的最后再补充一点，就是NAT打的洞也是具有时效性的，如果NAT超时了，那么还是需要重新打洞的。" class="headerlink" title="最后的最后再补充一点，就是NAT打的洞也是具有时效性的，如果NAT超时了，那么还是需要重新打洞的。"></a>最后的最后再补充一点，就是NAT打的洞也是具有时效性的，如果NAT超时了，那么还是需要重新打洞的。</h5><p><strong>文章地址：</strong></p>
+<p>作者：涂耀辉<br>链接：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/84e8c78ca61d">https://www.jianshu.com/p/84e8c78ca61d</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">网络</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/03/20/ICE%E5%8D%8F%E8%AE%AE%E4%B8%8BNAT%E7%A9%BF%E8%B6%8A%E7%9A%84%E5%AE%9E%E7%8E%B0%EF%BC%88STUN-TURN%EF%BC%89/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-P2P通信原理与实现" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -266,12 +410,9 @@
 </tr>
 </tbody></table>
 <h4 id="网络地址-端口转换器-NAPT"><a href="#网络地址-端口转换器-NAPT" class="headerlink" title="网络地址-端口转换器(NAPT)"></a>网络地址-端口转换器(NAPT)</h4><p>到目前为止最常见的即为NAPT,其检测并修改出入数据包的<strong>IP地址和端口号</strong>,从而允许多个内网主机同时共享一个公网IP地址.</p>
-<ol>
-<li><p>全锥形NAT(Full Cone NAT)</p>
-<p>初始状态时，Client与Server1、Client与Server2都没有通讯过。</p>
-<p>当Client通过NAT向Server1发送一个packet后，NAT会生成如下一行映射。</p>
-</li>
-</ol>
+<p>1.全锥形NAT(Full Cone NAT)</p>
+<p>   初始状态时，Client与Server1、Client与Server2都没有通讯过。</p>
+<p>   当Client通过NAT向Server1发送一个packet后，NAT会生成如下一行映射。</p>
 <table>
 <thead>
 <tr>
@@ -288,10 +429,9 @@
 <p>​        在全锥型网络下，后续当Server1要发送数据到Client时，Server1首先将数据送到       NAT（210.21.12.140:8000），NAT接收到该报文，会将该报文转发给Client（192.168.1.5:5000）。<br>​         在全锥型网络下，Server2要发送数据给Client，Server2也是需要先将数据发送到NAT（210.21.12.140:8000），NAT接收到该报文，会将该报文转发给Client（192.168.1.5:5000）。</p>
 <p>因为NAT上已经有了192.168.1.5:5000到210.21.12.140:8000的映射。  </p>
 <p>注：这边的关键点是client主机的内网和公网的IP和端口的对应。</p>
-<ol start="2">
-<li><p>受限锥形NAT(Restricted Cone NAT)</p>
-<p>初始状态时，Client与Server1、Client与Server2都没有通讯过。</p>
-<p>当Client通过NAT向Server1发送一个packet后，NAT中会生成如下一行映射（注意，这里增加了一项IP地址的限制）。</p>
+<p>2.受限锥形NAT(Restricted Cone NAT)</p>
+<p>   初始状态时，Client与Server1、Client与Server2都没有通讯过。</p>
+<p>   当Client通过NAT向Server1发送一个packet后，NAT中会生成如下一行映射（注意，这里增加了一项IP地址的限制）。</p>
 <table>
 <thead>
 <tr>
@@ -306,13 +446,10 @@
 <td>210.15.27.166</td>
 </tr>
 </tbody></table>
-<p>在受限圆锥型NAT下，Server1要发送数据到Client时，Server1首先将数据送到NAT（210.21.12.140:8000），NAT接收到该报文，会将该报文转发给Client（192.168.1.5:5000）。<br>并且Server1主机的<strong>任何端口号</strong>数据，都可以将数据送到NAT（210.21.12.140:8000），NAT都会将该报文转给Client（192.168.1.5:5000）。</p>
-<p>但是Server2主机无法与Client主机进行通讯。因为Client从来没有和Server2通信过，NAT将拒绝Server2试图与Client连接的动作。</p>
-</li>
-<li><p>端口受限锥形NAT(Port-Restricted Cone NAT)</p>
-<p>端口受限锥形NAT也类似,只当外部数据包的<strong>IP地址和端口号都匹</strong>配内网主机发送过的地址和端口号时才进行转发。</p>
-</li>
-</ol>
+<p>   在受限圆锥型NAT下，Server1要发送数据到Client时，Server1首先将数据送到NAT（210.21.12.140:8000），NAT接收到该报文，会将该报文转发给Client（192.168.1.5:5000）。<br>   并且Server1主机的<strong>任何端口号</strong>数据，都可以将数据送到NAT（210.21.12.140:8000），NAT都会将该报文转给Client（192.168.1.5:5000）。</p>
+<p>   但是Server2主机无法与Client主机进行通讯。因为Client从来没有和Server2通信过，NAT将拒绝Server2试图与Client连接的动作。</p>
+<p>3.端口受限锥形NAT(Port-Restricted Cone NAT)</p>
+<p>  端口受限锥形NAT也类似,只当外部数据包的<strong>IP地址和端口号都匹</strong>配内网主机发送过的地址和端口号时才进行转发。</p>
 <p>​        初始状态时，Client与Server1、Client与Server2都没有通讯过。</p>
 <p>​        当Client通过NAT向Server1发送一个packet后，NAT中会生成如下一行映射（注意，这里增加了IP+port限制）。</p>
 <table>
@@ -330,9 +467,7 @@
 </tr>
 </tbody></table>
 <p>​        在端口受限圆锥型NAT下，Server2无法与Client通信，因为Client从来没有和Server2通信过。<br>​        并且Server1也只能用它的210.15.27.166:80与Client的192.168.1.5:5000通信，因为Client也从来没有和Server1的<strong>其他端口</strong>通信过。<br>​       备注：家用路由器大部分都属于端口受限圆锥型NAT。</p>
-<ol start="4">
-<li>对称NAT(Symmetric NAT)</li>
-</ol>
+<p>4.对称NAT(Symmetric NAT)</p>
 <p>对称NAT正好相反,不在所有公网-内网对的会话中维持一个固定的端口绑定. 其为每个新的会话开辟一个新的端口。</p>
 <p>​        初始状态时，Client与Server1、Client与Server2都没有通讯过。</p>
 <p>​        当Client通过NAT向Server1发送一个packet后，NAT中会生成如下一行映射   </p>
@@ -1215,134 +1350,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2021/10/08/PAW-API%E6%8E%A5%E5%8F%A3%E8%B0%83%E8%AF%95/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-GO包管理的前世今生" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/08/GO%E5%8C%85%E7%AE%A1%E7%90%86%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F/">GO包管理的前世今生</a>
-    </h1>
-  
-
-        
-        <a href="/2021/10/08/GO%E5%8C%85%E7%AE%A1%E7%90%86%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F/" class="archive-article-date">
-  	<time datetime="2021-10-08T03:13:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-08</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="早期的GO包管理-了解"><a href="#早期的GO包管理-了解" class="headerlink" title="早期的GO包管理(了解)"></a>早期的GO包管理(了解)</h2><p>早期根本没有所谓的包管理，项目依赖一塌糊涂。那么这样会出现什么问题？</p>
-<blockquote>
-<p>在没有包管理方案之前，项目依赖于 GOPATH，带来一些不便之处</p>
-</blockquote>
-<ul>
-<li>多项目难以管理。试想一下，A 项目和 B 项目 同时依赖于一个 C 项目，但是依赖于 C 项目的不同版本，如何解决，只能通过多 GOPATH 设置。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">go命令依赖一个重要的环境变量：$GOPATH</span><br><span class="line">GOPATH允许多个目录，当有多个目录时，请注意分隔符，多个目录的时候Windows是分号;，Linux系统是冒号:</span><br><span class="line">[设置Golang的GOPATH](https:&#x2F;&#x2F;blog.csdn.net&#x2F;chenjh213&#x2F;article&#x2F;details&#x2F;51381024)</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>项目的依赖只能够手动 go get 下载到 GOPATH 中，如果换一台服务器开发项目，光是包依赖都得弄半天。</p>
-</li>
-<li><p>如果是本地想搭建对应的项目，还无法知道之前包的版本，只能通过当初项目创建时间进行<code>git tag</code>切换对应版本。</p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git tag #展示全部tag</span><br><span class="line">git checkout  release-v1.0.0 #切换到tag分支</span><br><span class="line"></span><br><span class="line">无关-记录</span><br><span class="line">git tag release-v1.0.1 #打上tag</span><br><span class="line">git push --tag #推送</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>一些解决方案</p>
-</blockquote>
-<ul>
-<li><p>godep，glide，go verdor 这些都是曾经出现过的包管理解决方案。</p>
-</li>
-<li><p>将所有依赖包都上传到一个公共的线上文件夹(类似vendor)，然后从上面直接拷贝。</p>
-</li>
-</ul>
-<h2 id="现在的GO包管理-go版本-gt-1-11"><a href="#现在的GO包管理-go版本-gt-1-11" class="headerlink" title="现在的GO包管理(go版本 &gt;= 1.11)"></a>现在的GO包管理(go版本 &gt;= 1.11)</h2><p>Go.mod是 <strong>Golang1.11版本</strong> 新引入的官方包管理工具用于解决之前没有地方记录依赖包具体版本的问题。</p>
-<p><em>前导</em></p>
-<p>Go.mod其实就是一个Modules官方定义为：</p>
-<p>Modules是相关Go包的集合，是源代码交换和版本控制的单元。go命令直接支持使用Modules，包括记录和解析对其他模块的依赖性。Modules替换旧的基于GOPATH的方法，来指定使用哪些源文件。</p>
-<p>Modules和传统的GOPATH不同，不需要包含例如src，bin这样的子目录，一个源代码目录甚至是空目录都可以作为Modules，只要其中包含有go.mod文件。</p>
-<p><strong>go mod的使用：</strong></p>
-<p>一个很关键的地方在于环境变量GO111MODULE的设置,GO111MODULE有三个值：off, on和auto（默认值）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1.GO111MODULE&#x3D;off，go命令行将不会支持module功能，寻找依赖包的方式将会沿用旧版本那种通过vendor目录或GOPATH模式来查找。</span><br><span class="line"></span><br><span class="line">2.GO111MODULE&#x3D;on，go命令行会使用modules，而一点也不会去GOPATH目录下查找。</span><br><span class="line"></span><br><span class="line">3.GO111MODULE&#x3D;auto，默认值，go命令行将会根据当前目录来决定是否启用module功能。</span><br><span class="line">这种情况下可以分为两种情形：</span><br><span class="line">当前目录在GOPATH&#x2F;src之外且该目录包含go.mod文件</span><br><span class="line">当前文件在包含go.mod文件的目录下面。</span><br><span class="line">Go mod 的命令使用help查看</span><br></pre></td></tr></table></figure>
-
-<p>如何在项目中使用？</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#cd xxx &#x2F;&#x2F;进入项目</span><br><span class="line">#go mod init  &#x2F;&#x2F;初始化项目</span><br><span class="line">#ps</span><br><span class="line">在当前目录下生成一个go.mod文件，通过这个文件管理包</span><br></pre></td></tr></table></figure>
-
-<p><strong>注意</strong>：除了go.mod之外，go命令还维护一个名为go.sum的文件，其中包含特定模块版本内容的预期加密哈希。go命令使用go.sum文件确保这些模块的未来下载检索与第一次下载相同的位，以确保项目所依赖的模块不会出现意外更改，无论是出于恶意、意外还是其他原因。 <strong>go.mod和go.sum都应检入版本控制</strong> 。go.sum 不需要手工维护，所以可以不用太关注。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">项目子目录里是不需要init的，所有的子目录里的依赖都会组织在根目录的go.mod文件里</span><br></pre></td></tr></table></figure>
-
-
-
-<p><strong>当依赖第三方包时:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- 最初是go get 拉取，而使用go mod，直接go run 或go build 即可！</span><br><span class="line">例如：go get utils&#x2F;iGong@v1.3.5</span><br><span class="line">不过，有了go mod后，只要项目 运行 或 创建二进制文件 就会自动拉取依赖。</span><br><span class="line"></span><br><span class="line">- go 会自动查找代码中的包，下载依赖包，并且把具体的依赖关系和版本写入到go.mod和go.sum文件中。</span><br><span class="line"></span><br><span class="line">- 依赖的第三方包被下载到了$GOPATH&#x2F;pkg&#x2F;mod路径下。</span><br></pre></td></tr></table></figure>
-
-
-
-<p><strong>依赖包的版本控制：</strong></p>
-<p>GOPATH/pkg/mod里可以保存相同包的<strong>不同版本</strong>。<br>go.mod中可指定下载包的版本：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">如果在go.mod中没有指定，go命令会自动下载最新版本。</span><br><span class="line">如果在go.mod用require语句指定包和版本 ，go命令会根据指定的路径和版本下载包。</span><br><span class="line">当然，对于某些缺失的包，可以用replace指定代替包。</span><br><span class="line">指定版本时可以用latest，这样它会自动下载指定包的最新版本,项目也可以放在$GOPATH&#x2F;src下。</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">module app #项目名</span><br><span class="line"></span><br><span class="line">go 1.13</span><br><span class="line"></span><br><span class="line">require (</span><br><span class="line">	gorm.io&#x2F;driver&#x2F;mysql v1.1.2 &#x2F;&#x2F; indirect</span><br><span class="line">	gorm.io&#x2F;gorm v1.21.15 &#x2F;&#x2F; indirect</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">replace github.com&#x2F;qiniu&#x2F;bytes &#x3D;&gt; gitlab.airdroid.com&#x2F;zhuoh&#x2F;bytes v0.0.0-20191012100200-92558a444c07</span><br></pre></td></tr></table></figure>
-
-<h2 id="参考原文"><a href="#参考原文" class="headerlink" title="参考原文"></a>参考原文</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/jkwanga/article/details/106288345">原文链接</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/d04b36fbdcd6#comments">原文链接</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">GO</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/10/08/GO%E5%8C%85%E7%AE%A1%E7%90%86%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F/">展开全文 >></a>
         </p>
       
 

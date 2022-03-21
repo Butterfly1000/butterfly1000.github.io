@@ -210,6 +210,146 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-GO-数据类型" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/08/16/GO-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">GO 数据类型(入门篇必读)</a>
+    </h1>
+  
+
+        
+        <a href="/2021/08/16/GO-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" class="archive-article-date">
+  	<time datetime="2021-08-16T02:12:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-08-16</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>为什么是必读？因为这边会给出这个系列的参考/出处文章地址</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://mojotv.cn/">https://mojotv.cn/</a></p>
+<blockquote>
+<p> 变量声明语法</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">var a int &#x2F;&#x2F;声明一个int类型的变量</span><br><span class="line"></span><br><span class="line">var b struct &#123; &#x2F;&#x2F;声明一个结构体</span><br><span class="line">    Name string</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var a &#x3D; 8 &#x2F;&#x2F;声明变量的同时赋值,编译器自动推导其数据类型</span><br><span class="line"></span><br><span class="line">var a int &#x3D; 8 &#x2F;&#x2F;声明变量的同时赋值</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;声明变量的同时赋值更习惯用&quot;:&#x3D;&quot;，但注意全局变量不可以用&quot;:&#x3D;&quot;</span><br><span class="line">a :&#x3D; 8</span><br></pre></td></tr></table></figure>
+
+<p><strong>go可使用var关键字声明全局变量,但是:=这种方式是不能用在全局变量中的.:=只能用在函数体内部.</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var (</span><br><span class="line">    a int</span><br><span class="line">    b bool</span><br><span class="line">    xx,yy,dd string&#x3D;&quot;xx&quot;,&quot;yy&quot;,&quot;dd&quot;</span><br><span class="line">    &#x2F;&#x2F;这里省略变量类型也是可以的.</span><br><span class="line">    zz,aa&#x3D;&quot;zz&quot;,&quot;aa&quot;        &#x2F;&#x2F;注意用&quot;&#x3D;&quot;，不能用&quot;:&#x3D;&quot;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p><strong>go函数体内的变量是如果被声明了,那么必须使用,不然会报错。注:全局变量声明未使用不会报错</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;已声明,但如果不想使用可以加上_&#x3D;varName,表示为已抛弃的变量.</span><br><span class="line">var a&#x3D;1</span><br><span class="line">&#x2F;&#x2F;标识为已抛弃的变量.</span><br><span class="line">_&#x3D;a  </span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>变量初始化</p>
+</blockquote>
+<p><strong>Go 语言在声明变量时会默认给变量赋个当前类型的<code>空值</code>/<code>零值</code></strong></p>
+<p>在方法中声明一个临时变量并赋初值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;推荐,会更新值的格式自动声明变量类型</span><br><span class="line">tmpStr :&#x3D;&quot;&quot;</span><br></pre></td></tr></table></figure>
+
+<p>当一个变量或者新值被创建时, 如果没有为其明确指定初始值,go语言会自动初始化其值为此类型对应的零值。</p>
+<table>
+<thead>
+<tr>
+<th align="center">类型</th>
+<th align="center"><strong>零值</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">数值类型</td>
+<td align="center">0</td>
+</tr>
+<tr>
+<td align="center">布尔类型</td>
+<td align="center">false</td>
+</tr>
+<tr>
+<td align="center">字符串</td>
+<td align="center">“”（空字符串）</td>
+</tr>
+<tr>
+<td align="center">slice</td>
+<td align="center">nil</td>
+</tr>
+<tr>
+<td align="center">map</td>
+<td align="center">nil</td>
+</tr>
+<tr>
+<td align="center">指针</td>
+<td align="center">nil</td>
+</tr>
+<tr>
+<td align="center">函数</td>
+<td align="center">nil</td>
+</tr>
+<tr>
+<td align="center">接口</td>
+<td align="center">nil</td>
+</tr>
+<tr>
+<td align="center">信道</td>
+<td align="center">nil</td>
+</tr>
+</tbody></table>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">GO入门</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/08/16/GO-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Hexo博客中插入音乐" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1252,88 +1392,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2021/04/26/GO-time%E7%AF%87/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-GO-mod篇" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/03/30/GO-mod%E7%AF%87/">GO mod篇</a>
-    </h1>
-  
-
-        
-        <a href="/2021/03/30/GO-mod%E7%AF%87/" class="archive-article-date">
-  	<time datetime="2021-03-30T11:36:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-03-30</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="三分钟掌握Go-mod常用与高级操作"><a href="#三分钟掌握Go-mod常用与高级操作" class="headerlink" title="三分钟掌握Go mod常用与高级操作"></a>三分钟掌握Go mod常用与高级操作</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/103534192">链接</a></p>
-<h2 id="go-mod-使用"><a href="#go-mod-使用" class="headerlink" title="go mod 使用"></a>go mod 使用</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/dhcn/p/11321376.html">链接</a></p>
-<blockquote>
-<p>更多内容 </p>
-</blockquote>
-<p><a href="./GO%E5%8C%85%E7%AE%A1%E7%90%86%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F.md">跳转到</a></p>
-<blockquote>
-<p>pprof记录</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;pkg.go.dev&#x2F;github.com&#x2F;revel&#x2F;modules&#x2F;pprof#section-readme</span><br><span class="line"></span><br><span class="line">https:&#x2F;&#x2F;pkg.go.dev&#x2F;net&#x2F;http&#x2F;pprof</span><br></pre></td></tr></table></figure>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">GO</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/03/30/GO-mod%E7%AF%87/">展开全文 >></a>
         </p>
       
 
