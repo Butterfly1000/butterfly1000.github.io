@@ -208,19 +208,190 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-zookeeper选举" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-zookeeper实战之服务注册与发现" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2022/03/21/zookeeper%E9%80%89%E4%B8%BE/">zookeeper选举</a>
+      <a class="article-title" href="/2022/03/21/zookeeper%E5%AE%9E%E6%88%98%E4%B9%8B%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E5%8F%91%E7%8E%B0/">zookeeper实战之服务注册与发现</a>
     </h1>
   
 
         
-        <a href="/2022/03/21/zookeeper%E9%80%89%E4%B8%BE/" class="archive-article-date">
+        <a href="/2022/03/21/zookeeper%E5%AE%9E%E6%88%98%E4%B9%8B%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E5%8F%91%E7%8E%B0/" class="archive-article-date">
+  	<time datetime="2022-03-21T03:28:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-03-21</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在这一篇之前，建议先阅读<a href="zookeeper%E9%80%89%E4%B8%BE%E5%92%8C%E5%90%8C%E6%AD%A5.md">zookeeper选举和同步.md</a>,阅读清楚后，可以接着轻阅读<a target="_blank" rel="noopener" href="https://www.cnblogs.com/raphael5200/p/5285583.html">Zookeeper工作原理（详细）</a>,然后开始本篇章。</p>
+<p>参考文章：</p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000019670015">zookeeper实战之服务注册与发现</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/bfd7e2f8e1a7">Zookeeper-服务注册与发现</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">网络</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/03/21/zookeeper%E5%AE%9E%E6%88%98%E4%B9%8B%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E5%8F%91%E7%8E%B0/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-zookeeper安装" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/03/21/zookeeper%E5%AE%89%E8%A3%85/">zookeeper安装</a>
+    </h1>
+  
+
+        
+        <a href="/2022/03/21/zookeeper%E5%AE%89%E8%A3%85/" class="archive-article-date">
+  	<time datetime="2022-03-21T03:26:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-03-21</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p><a target="_blank" rel="noopener" href="https://blog.51cto.com/nileader/795230"><strong>【ZooKeeper Notes 2】ZooKeeper快速搭建</strong></a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/jiangxiulilinux/article/details/96433560"><strong>zookeeper-3.5.5安装报错：找不到或无法加载主类 org.apache.zookeeper.server.quorum.QuorumPeerMain-新版本zookeeper易犯错误</strong></a></p>
+<h4 id="单机部署"><a href="#单机部署" class="headerlink" title="单机部署"></a>单机部署</h4><ol>
+<li>安装jdk</li>
+<li>地址：<code>https://mirror.bjtu.edu.cn/reverse/apache-archive/zookeeper/zookeeper-3.7.0/</code></li>
+<li>拉取<code>wget https://mirror.bjtu.edu.cn/reverse/apache-archive/zookeeper/zookeeper-3.7.0/apache-zookeeper-3.7.0-bin.tar.gz --no-check-certificate</code></li>
+<li>解压 <code>tar -zxvf apache-zookeeper-3.7.0-bin.tar.gz</code></li>
+<li>修改名称<code>mv apache-zookeeper-3.7.0-bin zookeeper-3.7.0 </code></li>
+<li>移动到你想的位置 <code>mv zookeeper-3.7.0/ /usr/local/</code></li>
+<li>复制 <code>cp /usr/local/zookeeper-3.7.0/conf/zoo_sample.cfg  /usr/local/zookeeper-3.7.0/conf/zoo.cfg</code></li>
+<li>vi zoo.cfg，修改 <code>dataDir=/usr/local/zookeeper-3.7.0/data</code></li>
+<li>创建数据目录：<code>mkdir /usr/local/zookeeper-3.7.0/data</code></li>
+<li>启动zookeeper：<code>/usr/local/zookeeper-3.7.0/bin/zkServer.sh start</code></li>
+<li>检测是否成功启动:<code>/usr/local/zookeeper-3.7.0/bin/zkCli.sh</code> 或<code>echo stat|nc localhost 2181</code></li>
+<li>记得要开启2181端口,以及修改zoo.cfg   <code>admin.serverPort=9051</code>,因为默认会用8080，可以会占用，导致启动却无进程。</li>
+<li>查看进程<code>ps -ef | grep zookeeper</code></li>
+</ol>
+<h2 id="简单使用"><a href="#简单使用" class="headerlink" title="简单使用"></a>简单使用</h2><p><strong>zoo.cfg</strong> 五大基础参数配置，其中 <code>tickTime</code> 就是基础时间。 <code>initLimit</code> 就是初始化的最大值， <code>syncLimit</code> 就是 异步交互的最大值。 <code>dataDir</code> 就是保存数据和快照的目录， <code>clientPort</code> 就是端口</p>
+<p>通过 <code>bin/zkCli.sh -server 127.0.0.1:2181</code> 可以连接这台zk的 cli 服务。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[zk: 127.0.0.1:2181(CONNECTED) 1] ls /</span><br><span class="line">[gopush-cluster-message, gopush-cluster-comet, zookeeper]</span><br></pre></td></tr></table></figure>
+
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">网络</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/03/21/zookeeper%E5%AE%89%E8%A3%85/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-zookeeper选举和同步" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/03/21/zookeeper%E9%80%89%E4%B8%BE%E5%92%8C%E5%90%8C%E6%AD%A5/">zookeeper选举</a>
+    </h1>
+  
+
+        
+        <a href="/2022/03/21/zookeeper%E9%80%89%E4%B8%BE%E5%92%8C%E5%90%8C%E6%AD%A5/" class="archive-article-date">
   	<time datetime="2022-03-21T02:57:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-03-21</time>
 </a>
         
@@ -229,6 +400,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Zookeeper 是一个分布式服务框架，主要是用来解决分布式应用中遇到的一些数据管理问题如：统一命名服务、状态同步服务、集群管理、分布式应用配置项的管理等。</p>
+<p>很多分布式中间件都利用zk来提供分布式一致性协调的特性。dubbo官方推荐使用zk作为注册中心，zk也是hadoop和Hbase的重要组件。其他知名的开源中间件中也都出现了zk的身影。</p>
 <h2 id="选举"><a href="#选举" class="headerlink" title="选举"></a>选举</h2><p><strong>注意如果 Zookeeper 是单机部署是不需要选举的，集群模式下才需要选举。</strong></p>
 <blockquote>
 <p> 选举四步骤：</p>
@@ -262,7 +434,7 @@
 <p>启动时期的 Leader 选举</p>
 </blockquote>
 <p>假设一个 Zookeeper 集群中有5台服务器，id从1到5编号，并且它们都是最新启动的，没有历史数据。</p>
-<p><img src="/2022/03/21/zookeeper%E9%80%89%E4%B8%BE/zk1.png"></p>
+<p><img src="/2022/03/21/zookeeper%E9%80%89%E4%B8%BE%E5%92%8C%E5%90%8C%E6%AD%A5/zk1.png"></p>
 <p>集群刚启动选举过程</p>
 <p>假设服务器依次启动，我们来分析一下选举过程：</p>
 <p>（1）服务器1启动</p>
@@ -289,14 +461,14 @@
 </blockquote>
 <p>在Zookeeper运行期间 Leader 和 非 Leader 各司其职，当有非 Leader 服务器宕机或加入不会影响 Leader，但是一旦 Leader 服务器挂了，那么整个 Zookeeper 集群将暂停对外服务，会触发新一轮的选举。</p>
 <p>初始状态下服务器3当选为Leader，假设现在服务器3故障宕机了，此时每个服务器上zxid可能都不一样，server1为99，server2为102，server4为100，server5为101</p>
-<p><img src="/2022/03/21/zookeeper%E9%80%89%E4%B8%BE/zk2.png"></p>
+<p><img src="/2022/03/21/zookeeper%E9%80%89%E4%B8%BE%E5%92%8C%E5%90%8C%E6%AD%A5/zk2.png"></p>
 <p>集群 Leader 节点故障运行期选举与初始状态投票过程基本类似，大致可以分为以下几个步骤：</p>
 <p>（1）状态变更。Leader 故障后，余下的非 Observer 服务器都会将自己的服务器状态变更为LOOKING，然后开始进入Leader选举过程。</p>
 <p>（2）每个Server会发出投票。</p>
 <p>（3）接收来自各个服务器的投票，如果其他服务器的数据比自己的新会改投票。</p>
 <p>（4）处理和统计投票，每一轮投票结束后都会统计投票，超过半数即可当选。</p>
 <p>（5）改变服务器的状态，宣布当选。</p>
-<p><img src="/2022/03/21/zookeeper%E9%80%89%E4%B8%BE/zk3.png"></p>
+<p><img src="/2022/03/21/zookeeper%E9%80%89%E4%B8%BE%E5%92%8C%E5%90%8C%E6%AD%A5/zk3.png"></p>
 <p>运行器 Leader 故障后选举流程</p>
 <p>（1）第一次投票，每台机器都会将票投给自己。</p>
 <p>（2）接着每台机器都会将自己的投票发给其他机器，如果发现其他机器的zxid比自己大，那么就需要改投票重新投一次。比如server1 收到了三张票，发现server2的xzid为102，pk一下发现自己输了，后面果断改投票选server2为老大。</p>
@@ -323,6 +495,27 @@
 <p>（3）Leader 故障会触发新一轮选举，zxid 代表数据越新，权值也就越大。</p>
 <p>（4）在运行期选举还可能会遇到脑裂的情况，大家可以自行学习。</p>
 <h2 id="具体可以看下面原文章"><a href="#具体可以看下面原文章" class="headerlink" title="具体可以看下面原文章:"></a>具体可以看下面原文章:</h2><p><a target="_blank" rel="noopener" href="https://baijiahao.baidu.com/s?id=1685254558927619982&wfr=spider&for=pc"><strong>用大白话给你解释Zookeeper的选举机制</strong></a></p>
+<h2 id="Zookeeper的同步机制"><a href="#Zookeeper的同步机制" class="headerlink" title="Zookeeper的同步机制"></a>Zookeeper的同步机制</h2><p>zookeeper的数据同步是为了保证每个节点的数据一致性，大致分为2个流程，一个是正常的客户端数据提交流程，二是集群中某个节点宕机后数据恢复流程。</p>
+<blockquote>
+<p>正常客户端数据提交流程</p>
+</blockquote>
+<p>客户端写入数据提交流程大致为：leader接受到客户端的写请求，然后同步给各个子节点：</p>
+<p><img src="/2022/03/21/zookeeper%E9%80%89%E4%B8%BE%E5%92%8C%E5%90%8C%E6%AD%A5/zk4.png"></p>
+<p>但是有童鞋就产生疑惑了，客户端一般连接的是所有节点，客户端并不知道哪个是leader呀。</p>
+<p>的确，客户端会和所有的节点建立链接，并且发起写入请求是挨个遍历节点进行的，比如第一次是节点1，第二次是节点2。以此类推。</p>
+<p>如果客户端正好链接的节点的角色是leader，那就按照上面的流程走。那如果链接的节点不是leader，是follower呢，则有以下流程：</p>
+<p><img src="/2022/03/21/zookeeper%E9%80%89%E4%B8%BE%E5%92%8C%E5%90%8C%E6%AD%A5/zk5.png"></p>
+<p>如果Client选择链接的节点是Follower的话，这个Follower会把请求转给当前Leader，然后Leader会走蓝色的线把请求广播给所有的Follower，每个节点同步完数据后会走绿色的线告诉Leader数据已经同步完成（但是还未提交），当Leader收到半数以上的节点ACK确认消息后，那么Leader就认为这个数据可以提交了，会广播给所有的Follower节点，所有的节点就可以提交数据。整个同步工作就结束了。</p>
+<blockquote>
+<p>那我们再来说说节点宕机后的数据同步流程</p>
+</blockquote>
+<p>当zookeeper集群中的Leader宕机后，会触发新的选举，选举期间，整个集群是没法对外提供服务的。直到选出新的Leader之后，才能重新提供服务。</p>
+<p>我们重新回到3个节点的例子，zk1，zk2，zk3，其中zk2为Leader，zk1，zk3为Follower，假设zk2宕机后，触发了重新选举，假设zk3的数据更新即ZXID更大，按照选举规则，zk3当选Leader。这时整个集群只整下zk1和zk3，如果这时整个集群又创建了一个节点数据，接着zk2重启。这时zk2的数据肯定比z1和z3要旧，那这时该如何同步数据呢。</p>
+<p>zookeeper是通过ZXID事务ID来确认的，ZXID是一个长度为64位的数字，其中低32位是按照数字来递增，任何数据的变更都会导致低32位数字简单加1。高32位是leader周期编号，每当选举出一个新的Leader时，新的Leader就从本地事务日志中取出ZXID，然后解析出高32位的周期编号，进行加1，再将低32位的全部设置为0。这样就保证了每次选举新的Leader后，保证了ZXID的唯一性而且是保证递增的。</p>
+<p>如果Leader宕机之后，再重启后，会去和目前的Leader去比较最新的ZXID，如果节点的ZXID比最新Leader里的ZXID要小，那么就会去同步数据。</p>
+<p>再提及一下选举问题，zk的选举过程会优先考虑ZXID大的节点，这时如果zk1和zk3的ZXID一样大，选举只会在这2个节点中产生，根据之前说的选举规则。在第一轮投票的时候，zk1只要获得1票，就能达到半数了，就能顺利当选为Leader了。</p>
+<h2 id="具体可以看下面原文章-1"><a href="#具体可以看下面原文章-1" class="headerlink" title="具体可以看下面原文章:"></a>具体可以看下面原文章:</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/bryan31/p/15378629.html">Zookeeper的选举机制和同步机制超详细讲解，面试经常问到！</a></p>
+<p>附：<a target="_blank" rel="noopener" href="http://www.pangxieke.com/share/use-docker-and-nginx-implement-load-balancing-on-one-service.html">Nginx+Docker在一台服务器上模拟实现负载均衡</a></p>
 
       
 
@@ -346,7 +539,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2022/03/21/zookeeper%E9%80%89%E4%B8%BE/">展开全文 >></a>
+          <a class="article-more-a" href="/2022/03/21/zookeeper%E9%80%89%E4%B8%BE%E5%92%8C%E5%90%8C%E6%AD%A5/">展开全文 >></a>
         </p>
       
 
@@ -1308,172 +1501,9 @@
 
 
   
-    <article id="post-mongoDB数据库查看工具" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/08/mongoDB%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9F%A5%E7%9C%8B%E5%B7%A5%E5%85%B7/">mongoDB数据库查看工具</a>
-    </h1>
-  
-
-        
-        <a href="/2021/10/08/mongoDB%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9F%A5%E7%9C%8B%E5%B7%A5%E5%85%B7/" class="archive-article-date">
-  	<time datetime="2021-10-08T05:45:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-08</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>支持MAC，不确定是否支持Win</p>
-<h2 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h2><ul>
-<li>MongoDB Compass </li>
-</ul>
-<p>下载地址:<a target="_blank" rel="noopener" href="https://www.mongodb.com/try/download/compass">https://www.mongodb.com/try/download/compass</a></p>
-<ul>
-<li>Robo 3T (这个下载安装挺简单的)</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">工具推荐</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/10/08/mongoDB%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9F%A5%E7%9C%8B%E5%B7%A5%E5%85%B7/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-mysql数据库查看工具" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/08/mysql%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9F%A5%E7%9C%8B%E5%B7%A5%E5%85%B7/">mysql数据库查看工具</a>
-    </h1>
-  
-
-        
-        <a href="/2021/10/08/mysql%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9F%A5%E7%9C%8B%E5%B7%A5%E5%85%B7/" class="archive-article-date">
-  	<time datetime="2021-10-08T05:43:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-08</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h2><ul>
-<li>Sequel Pro</li>
-</ul>
-<p>这个仅支持Mac端，不过查询效率比navicat-premium要快，据说有特别优化加速。</p>
-<ul>
-<li>navicat-premium</li>
-</ul>
-<p>这个显示的sql执行时间更为接近真实场景。</p>
-<p>下载地址：<a target="_blank" rel="noopener" href="https://macwk.com/soft/navicat-premium">https://macwk.com/soft/navicat-premium</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">工具推荐</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/10/08/mysql%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9F%A5%E7%9C%8B%E5%B7%A5%E5%85%B7/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
     </nav>
   
 
