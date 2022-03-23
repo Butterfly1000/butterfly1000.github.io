@@ -208,6 +208,501 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-MQTT协议是个啥？这篇文章告诉你！" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/03/23/MQTT%E5%8D%8F%E8%AE%AE%E6%98%AF%E4%B8%AA%E5%95%A5%EF%BC%9F%E8%BF%99%E7%AF%87%E6%96%87%E7%AB%A0%E5%91%8A%E8%AF%89%E4%BD%A0%EF%BC%81/">MQTT 协议是个啥？这篇文章告诉你！</a>
+    </h1>
+  
+
+        
+        <a href="/2022/03/23/MQTT%E5%8D%8F%E8%AE%AE%E6%98%AF%E4%B8%AA%E5%95%A5%EF%BC%9F%E8%BF%99%E7%AF%87%E6%96%87%E7%AB%A0%E5%91%8A%E8%AF%89%E4%BD%A0%EF%BC%81/" class="archive-article-date">
+  	<time datetime="2022-03-23T05:34:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-03-23</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="什么是-MQTT-协议"><a href="#什么是-MQTT-协议" class="headerlink" title="什么是 MQTT 协议"></a>什么是 MQTT 协议</h2><p>MQTT 协议的全称是 <strong>Message Queuing Telemetry Transport</strong>，翻译为消息队列传输探测，它是 ISO 标准下的一种基于<strong>发布 - 订阅</strong>模式的消息协议，它是基于 TCP/IP 协议簇的，它是为了改善网络设备硬件的性能和网络的性能来设计的。MQTT 一般多用于 IoT 即物联网上，广泛应用于工业级别的应用场景，比如汽车、制造、石油、天然气等。</p>
+<p><strong>ISO</strong>标准是指由『 国际标准化组织 (International Organization for Standardization)， <em>ISO</em> 』制订的标准。</p>
+<h2 id="MQTT-基础"><a href="#MQTT-基础" class="headerlink" title="MQTT 基础"></a>MQTT 基础</h2><p>上面我们解释了 MQTT 协议的基本概念，MQTT 协议总结一点就是一种<strong>轻量级的二进制协议</strong>，MQTT 协议与 HTTP 相比具有一个明显的优势：<strong>数据包开销较小</strong>，数据包开销小就意味着更容易进行网络传输。还有一个优势就是 MQTT 在客户端容易实现，而且具有易用性，非常适合当今资源有限的设备。</p>
+<blockquote>
+<p>你可能对这些概念有些讳莫如深，为什么具有 xxx 这种特性呢？这就需要从 MQTT 的设计说起了。</p>
+</blockquote>
+<p>MQTT 协议由 Andy Stanford-Clark (IBM) 和 Arlen Nipper（Arcom，现为 Cirrus Link）于 1999 年发明。 他们需要一种通过卫星连接石油管道的协议，以最大限度地减少电池损耗和带宽。所以他们为这个协议规定了几种要求：</p>
+<ul>
+<li>这个协议必须易于实现；</li>
+<li>这个协议中的数据必须易于传输，消耗成本小；</li>
+<li>这个协议必须提供服务质量管理；</li>
+<li>这个协议必须支持连续的会话控制</li>
+<li>假设数据不可知，不强求传输数据的类型与格式，保持灵活性。</li>
+</ul>
+<p>这些设计也是 MQTT 的精髓所在，MQTT 经过不断的发展，已经成为了物联网 IoT 所必备的一种消息探测协议，官方强烈推荐使用的版本是 MQTT 5。</p>
+<h3 id="发布-订阅模式"><a href="#发布-订阅模式" class="headerlink" title="发布 - 订阅模式"></a>发布 - 订阅模式</h3><p>发布 - 订阅模式我相信接触消息中间件架构的同学都听过，这是一种传统的<strong>客户端 - 服务器</strong>架构的替代方案。</p>
+<p>一般传统的客户端-服务器是客户端能够直接和服务器进行通信，但是发布 - 订阅模式 <code>pub/sub</code>就不一样了，发布订阅模式会将<strong>发送消息的发布者</strong> <code>publisher</code>与<strong>接收消息的订阅者</strong> <code>subscribers</code>进行分离，publisher 与 subscribers 并不会直接通信，他们甚至都不清楚对方是否存在，他们之间的交流由第三方组件 <code>broker</code> 代理。</p>
+<p><img src="/2022/03/23/MQTT%E5%8D%8F%E8%AE%AE%E6%98%AF%E4%B8%AA%E5%95%A5%EF%BC%9F%E8%BF%99%E7%AF%87%E6%96%87%E7%AB%A0%E5%91%8A%E8%AF%89%E4%BD%A0%EF%BC%81/mqtt1.jpg" alt="jpg"></p>
+<p>pub/sub 最重要的方面是 publisher 与 subscriber 的解藕，这种耦合度有下面三个维度：</p>
+<ul>
+<li>空间解耦：publisher 与 subscriber 并不知道对方的存在，例如不会有 IP 地址和端口的交互，也更不会有消息的交互。</li>
+<li>时间解藕：publisher 与 subscriber 并不一定需要同时运行。</li>
+<li>同步 <code>Synchronization</code> 解藕：两个组件的操作比如 publish 和 subscribe 都不会在发布或者接收过程中产生中断。</li>
+</ul>
+<p>总之，发布/订阅模式消除了传统客户-服务器之间的直接通信，把通信这个操作交给了 broker 进行代理，并在空间、时间、同步三个维度上进行了解藕。</p>
+<h3 id="可拓展性"><a href="#可拓展性" class="headerlink" title="可拓展性"></a>可拓展性</h3><p>pub/sub 比传统的客户端-服务器模式有了更好的拓展，这是由于 broker 的高度<code>并行化</code>，并且是基于<code>事件驱动</code>的模式。可拓展性还体现在<strong>消息的缓存</strong>和<strong>消息的智能路由</strong>，还可以通过集群代理来实现数百万的连接，使用负载均衡器将负载分配到更多的单个服务器上，这就是 MQTT 的深度应用了。</p>
+<blockquote>
+<p>你可能不明白什么是事件驱动，我在这里解释下事件驱动的概念。</p>
+</blockquote>
+<p>事件驱动是一种<code>编程范式</code>，编程范式是软件工程中的概念，<strong>它指的是一种编程方法或者说程序设计方式</strong>，比如说面向对象编程和面向过程编程就是一种编程范式，事件驱动中的程序流程会由诸如用户操作（点击鼠标、键盘）、传感器输出或者从其他程序或传递的消息事件决定。事件驱动编程是图形用户界面和其他应用程序比如 Web 中使用的主要范式，这些应用程序能够响应用户输入执行某些操作为中心，这同时也适用于驱动程序的编程。</p>
+<h3 id="消息过滤"><a href="#消息过滤" class="headerlink" title="消息过滤"></a>消息过滤</h3><p>在 pub/sub 的架构模式中，broker 扮演着至关重要的作用，其中非常重要的一点就是 broker 能够对消息进行过滤，使每个订阅者只接收自己感兴趣的消息。</p>
+<p>broker 有几个可以过滤的选项</p>
+<ul>
+<li><strong>基于主题的过滤</strong></li>
+</ul>
+<p>MQTT 是基于 subject 的消息过滤的，每条消息都会有一个 topic ，接收客户端会向 borker 订阅感兴趣的 topic，订阅后，broker 就会确保客户端收到发布到 topic 中的消息。</p>
+<ul>
+<li><strong>基于内容的过滤</strong></li>
+</ul>
+<p>在基于内容的过滤中，broker 会根据特定的内容过滤消息，接受客户端会经过过滤他们感兴趣的内容。这种方法的一个显著的缺点就是必须事先知道消息的内容，不能加密或者轻易修改。</p>
+<ul>
+<li><strong>基于类型的过滤</strong></li>
+</ul>
+<p>在使用面向对象的语言时，基于消息（事件）的类型过滤是一种比较常见的过滤方式。</p>
+<p>为了发布/订阅系统的挑战，MQTT 具有三个服务质量级别，你可以指定<strong>消息</strong>从客户端传到 broker 或者从 broker 传到客户端，在 topic 的订阅中，会存在 topic 没有 subscriber 订阅的情况，作为 broker 必须知道如何处理这种情况。</p>
+<h2 id="MQTT-与消息队列的区别"><a href="#MQTT-与消息队列的区别" class="headerlink" title="MQTT 与消息队列的区别"></a>MQTT 与消息队列的区别</h2><p>我们现在知道，MQTT 是一种消息队列传输探测协议，这种协议是看似是以消息队列为基础，但却与消息队列有所差别。</p>
+<p>在传统的消息队列模式中，一条消息会存储在消息队列中等待被消费，每个传入的消息都存储在消息队列中，直到它被客户端（通常称之为消费者）所接收，如果没有客户端消费消息的话，这条消息就会存在消息队列中等待被消费。但是<strong>在消息队列中，不会存在消息没有客户端消费的情况，但是在 MQTT 中，确存在 topic 无 subscriber 订阅的情况</strong>。</p>
+<p>在传统的消息队列模式中，一条消息只能被一个客户端所消费，<code>负载</code>会分布在队列的每个消费者之间；而在 MQTT 中，<strong>每个订阅者都会受到消息</strong>，每个订阅者有相同的负载。</p>
+<p>在传统的消息队列模式中，必须使用单独的命令来显式创建队列，只有队列创建后，才可以生产或者消费消息；而在 MQTT 中，topic 比较灵活，可以即时创建。</p>
+<blockquote>
+<p>HiveMQ 现在是开源的，HiveMQ 社区版实现了 MQTT broker 规范，并兼容了 MQTT 3.1、3.1.1 和 MQTT 5。HiveMQ MQTT Client 是一个基于 Java 的 MQTT 客户端实现，兼容 MQTT 3.1.1 和 MQTT 5。这两个项目都可以在 HiveMQ 的 github <a href="https://link.juejin.cn/?target=https://github.com/hivemq">github.com/hivemq</a> 上找到。</p>
+</blockquote>
+<p>我们知道，broker 将 publisher 和 subscriber 进行分离，因此客户端的连接由 broker 代理，所以在我们深入理解 MQTT 之前，我们需要先知道客户端和代理的含义。</p>
+<h2 id="MQTT-重要概念"><a href="#MQTT-重要概念" class="headerlink" title="MQTT 重要概念"></a>MQTT 重要概念</h2><h3 id="MQTT-client"><a href="#MQTT-client" class="headerlink" title="MQTT client"></a>MQTT client</h3><p>当我们讨论关于客户端的概念时，一般指的就是 <strong>MQTT Client</strong>，publisher 和 subscriber 都属于 MQTT Client。之所以有发布者和订阅者这个概念，其实是一种相对的概念，就是指当前客户端是在发布消息还是在接收消息，<strong>发布和订阅的功能也可以由同一个 MQTT Client 实现</strong>。</p>
+<p>MQTT 客户端是指<strong>运行 MQTT 库并通过网络连接到 MQTT broker 的任何设备</strong>，这些设备可以从微控制器到成熟的服务器。基本上，任何使用 TCP/IP 协议使用 MQTT 设备的都可以称之为 MQTT Client。MQTT 协议的客户端实现非常简单直接。易于实施是 MQTT 非常适合小型设备的原因之一。 MQTT 客户端库可用于多种编程语言。 例如，Android、Arduino、C、C++、C#、Go、iOS、Java、JavaScript 和 .NET。</p>
+<h3 id="MQTT-broker"><a href="#MQTT-broker" class="headerlink" title="MQTT broker"></a>MQTT broker</h3><p>与 MQTT client 对应的就是 MQTT broker，broker 是任何发布/订阅机构的核心，根据实现的不同，代理可以处理多达数百万连接的 MQTT client。</p>
+<p>broker 负责接收所有消息，过滤消息，确定是哪个 client 订阅了哪条消息，并将消息发送给对应的 client，broker 还负责保存会话数据，这些数据包括订阅的和错过的消息。broker 还负责客户端的身份验证和授权。</p>
+<h3 id="MQTT-Connection"><a href="#MQTT-Connection" class="headerlink" title="MQTT Connection"></a>MQTT Connection</h3><p>MQTT 是基于 TCP/IP 协议基础之上的，所以 MQTT 的 client 和 broker 都需要 TCP/IP 协议的支持。</p>
+<p><img src="/2022/03/23/MQTT%E5%8D%8F%E8%AE%AE%E6%98%AF%E4%B8%AA%E5%95%A5%EF%BC%9F%E8%BF%99%E7%AF%87%E6%96%87%E7%AB%A0%E5%91%8A%E8%AF%89%E4%BD%A0%EF%BC%81/mqtt2.jpg" alt="jpg"></p>
+<p>MQTT 的连接总是在 client 和 broker 之间进行，client 和 client 之间并<strong>不会</strong>相互连接。如果要发起连接的话，那么 client 就会向 broker 发起 <code>CONNECT</code> 消息，代理会使用 <code>CONNACK</code> 消息和状态码进行响应。一旦 client 和 broker 的连接建立后，broker 就会使客户端的连接一直处于打开状态，直到 client 发出断开命令或者连接中断。</p>
+<p><img src="/2022/03/23/MQTT%E5%8D%8F%E8%AE%AE%E6%98%AF%E4%B8%AA%E5%95%A5%EF%BC%9F%E8%BF%99%E7%AF%87%E6%96%87%E7%AB%A0%E5%91%8A%E8%AF%89%E4%BD%A0%EF%BC%81/mqtt3.jpg" alt="jpg"></p>
+<h2 id="消息报文"><a href="#消息报文" class="headerlink" title="消息报文"></a>消息报文</h2><p>MQTT 的消息报文主要分为 CONNECT 和 CONNACK 消息。</p>
+<h3 id="CONNECT"><a href="#CONNECT" class="headerlink" title="CONNECT"></a>CONNECT</h3><p>我们上面提到了为了初始化连接，需要 client 向 broker 发送 CONNECT 消息，如果这个 CONNECT 消息格式错误或者打开套接字（因为基于 TCP/IP 协议栈需要初始化 Socket 连接）时间过长，亦或是发送连接消息时间过长的话，broker 就会关闭这条连接。</p>
+<p>一个 MQTT 客户端发送一条 CONNECT 连接，这条 CONNECT 连接可能会包含下面这些信息：</p>
+<p><img src="/2022/03/23/MQTT%E5%8D%8F%E8%AE%AE%E6%98%AF%E4%B8%AA%E5%95%A5%EF%BC%9F%E8%BF%99%E7%AF%87%E6%96%87%E7%AB%A0%E5%91%8A%E8%AF%89%E4%BD%A0%EF%BC%81/mqtt4.jpg" alt="jpg"></p>
+<p>我这里解释一下这些信息都是什么概念</p>
+<ul>
+<li><code>ClientId</code>：显而易见，这个就是每个客户端的 ID 标识，也就是连接到 MQTT broker 的每个 client。这个 ID 应该是每个 client 和 broker 唯一的，如果你不需要 broker 持有状态的话，你可以发送一个空的 ClientId，空的 ClientId 会没有任何状态。在这种情况下，<strong>ClientSession</strong> 需要设置为 true，否则将会拒绝连接。</li>
+</ul>
+<blockquote>
+<p>clientSession 是什么我们下面会说。</p>
+</blockquote>
+<ul>
+<li><code>CleanSession</code>：CleanSession 会话标志会告诉 broker client 是否需要建立持久会话。在持久会话 （CleanSession = false）中，broker 存储 client 的所有订阅以及<strong>服务质量(Qos)</strong> 是 1 或 2 订阅的 client 的所有丢失的消息。如果会话不是持久的（CleanSession = true），那么 broker 则不会为 client 存储任何内容并且会清除先前持久会话中的所有信息。</li>
+<li><code>Username/Password</code> ：MQTT 会发送 username 和 password 进行 client 认证和授权。如果此信息没有经过加密或者 hash ，那么密码将会以纯文本的形式发送。所以，一般强烈建议 username 和 password 要经过加密安全传输。像 HiveMQ 这样的 broker 可以与 SSL 证书进行身份验证，因此不需要用户名和密码。</li>
+<li><code>LastWillxxx</code> ：LastWillxxx 表示的是遗愿，client 在连接 broker 的时候将会设立一个遗愿，这个遗愿会保存在 broker 中，当 client 因为<strong>非正常原因</strong>断开与 broker 的连接时，broker 会将遗愿发送给订阅了这个 topic（订阅遗愿的 topic）的 client。</li>
+<li><code>keepAlive</code>：keepAlive 是 client 在连接建立时与 broker 通信的时间间隔，通常以秒为单位。这个时间指的是 client 与 broker 在不发送消息下所能承受的最大时长。</li>
+</ul>
+<p>在聊完 client 与 broker 之间发送建立连接的 CONNECT 消息后，我们再来聊一下 broker 需要对 CONNECT 进行确认的 CONNACK 消息。</p>
+<h3 id="CONNACK"><a href="#CONNACK" class="headerlink" title="CONNACK"></a>CONNACK</h3><p>当 broker 收到 CONNECT 消息时，它有义务回复 CONNACK 消息进行响应。CONNACK 消息包括两部分内容</p>
+<p><img src="/2022/03/23/MQTT%E5%8D%8F%E8%AE%AE%E6%98%AF%E4%B8%AA%E5%95%A5%EF%BC%9F%E8%BF%99%E7%AF%87%E6%96%87%E7%AB%A0%E5%91%8A%E8%AF%89%E4%BD%A0%EF%BC%81/mqtt5.jpg" alt="jpg"></p>
+<ul>
+<li><p><code>SessionPresent</code>：会话当前标识，这个标志会告诉 client 当前 broker 是否有一个持久性会话与 client 进行交互。SessionPresent 标志和 CleanSession 标志有关，当 client 在 CleanSession 设置为 true 的情况下连接时，SessionPresent 始终为 false，因为没有持久性会话可以使用。如果 CleanSession 设置为 false，则有两种可能性，如果 ClientId 的会话信息可用，并且 broker 已经存储了会话信息，那么 SessionPresent 为 true，否则如果没有 ClientId 的任何会话信息，那么 SessionPresent 为 false。</p>
+<p><img src="/2022/03/23/MQTT%E5%8D%8F%E8%AE%AE%E6%98%AF%E4%B8%AA%E5%95%A5%EF%BC%9F%E8%BF%99%E7%AF%87%E6%96%87%E7%AB%A0%E5%91%8A%E8%AF%89%E4%BD%A0%EF%BC%81/mqtt6.jpg" alt="jpg"></p>
+</li>
+<li><p><code>ReturnCode</code>：CONNACK 消息中的第二个标志是连接确认标志。这个标志包含一个返回码，告诉客户端连接尝试是否成功。连接确认标志有下面这些选项。</p>
+<p><img src="/2022/03/23/MQTT%E5%8D%8F%E8%AE%AE%E6%98%AF%E4%B8%AA%E5%95%A5%EF%BC%9F%E8%BF%99%E7%AF%87%E6%96%87%E7%AB%A0%E5%91%8A%E8%AF%89%E4%BD%A0%EF%BC%81/mqtt7.jpg" alt="jpg"></p>
+</li>
+</ul>
+<p>关于每个连接的详细说明，可以参考 <a href="https://link.juejin.cn/?target=https://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html%23_Toc398718035">docs.oasis-open.org/mqtt/mqtt/v…</a></p>
+<h2 id="消息类型"><a href="#消息类型" class="headerlink" title="消息类型"></a>消息类型</h2><h3 id="发布"><a href="#发布" class="headerlink" title="发布"></a>发布</h3><p>当 MQTT client 在连接到 broker 之后就可以发送消息了，MQTT 使用的是基于 topic 主题的过滤。每条消息都应该包含一个 topic ，broker 可以使用 topic 将消息发送给感兴趣的 client。除此之外，每条消息还会包含一个<code>负载(Payload)</code>，Payload 中包含要以字节形式发送的数据。</p>
+<p>MQTT 是数据无关性的，也就是说数据是由发布者 - publisher 决定要发送的是 XML 、JSON 还是二进制数据、文本数据。</p>
+<p>MQTT 中的 PUBLISH 消息结构如下。</p>
+<p><img src="/2022/03/23/MQTT%E5%8D%8F%E8%AE%AE%E6%98%AF%E4%B8%AA%E5%95%A5%EF%BC%9F%E8%BF%99%E7%AF%87%E6%96%87%E7%AB%A0%E5%91%8A%E8%AF%89%E4%BD%A0%EF%BC%81/mqtt8.jpg" alt="jpg"></p>
+<ul>
+<li><code>Packet Identifier</code>：这个 PacketId 标识在 client 和 broker 之间唯一的消息标识。packetId 仅与大于零的 Qos 级别相关。</li>
+<li><code>TopicName</code>：主题名称是一个简单的字符串，<code>/</code> 代表着分层结构。</li>
+<li><code>Qos</code>：这个数字表示的是服务质量水平，服务质量水平有三个等级：0、1 和 2，服务级别决定了消息到达 client 或者 broker 的保证类型，来决定消息是否丢失。</li>
+<li><code>RetainFlag</code>：这个标志表示 broker 将最近收到的一条 RETAIN 标志位为<code>true</code>的消息保存在服务器端（内存或者文件）。</li>
+</ul>
+<blockquote>
+<p>MQTT 服务器只会为每一个 Topic 保存最近收到的一条 RETAIN 标志位为<code>true</code>的消息。也就是说，如果MQTT 服务器上已经为某个 Topic 保存了一条 Retained 消息，当客户端再次发布一条新的 Retained 消息时，那么服务器上原来的那条消息会被覆盖。</p>
+</blockquote>
+<ul>
+<li><code>Payload</code>：这个是每条消息的实际内容。MQTT 是数据无关性的。可以发送任何文本、图像、加密数据以及二进制数据。</li>
+<li><code>Dupflag</code>：这个标志表示该消息是重复的并且由于预期的 client 或者 broker 没有确认所以重新发送了一次。这个标志仅仅与 Qos 大于 0 相关。</li>
+</ul>
+<p>当 client 向 broker 发送消息时，broker 会读取消息，根据 Qos 的级别进行消息确认，然后处理消息。处理消息其实就是确定哪些 subscriber 订阅了 topic 并将消息发送给他们。</p>
+<p><img src="/2022/03/23/MQTT%E5%8D%8F%E8%AE%AE%E6%98%AF%E4%B8%AA%E5%95%A5%EF%BC%9F%E8%BF%99%E7%AF%87%E6%96%87%E7%AB%A0%E5%91%8A%E8%AF%89%E4%BD%A0%EF%BC%81/mqtt9.jpg" alt="jpg"></p>
+<p>最初发布消息的 client 只关心将 PUBLISH 消息发送给 broker，一旦 broker 收到 PUBLISH 消息，broker 就有责任将其传递给所有 subscriber。发布消息的 client 不会知道是否有人对发布的消息感兴趣，同时也不知道多少 client 从 broker 收到了消息。</p>
+<h3 id="订阅"><a href="#订阅" class="headerlink" title="订阅"></a>订阅</h3><p>client 会向 broker 发送 SUBSCRIBE 消息来接收有关感兴趣的 topic，这个 SUBSCRIBE 消息非常简单，它包含了一个唯一的数据包标识和一个订阅列表。</p>
+<p><img src="/2022/03/23/MQTT%E5%8D%8F%E8%AE%AE%E6%98%AF%E4%B8%AA%E5%95%A5%EF%BC%9F%E8%BF%99%E7%AF%87%E6%96%87%E7%AB%A0%E5%91%8A%E8%AF%89%E4%BD%A0%EF%BC%81/mqtt10.jpg" alt="jpg"></p>
+<ul>
+<li><code>Packet Identifier</code>：这个 PacketId 和上面的 PacketId 一样，都表示消息的唯一标识符。</li>
+<li><code>ListOfSubscriptions</code>：SUBSCRIBE 消息可以包含一个 client 的多个订阅，每个订阅都会由一个 topic 和一个 Qos 构成。订阅消息中的 topic 可以包含通配符。</li>
+</ul>
+<h3 id="确认消息"><a href="#确认消息" class="headerlink" title="确认消息"></a>确认消息</h3><p>client 在向 broker 发送 SUBSCRIBE 消息后，为了确认每个订阅，broker 会向 client 发送 SUBACK 确认消息。这个 SUBACK 包含原始 SUBSCRIBE 消息的 packetId 和返回码列表。</p>
+<p><img src="/2022/03/23/MQTT%E5%8D%8F%E8%AE%AE%E6%98%AF%E4%B8%AA%E5%95%A5%EF%BC%9F%E8%BF%99%E7%AF%87%E6%96%87%E7%AB%A0%E5%91%8A%E8%AF%89%E4%BD%A0%EF%BC%81/mqtt11.jpg" alt="jpg"></p>
+<p>其中</p>
+<ul>
+<li><code>Packet Identifier</code> ：这个数据包标识符和 SUBSCRIBE 中的相同。</li>
+<li><code>ReturnCode</code>：broker 为每个接收到的 SUBSCRIBE 消息的 topic/Qos 对发送一个返回码。例如，如果 SUBSCRIBE 消息有五个订阅消息，则 SUBACK 消息包含五个返回码作为响应。</li>
+</ul>
+<p>到现在我们已经探讨过了三种消息类型，发布 - 订阅 - 确认消息，这三种消息的示意图如下。</p>
+<p><img src="/2022/03/23/MQTT%E5%8D%8F%E8%AE%AE%E6%98%AF%E4%B8%AA%E5%95%A5%EF%BC%9F%E8%BF%99%E7%AF%87%E6%96%87%E7%AB%A0%E5%91%8A%E8%AF%89%E4%BD%A0%EF%BC%81/mqtt12.jpg" alt="jpg"></p>
+<h3 id="退订"><a href="#退订" class="headerlink" title="退订"></a>退订</h3><p>SUBSCRIBE 消息对应的是 <code>UNSUBSCRIBE</code> 消息，这条消息发送后，broker 会删除关于 client 的订阅。所以，UNSUBSCRIBE 消息与 SUBSCRIBE 消息类似，都具有 packetId 和 topic 列表。</p>
+<p><img src="/2022/03/23/MQTT%E5%8D%8F%E8%AE%AE%E6%98%AF%E4%B8%AA%E5%95%A5%EF%BC%9F%E8%BF%99%E7%AF%87%E6%96%87%E7%AB%A0%E5%91%8A%E8%AF%89%E4%BD%A0%EF%BC%81/mqtt13.jpg" alt="jpg"></p>
+<h3 id="确认退订"><a href="#确认退订" class="headerlink" title="确认退订"></a>确认退订</h3><p>取消订阅也需要 broker 的确认，此时 broker 会向 client 发送一个 <code>UNSUBACK</code> 消息，这个 UNSUBACK 消息非常简单，只有一个 packetId 数据标识符。</p>
+<p><img src="/2022/03/23/MQTT%E5%8D%8F%E8%AE%AE%E6%98%AF%E4%B8%AA%E5%95%A5%EF%BC%9F%E8%BF%99%E7%AF%87%E6%96%87%E7%AB%A0%E5%91%8A%E8%AF%89%E4%BD%A0%EF%BC%81/mqtt14.jpg" alt="jpg"></p>
+<p>退订和确认退订的流程如下。</p>
+<p><img src="/2022/03/23/MQTT%E5%8D%8F%E8%AE%AE%E6%98%AF%E4%B8%AA%E5%95%A5%EF%BC%9F%E8%BF%99%E7%AF%87%E6%96%87%E7%AB%A0%E5%91%8A%E8%AF%89%E4%BD%A0%EF%BC%81/mqtt15.jpg" alt="jpg"></p>
+<p>当 client 收到来自 broker 的 UNSUBACK 消息后，就可以认为 UNSUBSCRIBE 消息中的订阅被删除了。</p>
+<h2 id="聊聊-Topic"><a href="#聊聊-Topic" class="headerlink" title="聊聊 Topic"></a>聊聊 Topic</h2><p>聊了这么多关于 MQTT 的内容，但是我们还没有好好聊过 Topic。在 MQTT 中，Topic 是指 broker 为每个连接的 client 过滤消息的 <code>UTF-8</code> 字符串。Topic 是一种分层的结构，可以由一个或者多个 Topic 组成。每个 Topic 由 <code>/</code> 进行分割。</p>
+<p><img src="/2022/03/23/MQTT%E5%8D%8F%E8%AE%AE%E6%98%AF%E4%B8%AA%E5%95%A5%EF%BC%9F%E8%BF%99%E7%AF%87%E6%96%87%E7%AB%A0%E5%91%8A%E8%AF%89%E4%BD%A0%EF%BC%81/mqtt16.jpg" alt="jpg"></p>
+<p>与传统的消息队列相比，MQTT Topic 非常轻量级，client 在发布或订阅之前不需要先创建所需要的 Topic，broker 在接收每个 Topic 前不用进行初始化操作。</p>
+<p><strong>通配符</strong></p>
+<p>当客户端订阅 Topic 时，它可以订阅已发布消息的确切 Topic，也可以使用通配符来同时订阅多个 Topic。通配符有两种：<strong>单级和多级</strong>。</p>
+<h3 id="单级通配符"><a href="#单级通配符" class="headerlink" title="单级通配符"></a>单级通配符</h3><p>单级通配符可以替换 Topic 的一个级别，<code>+</code> 号代表 Topic 中的单级通配符。</p>
+<p><img src="/2022/03/23/MQTT%E5%8D%8F%E8%AE%AE%E6%98%AF%E4%B8%AA%E5%95%A5%EF%BC%9F%E8%BF%99%E7%AF%87%E6%96%87%E7%AB%A0%E5%91%8A%E8%AF%89%E4%BD%A0%EF%BC%81/mqtt17.jpg" alt="jpg"></p>
+<p>如果 Topic 包含任意字符串而不是通配符，则任何 Topic 都能够和单级通配符匹配。例如</p>
+<p><em>myhome/groundfloor/+/temperature</em> 就有下面这几种匹配方式。</p>
+<p><img src="/2022/03/23/MQTT%E5%8D%8F%E8%AE%AE%E6%98%AF%E4%B8%AA%E5%95%A5%EF%BC%9F%E8%BF%99%E7%AF%87%E6%96%87%E7%AB%A0%E5%91%8A%E8%AF%89%E4%BD%A0%EF%BC%81/mqtt18.jpg" alt="jpg"></p>
+<h3 id="多级通配符"><a href="#多级通配符" class="headerlink" title="多级通配符"></a>多级通配符</h3><p>多级通配符涵盖多个 Topic，<code>#</code> 代表 Topic 中的多级通配符。为了让 broker 能够确定和哪些 Topic 匹配，多级通配符必须作为 Topic 中的最后一个字符放置，并以 <code>/</code> 开头。</p>
+<p><img src="/2022/03/23/MQTT%E5%8D%8F%E8%AE%AE%E6%98%AF%E4%B8%AA%E5%95%A5%EF%BC%9F%E8%BF%99%E7%AF%87%E6%96%87%E7%AB%A0%E5%91%8A%E8%AF%89%E4%BD%A0%EF%BC%81/mqtt19.jpg" alt="jpg"></p>
+<p>下面是 <em>myhome/groundfloor/#</em> 的几个例子</p>
+<p><img src="/2022/03/23/MQTT%E5%8D%8F%E8%AE%AE%E6%98%AF%E4%B8%AA%E5%95%A5%EF%BC%9F%E8%BF%99%E7%AF%87%E6%96%87%E7%AB%A0%E5%91%8A%E8%AF%89%E4%BD%A0%EF%BC%81/mqtt20.jpg" alt="jpg"></p>
+<p>当 client 订阅带有多级通配符的 Topic 时，不论 Topic 有多长多深，它都会收到通配符之前 Topic 的所有消息。如果你只将 Topic 定义为 # 的话，那么你将会收到所有的消息。</p>
+<h2 id="原文地址"><a href="#原文地址" class="headerlink" title="原文地址"></a>原文地址</h2><p>作者：程序员cxuan</p>
+<p>链接：<a target="_blank" rel="noopener" href="https://juejin.cn/post/6976441705067184135">https://juejin.cn/post/6976441705067184135</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">网络</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/03/23/MQTT%E5%8D%8F%E8%AE%AE%E6%98%AF%E4%B8%AA%E5%95%A5%EF%BC%9F%E8%BF%99%E7%AF%87%E6%96%87%E7%AB%A0%E5%91%8A%E8%AF%89%E4%BD%A0%EF%BC%81/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-GO-Channel-信道" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/03/22/GO-Channel-%E4%BF%A1%E9%81%93/">Channel 信道</a>
+    </h1>
+  
+
+        
+        <a href="/2022/03/22/GO-Channel-%E4%BF%A1%E9%81%93/" class="archive-article-date">
+  	<time datetime="2022-03-22T07:00:09.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-03-22</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>说到channel，就一定要说一说线程了。任何实际项目，无论大小，并发是必然存在的。并发的存在，就涉及到线程通信。在当下的开发语言中，线程通讯主要有两种，共享内存与消息传递。共享内存一定都很熟悉，通过共同操作同一对象，实现线程间通讯。消息传递即通过类似聊天的方式。golang对并发的处理采用了协程的技术。golang的goroutine就是<strong>协程</strong>的实现。协程的概念很早就有，简单的理解为轻量级线程，goroutine就是为了解决并发任务间的通信而设计的。golang解决通信的理念是：不要通过共享内存来通信,而应该通过<strong>通信</strong>来共享内存。golang解决方案是消息传递机制，消息的传递就是通过channel来实现的。</p>
+<p><strong>Channal是什么？</strong>Channal就是用来通信的，就像Unix下的管道一样，在Go中是这样使用Channel的。</p>
+<p>下面的程序演示了一个goroutine和主程序通信的例程。这个程序足够简单了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line">func main() &#123;</span><br><span class="line">    &#x2F;&#x2F;创建一个string类型的channel</span><br><span class="line">    channel :&#x3D; make(chan string)</span><br><span class="line">    &#x2F;&#x2F;创建一个goroutine向channel里发一个字符串</span><br><span class="line">    go func() &#123; channel &lt;- &quot;hello&quot; &#125;()</span><br><span class="line">    msg :&#x3D; &lt;- channel</span><br><span class="line">    fmt.Println(msg)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>指定channel的buffer</strong></p>
+<p>指定buffer的大小很简单，看下面的程序：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line">func main() &#123;</span><br><span class="line">    channel :&#x3D; make(chan string, 2)</span><br><span class="line">    go func() &#123;</span><br><span class="line">        channel &lt;- &quot;hello&quot;</span><br><span class="line">        channel &lt;- &quot;World&quot;</span><br><span class="line">    &#125;()</span><br><span class="line">    msg1 :&#x3D; &lt;-channel</span><br><span class="line">    msg2 :&#x3D; &lt;-channel</span><br><span class="line">    fmt.Println(msg1, msg2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>Channel的阻塞</strong></p>
+<p>现在谈一谈对channe阻塞l的理解。　　</p>
+<p>　　发送者角度：对于同一个通道，发送操作（协程或者函数中的），在<strong>接收者准备好之前是阻塞的</strong>。如果chan中的数据<strong>无人接收</strong>，就<strong>无法再给通道传入其他数据</strong>。因为新的输入无法在通道非空的情况下传入。所以发送操作会等待 chan 再次变为可用状态：就是通道值被接收时（可以传入变量）。</p>
+<p>　　接收者角度：对于同一个通道，<strong>接收操作是阻塞的</strong>（协程或函数中的），直到发送者可用：如果通道中没有数据，接收者就阻塞了。</p>
+<p><strong>案例1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">    &quot;fmt&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func f1(in chan int) &#123;</span><br><span class="line">    fmt.Println(&lt;-in)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">    out :&#x3D; make(chan int)</span><br><span class="line">    out &lt;- 2   &#x2F;&#x2F;13行</span><br><span class="line">    go f1(out)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：fatal error: all goroutines are asleep - deadlock!</p>
+<p>这是由于第13行之前不存在对out的接收，所以，对于out &lt;- 2来说，永远是阻塞的，即一直会等下去。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">这很明显，因为out&lt;-2插入后并没有被使用，就一直阻塞在等待被使用，走不到go fl(out)。所以将go fl(out)放在out&lt;-2前面即可。</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>案例2:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">    &quot;fmt&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">    c1 :&#x3D; make(chan int)</span><br><span class="line">    func()&#123;</span><br><span class="line">    	time.Sleep(time.Second*2)</span><br><span class="line">    	c1&lt;-&quot;result 1&quot;</span><br><span class="line">	  &#125;()</span><br><span class="line">		fmt.Println(&quot;c1 is&quot;,&lt;-c1)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果：deadlock，因为push和pull永远不可能同时发生，这就是阻塞channel的不当用法。</p>
+<p>解决方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">func main() &#123;</span><br><span class="line">    c1 :&#x3D; make(chan int)</span><br><span class="line">    go func()&#123;</span><br><span class="line">    	time.Sleep(time.Second*2)</span><br><span class="line">    	c1&lt;-&quot;result 1&quot;</span><br><span class="line">	  &#125;()</span><br><span class="line">		fmt.Println(&quot;c1 is&quot;,&lt;-c1)</span><br><span class="line">&#125;</span><br><span class="line">#通过在另一个协程中run push代码，使得channel的生产和消费可以同时对接，正常的阻塞使用方式。</span><br></pre></td></tr></table></figure>
+
+<p>另外的解决方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">func main() &#123;</span><br><span class="line">    c1 :&#x3D; make(chan int,1)</span><br><span class="line">    func()&#123;</span><br><span class="line">    	time.Sleep(time.Second*2)</span><br><span class="line">    	c1&lt;-&quot;result 1&quot;</span><br><span class="line">	  &#125;()</span><br><span class="line">		fmt.Println(&quot;c1 is&quot;,&lt;-c1)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 给channel加一个buffer，只要buffer没用尽，大家就不用阻塞。</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>案例3:</strong></p>
+<p><strong>注意</strong>，channel默认上是阻塞的，也就是说，如果Channel满了，就阻塞写，如果Channel空了，就阻塞读。于是，我们就可以使用这种特性来同步我们的发送和接收端。</p>
+<p>下面这个例程说明了这一点，代码有点乱，不过我觉得不难理解。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line">import &quot;time&quot;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">    channel :&#x3D; make(chan string) </span><br><span class="line"></span><br><span class="line">    go func() &#123;</span><br><span class="line">        channel &lt;- &quot;hello&quot; &#x2F;&#x2F;发送方等待接收</span><br><span class="line">        fmt.Println(&quot;write \&quot;hello\&quot; done!&quot;)</span><br><span class="line"></span><br><span class="line">        channel &lt;- &quot;World&quot; &#x2F;&#x2F;Reader在Sleep，这里在阻塞</span><br><span class="line">        fmt.Println(&quot;write \&quot;World\&quot; done!&quot;)</span><br><span class="line"></span><br><span class="line">        fmt.Println(&quot;Write go sleep...&quot;)</span><br><span class="line">        time.Sleep(3*time.Second)</span><br><span class="line">        channel &lt;- &quot;channel&quot;</span><br><span class="line">        fmt.Println(&quot;write \&quot;channel\&quot; done!&quot;)</span><br><span class="line">    &#125;()</span><br><span class="line"></span><br><span class="line">    time.Sleep(2*time.Second)</span><br><span class="line">    fmt.Println(&quot;Reader Wake up...&quot;) &#x2F;&#x2F;首先打印</span><br><span class="line"></span><br><span class="line">    msg :&#x3D; &lt;-channel</span><br><span class="line">    fmt.Println(&quot;Reader: &quot;, msg)</span><br><span class="line"></span><br><span class="line">    msg &#x3D; &lt;-channel</span><br><span class="line">    fmt.Println(&quot;Reader: &quot;, msg)</span><br><span class="line"></span><br><span class="line">    msg &#x3D; &lt;-channel &#x2F;&#x2F;Writer在Sleep，这里在阻塞</span><br><span class="line">    fmt.Println(&quot;Reader: &quot;, msg)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">Reader Wake up...</span><br><span class="line">Reader:  hello </span><br><span class="line">write &quot;hello&quot; done! </span><br><span class="line">write &quot;World&quot; done! </span><br><span class="line">Write go sleep...</span><br><span class="line">Reader:  World</span><br><span class="line">write &quot;channel&quot; done! </span><br><span class="line">Reader:  channel</span><br><span class="line"></span><br><span class="line">解释：</span><br><span class="line">Reader Wake up...  &#x2F;&#x2F;没有问题，不解释</span><br><span class="line"></span><br><span class="line">Reader:  hello</span><br><span class="line">因为go func()的代码在前，所以会先执行”channel &lt;- &quot;hello&quot;“，这时候被没有消费，阻塞。</span><br><span class="line">当主程序运行到msg :&#x3D; &lt;-channel，打印了Reader:  hello，然后执行到下面的msg &#x3D; &lt;-channel，没有数据，被阻塞。</span><br><span class="line"></span><br><span class="line">write &quot;hello&quot; done! </span><br><span class="line">write &quot;World&quot; done! </span><br><span class="line">Write go sleep...</span><br><span class="line">go func()执行channel&lt;-&quot;hello&quot;阻塞被释放，执行代码fmt.Println(&quot;write \&quot;hello\&quot; done!&quot;)；</span><br><span class="line">然后执行channel &lt;- &quot;World&quot;的时候，插入数据，因为主程序已有读取请求，所以没有阻塞，并打印write &quot;World&quot; done!和Write go sleep...; 然后，channel &lt;- &quot;channel&quot;因为需要等待3s未马上执行到，所以会比主程序慢。</span><br><span class="line"></span><br><span class="line">Reader:  World</span><br><span class="line">主程序里面msg &#x3D; &lt;-channel因channel &lt;- &quot;World&quot;，有数据了，解除阻塞打印Reader:  World，并再执行下面代码msg &#x3D; &lt;-channel，这时候因为channel &lt;- &quot;channel&quot;还在等待中，再次被阻塞。</span><br><span class="line"></span><br><span class="line">write &quot;channel&quot; done!</span><br><span class="line">直到3s后，channel &lt;- &quot;channel&quot;解除阻塞，打印write &quot;channel&quot; done!</span><br><span class="line"></span><br><span class="line">Reader:  channel</span><br><span class="line">主程序解除阻塞，再打印Reader:  channel</span><br></pre></td></tr></table></figure>
+
+<p><strong>详解go语言 make(chan int, 1) 和 make (chan int) 的区别</strong></p>
+<p><strong>无缓冲区channel</strong></p>
+<p>用make(chan int) 创建的chan, 是无缓冲区的, send 数据到chan 时，在没有协程取出数据的情况下， 会阻塞当前协程的运行。ch &lt;- 后面的代码就不会再运行，直到channel 的数据被接收，当前协程才会继续往下执行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">    &quot;fmt&quot;</span><br><span class="line">    &quot;time&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">    ch :&#x3D; make(chan int) &#x2F;&#x2F; 创建无缓冲channel</span><br><span class="line">    go func() &#123;</span><br><span class="line">      fmt.Println(&quot;time sleep 5 second...&quot;)</span><br><span class="line">      time.Sleep(5 * time.Second)</span><br><span class="line">      &lt;-ch</span><br><span class="line">      fmt.Println(&quot;read...&quot;)</span><br><span class="line">    &#125;()</span><br><span class="line">    fmt.Println(&quot;即将阻塞...&quot;)</span><br><span class="line">    ch &lt;-1  &#x2F;&#x2F; 协程将会阻塞，等待数据被读取</span><br><span class="line">    fmt.Println(&quot;ch 数据被消费，主协程退出&quot;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#结果：</span><br><span class="line">即将阻塞...</span><br><span class="line">time sleep 5 second...</span><br><span class="line">send...</span><br><span class="line">ch 数据被消费，主协程退出</span><br><span class="line"></span><br><span class="line">##这边可以看到接收方的代码先打印，然后打印发送方下面的代码，这个符合逻辑，接收解锁执行，发送解锁执行。</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>有缓冲区channel</strong></p>
+<p>channel 的缓冲区为1，向channel 发送第一个数据，主协程不会退出。发送第二个时候，缓冲区已经满了， 此时阻塞主协程。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">    &quot;fmt&quot;</span><br><span class="line">    &quot;time&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">      ch :&#x3D; make(chan int, 1) &#x2F;&#x2F; 创建有缓冲channel</span><br><span class="line">      go func() &#123;</span><br><span class="line">         fmt.Println(&quot;time sleep 5 second...&quot;)</span><br><span class="line">         time.Sleep(5 * time.Second)</span><br><span class="line">         &lt;-ch</span><br><span class="line">         fmt.Println(&quot;read...&quot;)</span><br><span class="line">      &#125;()</span><br><span class="line">      ch &lt;-1 &#x2F;&#x2F; 协程不会阻塞，等待数据被读取</span><br><span class="line">      fmt.Println(&quot;第二次发送数据到channel， 即将阻塞&quot;)</span><br><span class="line">      ch &lt;-1 &#x2F;&#x2F; 第二次发送数据到channel, 在数据没有被读取之前，因为缓冲区满了， 所以会阻塞主协程。</span><br><span class="line">      fmt.Println(&quot;ch 数据被消费，主协程退出&quot;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">结果：</span><br><span class="line">第二次发送数据到channel， 即将阻塞   &#x2F;&#x2F;阻塞了，因为buffer为1，等待前面的消费</span><br><span class="line">time sleep 5 second...</span><br><span class="line">read...               &#x2F;&#x2F;消费了</span><br><span class="line">ch 数据被消费，主协程退出 &#x2F;&#x2F;插入，执行</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>多个Channel的select</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line">import &quot;time&quot;</span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line">func main() &#123;</span><br><span class="line">    &#x2F;&#x2F;创建两个channel - c1 c2</span><br><span class="line">    c1 :&#x3D; make(chan string)</span><br><span class="line">    c2 :&#x3D; make(chan string)</span><br><span class="line">    &#x2F;&#x2F;创建两个goruntine来分别向这两个channel发送数据</span><br><span class="line">    go func() &#123;</span><br><span class="line">        time.Sleep(time.Second * 1)</span><br><span class="line">        c1 &lt;- &quot;Hello&quot;</span><br><span class="line">    &#125;()</span><br><span class="line">    go func() &#123;</span><br><span class="line">        time.Sleep(time.Second * 1)</span><br><span class="line">        c2 &lt;- &quot;World&quot;</span><br><span class="line">    &#125;()</span><br><span class="line">    &#x2F;&#x2F;使用select来侦听两个channel</span><br><span class="line">    for i :&#x3D; 0; i &lt; 2; i++ &#123;</span><br><span class="line">        select &#123;</span><br><span class="line">          case msg1 :&#x3D; &lt;-c1:</span><br><span class="line">              fmt.Println(&quot;received&quot;, msg1)</span><br><span class="line">          case msg2 :&#x3D; &lt;-c2:</span><br><span class="line">              fmt.Println(&quot;received&quot;, msg2)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意：上面的select是阻塞的，所以，才搞出ugly的for i &lt;2这种东西。</p>
+<p><strong>Channel select阻塞的Timeout</strong></p>
+<p>解决上述那个for循环的问题，一般有两种方法：一种是阻塞但有timeout，一种是无阻塞。我们来看看如果给select设置上timeout的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">for &#123;</span><br><span class="line">    timeout_cnt :&#x3D; 0</span><br><span class="line">    select &#123;</span><br><span class="line">    case msg1 :&#x3D; &lt;-c1:</span><br><span class="line">        fmt.Println(&quot;msg1 received&quot;, msg1)</span><br><span class="line">    case msg2 :&#x3D; &lt;-c2:</span><br><span class="line">        fmt.Println(&quot;msg2 received&quot;, msg2)</span><br><span class="line">    case  &lt;-time.After(time.Second * 30)：</span><br><span class="line">        fmt.Println(&quot;Time Out&quot;)</span><br><span class="line">        time_cnt++</span><br><span class="line">    &#125;</span><br><span class="line">    if time_cnt &gt; 1 &#123;</span><br><span class="line">        break</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面代码中高亮的代码主要是用来让select返回的，注意 case中的time.After事件。</p>
+<p><strong>Channel的无阻塞</strong></p>
+<p>好，我们再来看看无阻塞的channel，其实也很简单，就是在select中加入default，如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">for &#123;</span><br><span class="line">    select &#123;</span><br><span class="line">    case msg1 :&#x3D; &lt;-c1:</span><br><span class="line">        fmt.Println(&quot;received&quot;, msg1)</span><br><span class="line">    case msg2 :&#x3D; &lt;-c2:</span><br><span class="line">        fmt.Println(&quot;received&quot;, msg2)</span><br><span class="line">    default: &#x2F;&#x2F;default会导致无阻塞</span><br><span class="line">        fmt.Println(&quot;nothing received!&quot;)</span><br><span class="line">        time.Sleep(time.Second)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Channel的关闭</strong></p>
+<p>关闭Channel可以通知对方内容发送完了，不用再等了。参看下面的例程：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line">import &quot;time&quot;</span><br><span class="line">import &quot;math&#x2F;rand&quot;</span><br><span class="line">func main() &#123;</span><br><span class="line">    channel :&#x3D; make(chan string)</span><br><span class="line">    rand.Seed(time.Now().Unix())</span><br><span class="line">    &#x2F;&#x2F;向channel发送随机个数的message</span><br><span class="line">    go func () &#123;</span><br><span class="line">        cnt :&#x3D; rand.Intn(10)</span><br><span class="line">        fmt.Println(&quot;message cnt :&quot;, cnt)</span><br><span class="line">        for i:&#x3D;0; i&lt;cnt; i++&#123;</span><br><span class="line">            channel &lt;- fmt.Sprintf(&quot;message-%2d&quot;, i)</span><br><span class="line">        &#125;</span><br><span class="line">        close(channel) &#x2F;&#x2F;关闭Channel</span><br><span class="line">    &#125;()</span><br><span class="line">    var more bool &#x3D; true</span><br><span class="line">    var msg string</span><br><span class="line">    for more &#123;</span><br><span class="line">        select&#123;</span><br><span class="line">        &#x2F;&#x2F;channel会返回两个值，一个是内容，一个是还有没有内容</span><br><span class="line">        case msg, more &#x3D; &lt;- channel:</span><br><span class="line">            if more &#123;</span><br><span class="line">                fmt.Println(msg)</span><br><span class="line">            &#125;else&#123;</span><br><span class="line">                fmt.Println(&quot;channel closed!&quot;)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>参考文章：</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xiaofengshuyu/p/5190824.html">golang协程——通道channel阻塞</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/22620172">golang channel阻塞与非阻塞用法</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_31406415/article/details/110521553">详解go语言 make(chan int, 1) 和 make (chan int) 的区别</a></p>
+<p><a target="_blank" rel="noopener" href="https://coolshell.cn/articles/8489.html#goroutine">GO 语言简介（下）— 特性</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">GO入门</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/03/22/GO-Channel-%E4%BF%A1%E9%81%93/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Jenkins" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/03/21/Jenkins/">Jenkins</a>
+    </h1>
+  
+
+        
+        <a href="/2022/03/21/Jenkins/" class="archive-article-date">
+  	<time datetime="2022-03-21T11:03:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-03-21</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/mPkhy7YvrYO_HnfL-rho3w">超级详细！开发集成工具Jenkins使用教程</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/7064389514470359053">docker | jenkins 自动化CI/CD，后端躺着把运维的钱挣了！(下)</a></p>
+<p><code>docker + jenkins:</code>使用jenkins监听git仓库的变化，一旦发生变化就<strong>自动拉取git仓库代码，构建docker镜像，然后自动部署，运行容器</strong>。只要push了代码，则新一版的项目就会由jenkins自动部署到指定服务器。</p>
+<p><code>账号:浅蝶果果 密码:qqx</code></p>
+<blockquote>
+<p>创建仓库</p>
+</blockquote>
+<p>访问<code>https://hub.docker.com/</code></p>
+<p>点击<code>菜单栏 Repositories</code>  -&gt; <code>Create Repository</code></p>
+<blockquote>
+<p>安装Jenkins</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.jenkins.io/zh/doc/tutorials/build-a-python-app-with-pyinstaller/">官方连接</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">docker run \</span><br><span class="line">  -d \</span><br><span class="line">  --rm \</span><br><span class="line">  -u root \</span><br><span class="line">  -p 9026:8080 \</span><br><span class="line">  -v jenkins-data:&#x2F;var&#x2F;jenkins_home \</span><br><span class="line">  -v &#x2F;var&#x2F;run&#x2F;docker.sock:&#x2F;var&#x2F;run&#x2F;docker.sock \</span><br><span class="line">  -v &quot;$HOME&quot;:&#x2F;home \</span><br><span class="line">  jenkinsci&#x2F;blueocean</span><br></pre></td></tr></table></figure>
+
+<p>因为我8080已应用别的内容，就修改成9026。</p>
+<p>请求：localhost:8080，会跳转到页面让你填写初始密码</p>
+<p><strong>获取初始密码</strong></p>
+<p>进入<code>docker exec -it a3c5c0caecfb  bash</code></p>
+<p><code>cat /var/jenkins_home/secrets/initialAdminPassword</code>  //这个页面会有提示地址的</p>
+<p><code>b950574b0c2c43b78e03ee0a8a2aecc3</code></p>
+<p><strong>选择推荐安装</strong></p>
+<p><strong>创建第一个管理员用户</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">king</span><br><span class="line">123456aa</span><br><span class="line">123456aa</span><br><span class="line">王</span><br><span class="line">2496978350@qq.com</span><br></pre></td></tr></table></figure>
+
+<p><strong>保存，然后进入后台咯</strong></p>
+<h2 id="Docker创建私有仓库-学习"><a href="#Docker创建私有仓库-学习" class="headerlink" title="Docker创建私有仓库(学习)"></a>Docker创建私有仓库(学习)</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/huangenai/p/10012672.html">docker for mac 创建私有仓库</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_33724659/article/details/93810200">Mac 环境部署Docker私有仓库</a></p>
+<p>拉取镜像</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull registry</span><br></pre></td></tr></table></figure>
+
+<p>运行registry</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 5000:5000 -v &#x2F;Users&#x2F;huangyanyu&#x2F;WWW&#x2F;docker&#x2F;registry:&#x2F;var&#x2F;lib&#x2F;registry registry</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>-i</strong>: 交互式操作。</li>
+<li><strong>-t</strong>: 终端。</li>
+<li><strong>-v:</strong> 将宿主机目录挂载到容器里, 或者说把镜像路径映射到本机。<code>-v /宿主机目录:/容器目录</code></li>
+<li><strong>-d</strong> 指定容器的运行模式，后台运行，默认不会进入容器</li>
+</ul>
+<ul>
+<li><strong>-P (大写):**是容器内部端口</strong>随机**映射到主机的端口。</li>
+<li><strong>-p(小写) :</strong> 是<strong>容器内部端口</strong>绑定到<strong>指定</strong>的<strong>主机端口</strong>。-p <strong>指定</strong>的<strong>主机端口</strong>  <strong>容器内部端口</strong></li>
+<li><strong>docker attach</strong></li>
+<li><strong>docker exec</strong>：推荐大家使用 docker exec 命令，因为此退出容器终端，不会导致容器的停止。</li>
+</ul>
+<p><code>fe1a0525e19102c5208ab141cc96dfebe51f5445dc71c2ee181d32fd05995f36</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;查看运行容器</span><br><span class="line">docker ps</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;进入容器  fe1a0525e191是容器id 在上一步骤中获得 </span><br><span class="line">sudo docker attach fe1a0525e191 （失败）</span><br><span class="line">sudo docker exec -it fe1a0525e191 &#x2F;bin&#x2F;bash (失败)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>本地仓库非安全配置 user/<username>/.docker/daemon.json</username></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cat .docker&#x2F;daemon.json </span><br><span class="line">&#123;</span><br><span class="line">  &quot;insecure-registries&quot; : [</span><br><span class="line">    &quot;127.0.0.1:5000&quot;</span><br><span class="line">  ],</span><br><span class="line">  &quot;debug&quot; : true,</span><br><span class="line">  &quot;experimental&quot; : true,</span><br><span class="line">  &quot;registry-mirrors&quot; : [</span><br><span class="line">    &quot;https:&#x2F;&#x2F;8q2dp9p9.mirror.aliyuncs.com&quot;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>查看仓库中的镜像</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -XGET http:&#x2F;&#x2F;127.0.0.1:5000&#x2F;v2&#x2F;_catalog</span><br></pre></td></tr></table></figure>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/03/21/Jenkins/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-zookeeper实战之服务注册与发现" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1138,340 +1633,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2021/11/24/R%E7%B3%BB%E5%88%97-1/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-go的一些认知使用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/27/go%E7%9A%84%E4%B8%80%E4%BA%9B%E8%AE%A4%E7%9F%A5%E4%BD%BF%E7%94%A8/">go的一些认知使用</a>
-    </h1>
-  
-
-        
-        <a href="/2021/10/27/go%E7%9A%84%E4%B8%80%E4%BA%9B%E8%AE%A4%E7%9F%A5%E4%BD%BF%E7%94%A8/" class="archive-article-date">
-  	<time datetime="2021-10-27T09:17:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-27</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="本篇观点不一定正确，目前仅供个人使用"><a href="#本篇观点不一定正确，目前仅供个人使用" class="headerlink" title="本篇观点不一定正确，目前仅供个人使用"></a>本篇观点不一定正确，目前仅供个人使用</h2><blockquote>
-<p>数组和切片区别</p>
-</blockquote>
-<p>数组是固定的，但切片有扩展性<code>append</code></p>
-<blockquote>
-<p>切片和map</p>
-</blockquote>
-<p>其实map可以当做一个类型，可以存储字符串</p>
-<blockquote>
-<p>map嵌套</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">a :&#x3D; map[string]map[string]string&#123;&#125;</span><br><span class="line">b,ok :&#x3D; a[&quot;name&quot;]</span><br><span class="line">if !ok &#123;</span><br><span class="line">    b :&#x3D; make(map[string]string)</span><br><span class="line">    a[&quot;name&quot;] &#x3D; b</span><br><span class="line">    b[&quot;xiaoming&quot;] &#x3D; &quot;go&quot;</span><br><span class="line">    b[&quot;xiaodong&quot;] &#x3D; &quot;why&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>struct 继承和重组</p>
-</blockquote>
-<p>结构体，对象。可以通过指针关联方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;blog.csdn.net&#x2F;z226688&#x2F;article&#x2F;details&#x2F;108963110</span><br></pre></td></tr></table></figure>
-
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">GO入门</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/10/27/go%E7%9A%84%E4%B8%80%E4%BA%9B%E8%AE%A4%E7%9F%A5%E4%BD%BF%E7%94%A8/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-扩展管理工具composer" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/09/%E6%89%A9%E5%B1%95%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7composer/">扩展管理工具composer</a>
-    </h1>
-  
-
-        
-        <a href="/2021/10/09/%E6%89%A9%E5%B1%95%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7composer/" class="archive-article-date">
-  	<time datetime="2021-10-09T02:47:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>作为最热门的php的扩展工具，<code>composer</code>在各个php框架基本都会用到，本文介绍一下实用常规操作。</p>
-<h3 id="composer的作用"><a href="#composer的作用" class="headerlink" title="composer的作用"></a>composer的作用</h3><p>Composer是 PHP 用来管理依赖（dependency）关系的工具。你可以在自己的项目中声明所依赖的外部工具库（libraries），Composer 会帮你安装这些依赖的库文件。</p>
-<h3 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h3><p><code>composer install</code> 安装依赖包，当你下载一个项目后，这或许是你改做的第一件事。</p>
-<p><code>composer require/update</code> 更新依赖包，我更喜欢用composer require。</p>
-<p><code>composer remove</code> 卸载依赖包</p>
-<h3 id="指定版本"><a href="#指定版本" class="headerlink" title="指定版本"></a>指定版本</h3><p>update则无法在命令行传入新的版本号，需要先手动在<code>composer.json</code>中指定<strong>新的版本号</strong>，然后执行更新命令。但require可以直接在命令行传入版本号，例如:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer require hashids&#x2F;hashids:2.0.0</span><br></pre></td></tr></table></figure>
-
-<p>升级</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer require hashids&#x2F;hashids:3.0.0</span><br></pre></td></tr></table></figure>
-
-<p>降级</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer require hashids&#x2F;hashids:2.0.4</span><br></pre></td></tr></table></figure>
-
-<h3 id="符号"><a href="#符号" class="headerlink" title="符号"></a>符号</h3><p>版本号范围大于/大于等于：<code>&gt;1.2.3</code> <code> &gt;=1.2.3</code></p>
-<p>小于/小于等于：<code>&lt;1.2.3</code> <code> &lt;=1.2.3</code></p>
-<p>确切的版本号：<code>1.2.3</code></p>
-<p>~1.2.3: <code>1.2.3 &lt;= version &lt; 1.3</code></p>
-<p>^1.2.3: <code>1.2.3 &lt;= version &lt; 2.0</code></p>
-<h3 id="全局参数-常用"><a href="#全局参数-常用" class="headerlink" title="全局参数(常用)"></a>全局参数(常用)</h3><ul>
-<li>-v 表示正常输出。</li>
-<li>-vv 表示更详细的输出。</li>
-<li>-vvv 则是为了 debug。</li>
-<li><strong>–help (-h):</strong> 显示帮助信息。</li>
-</ul>
-<h3 id="常见的坑"><a href="#常见的坑" class="headerlink" title="常见的坑"></a>常见的坑</h3><blockquote>
-<p><strong>卡着不动</strong></p>
-</blockquote>
-<p>因为某些特殊情况，老外的源特别慢，我们就得把源改为国内的。阿里某个云。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer config -g repo.packagist composer https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;composer&#x2F;</span><br></pre></td></tr></table></figure>
-
-
-
-<blockquote>
-<p><strong>添加-vvv选项</strong></p>
-</blockquote>
-<p>这样就知道compose这个家伙到底啥情况了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer install -vvv</span><br></pre></td></tr></table></figure>
-
-
-
-<blockquote>
-<p>提示不符合composer.json需要的版本，例如&gt;=php7，但实际&lt;php7也能正常运行，所以忽略</p>
-</blockquote>
-<p>这样就可以正常运行了</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer install --ignore-platform-reqs</span><br></pre></td></tr></table></figure>
-
-
-
-<blockquote>
-<p>Warning from <a target="_blank" rel="noopener" href="https://mirrors.aliyun.com/composer">https://mirrors.aliyun.com/composer</a>: Support for Composer 1 is deprecated and some packages will not be available. You should upgrade to Composer 2.</p>
-</blockquote>
-<p>解决方法：<br>更新一下 composer 工具版本：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer self-update</span><br></pre></td></tr></table></figure>
-
-<p>出现错误:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">The &quot;https:&#x2F;&#x2F;getcomposer.org&#x2F;versions&quot; file could not be downloaded: SSL operation failed with code 1.</span><br><span class="line"></span><br><span class="line">解决文章：</span><br><span class="line">https:&#x2F;&#x2F;stackoom.com&#x2F;question&#x2F;3t3EF</span><br></pre></td></tr></table></figure>
-
-<h3 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_29525745/article/details/116037185">composer指定php,composer 更新指定的依赖包</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.freesion.com/article/22651405122/">PHP扩展管理工具COMPOSER的坑、常见问题和解决方法</a></p>
-<p><a target="_blank" rel="noopener" href="http://www.thinkphp.cn/code/2430.html">Composer设置忽略版本匹配的方法</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/aze999/p/15062222.html">Warning from https://mirrors.aliyun.com/composer: Support for Composer 1 is deprecated and some packages will not be available. You should upgrade to Composer 2.</a></p>
-<h2 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h2><p>如果后面有空的话，也可能继续写一篇创建自己的composer包。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">知识点</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/10/09/%E6%89%A9%E5%B1%95%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7composer/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Redis数据库查看工具" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/08/Redis%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9F%A5%E7%9C%8B%E5%B7%A5%E5%85%B7/">Redis数据库查看工具</a>
-    </h1>
-  
-
-        
-        <a href="/2021/10/08/Redis%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9F%A5%E7%9C%8B%E5%B7%A5%E5%85%B7/" class="archive-article-date">
-  	<time datetime="2021-10-08T05:45:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-08</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h2><ul>
-<li><p>Redis Desktop Manager(被推荐，但未使用过)</p>
-</li>
-<li><p>DBeaver(不仅支持redis，还支持多种数据库)</p>
-</li>
-</ul>
-<h2 id="下载地址"><a href="#下载地址" class="headerlink" title="下载地址"></a>下载地址</h2><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/214baa511f2e">mac安装Redis可视化工具-Redis Desktop Manager</a></p>
-<p><a target="_blank" rel="noopener" href="https://zhile.io/2019/05/08/dbeaver-license-crack.html">DBeaver Enterprise 21.0 企业版激活方法</a></p>
-<h2 id="DBeaver配置"><a href="#DBeaver配置" class="headerlink" title="DBeaver配置"></a>DBeaver配置</h2><p><img src="/2021/10/08/Redis%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9F%A5%E7%9C%8B%E5%B7%A5%E5%85%B7/r_1.png"></p>
-<blockquote>
-<p>Mac查询文件</p>
-</blockquote>
-<p>mdfind -name 文件名字</p>
-<blockquote>
-<p>Mac查询文本</p>
-</blockquote>
-<p>mdfind “John”<br>mdfind -onlyin ~/Library txt</p>
-<blockquote>
-<p>dbeaver.ini文件地址</p>
-</blockquote>
-<p>/Applications/DBeaverEE.app/Contents/Eclipse/dbeaver.ini</p>
-<blockquote>
-<p>dbeaver.ini内容</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">-startup</span><br><span class="line">..&#x2F;Eclipse&#x2F;plugins&#x2F;org.eclipse.equinox.launcher_1.6.0.v20200915-1508.jar</span><br><span class="line">--launcher.library</span><br><span class="line">..&#x2F;Eclipse&#x2F;plugins&#x2F;org.eclipse.equinox.launcher.cocoa.macosx.x86_64_1.2.0.v20200915-1442</span><br><span class="line">-vm</span><br><span class="line">&#x2F;Library&#x2F;Java&#x2F;JavaVirtualMachines&#x2F;openjdk-12.0.1.jdk&#x2F;Contents&#x2F;Home&#x2F;bin&#x2F;java</span><br><span class="line">-vmargs</span><br><span class="line">-XX:+IgnoreUnrecognizedVMOptions</span><br><span class="line">--add-modules&#x3D;ALL-SYSTEM</span><br><span class="line">-Dosgi.requiredJavaVersion&#x3D;11</span><br><span class="line">-Xms128m</span><br><span class="line">-Xmx2048m</span><br><span class="line">-XstartOnFirstThread</span><br><span class="line">-javaagent:&#x2F;Applications&#x2F;DBeaverEE.app&#x2F;dbeaver-agent&#x2F;dbeaver-agent.jar</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>使用方法:</p>
-</blockquote>
-<ol>
-<li>在打开的dbeaver.ini编辑窗口末行添加(绝对路径)：<br>“-vm”<br>“-javaagent”</li>
-<li>启动DBeaverEE即可。</li>
-</ol>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">工具推荐</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/10/08/Redis%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9F%A5%E7%9C%8B%E5%B7%A5%E5%85%B7/">展开全文 >></a>
         </p>
       
 

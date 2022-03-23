@@ -210,6 +210,290 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-限制ip接口案例" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/01/%E9%99%90%E5%88%B6ip%E6%8E%A5%E5%8F%A3%E6%A1%88%E4%BE%8B/">限制ip接口案例</a>
+    </h1>
+  
+
+        
+        <a href="/2021/09/01/%E9%99%90%E5%88%B6ip%E6%8E%A5%E5%8F%A3%E6%A1%88%E4%BE%8B/" class="archive-article-date">
+  	<time datetime="2021-09-01T01:51:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-09-01</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="为什么要开细节类"><a href="#为什么要开细节类" class="headerlink" title="为什么要开细节类"></a>为什么要开细节类</h2><p>因为有很多东西，很细微，但又很实用。就会放在细节类。该类的目的是做个记录，既然简单。</p>
+<h2 id="限制ip接口案例"><a href="#限制ip接口案例" class="headerlink" title="限制ip接口案例"></a>限制ip接口案例</h2><blockquote>
+<p>场景</p>
+</blockquote>
+<p>需要针对相同ip用户每分访问接口次数的做限制，防止用户恶意刷。</p>
+<blockquote>
+<p>代码</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * 接口 ip 限制</span><br><span class="line"> * @param $miniutes 分钟数</span><br><span class="line"> * @param $times 次数</span><br><span class="line"> * @param $api 接口唯一标识</span><br><span class="line"> * @return bool</span><br><span class="line"> *&#x2F;</span><br><span class="line">public function apiIpLimit($miniutes, $times, $api)</span><br><span class="line">&#123;</span><br><span class="line">    $ip &#x3D; Request::getClientIP(); &#x2F;&#x2F;获取用户ip</span><br><span class="line"></span><br><span class="line">    if ($ip) &#123;</span><br><span class="line">        $key &#x3D; $api . &quot;_&quot; . $ip;</span><br><span class="line"></span><br><span class="line">        $num &#x3D; Yii::$app-&gt;cookie-&gt;get($key);</span><br><span class="line">        $num &#x3D; $num ? $num + 1 : 1; &#x2F;&#x2F;请求次数加1</span><br><span class="line">        if ($num &gt; $times) &#123;</span><br><span class="line">            Yii::getLogger()-&gt;log($key . &quot; exceed limit&quot;, Logger::LEVEL_ERROR);</span><br><span class="line">            return false; &#x2F;&#x2F;超过限制次数直接返回，不重置过期时间</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Yii::$app-&gt;cookie-&gt;set($key, $num, $miniutes * 60); &#x2F;&#x2F;未超过限制次数，更新访问次数，并重置过期时间为一分钟</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h2><blockquote>
+<p>情景</p>
+</blockquote>
+<p>假设每分钟限制8次请求</p>
+<blockquote>
+<p>代码逻辑是否符合需求</p>
+</blockquote>
+<p>上面的代码案例并不是完全依照<code>每分钟限制8次请求</code>逻辑处理，因为有重置过期时间。</p>
+<p>假设第6，7，8次请求都间隔了40s。按逻辑，第6次和第8次中间间隔了80s，超过一分钟了，但因为访问接口，未超过限制次数时会重置<code>过期时间</code>为60s的因素，第6次访问和第8次访问被累加在同一个次数累计中。</p>
+<blockquote>
+<p>代码合理性</p>
+</blockquote>
+<p>从合理性上，我觉得是合理的。但逻辑解释应该是<strong>相同ip距离上一次访问时间不超过一分钟，计入次数累计，当次数累计超过限制次数将会返回错误，时间1min</strong></p>
+<p>当然，如果要按目前逻辑实现也很简单，可以存储值<code>num_day</code>(累计次数+当天日期<code>(最小单位:天)</code>)，然后重置的时间设置为<code>当前时间戳-第一次的时间戳</code>。</p>
+<blockquote>
+<p>优化点</p>
+</blockquote>
+<p>首先ip这块用户可以通过vpn等手段切换不同ip。</p>
+<p>其次，限制次数是设置在cookie用户是可以删除的。</p>
+<p>建议：限制用户每天可以请求多少次，记录在redis之类的服务端缓存。</p>
+<h2 id="限制用户每天可以请求多少次"><a href="#限制用户每天可以请求多少次" class="headerlink" title="限制用户每天可以请求多少次"></a>限制用户每天可以请求多少次</h2><blockquote>
+<p>检验</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 邀请邮件 校验: 每天(utc时区)限制50封</span><br><span class="line">if ($this-&gt;getApiRequestLimitByDay(50, &#39;bizInviteEmail&#39;) &#x3D;&#x3D;&#x3D; false) &#123;</span><br><span class="line">    Response::echoResult(ErrCode::$ACCOUNT_LIMIT_ERR);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>累计次数</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$this-&gt;setApiRequestLimitByDay(&#39;bizInviteEmail&#39;, $accountId); &#x2F;&#x2F;发送邮件后更新用户当天发邮件次数</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>方法</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * 获取接口是否超出每日访问次数限制</span><br><span class="line"> * @param $times 次数</span><br><span class="line"> * @param $api 限制内容唯一标识</span><br><span class="line"> * @param string $accountId 用户主账号id</span><br><span class="line"> * @return bool</span><br><span class="line"> *&#x2F;</span><br><span class="line">public function getApiRequestLimitByDay($times, $api, $accountId &#x3D; &quot;&quot;)</span><br><span class="line">&#123;</span><br><span class="line">    if(empty($accountId)) &#123;</span><br><span class="line">        $accountId &#x3D; \Yii::$app-&gt;bizUser-&gt;accountId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if ($accountId) &#123;</span><br><span class="line">        $day &#x3D; date(&#39;Y_m_d&#39;,time());</span><br><span class="line">        $key &#x3D; $api . &quot;_&quot; . $accountId . &quot;_&quot; . $day;</span><br><span class="line"></span><br><span class="line">        $redis &#x3D; Factory::getUserRedisClient();</span><br><span class="line">        $num &#x3D; $redis-&gt;get($key);</span><br><span class="line">        $num &#x3D; $num ? $num + 1 : 1;</span><br><span class="line"></span><br><span class="line">        if ($num &gt; $times) &#123;</span><br><span class="line">            Yii::getLogger()-&gt;log($key . &quot; exceed limit&quot;, Logger::LEVEL_ERROR);</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;**</span><br><span class="line"> * 更新(累加)接口每日访问次数</span><br><span class="line"> * @param $api 限制内容唯一标识</span><br><span class="line"> * @param string $accountId 用户主账号id</span><br><span class="line"> *&#x2F;</span><br><span class="line">public function setApiRequestLimitByDay($api, $accountId &#x3D; &quot;&quot;)</span><br><span class="line">&#123;</span><br><span class="line">    if(empty($accountId)) &#123;</span><br><span class="line">        $accountId &#x3D; \Yii::$app-&gt;bizUser-&gt;accountId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if ($accountId) &#123;</span><br><span class="line">        $day &#x3D; date(&#39;Y_m_d&#39;,time());</span><br><span class="line">        $key &#x3D; $api . &quot;_&quot; . $accountId . &quot;_&quot; . $day;</span><br><span class="line"></span><br><span class="line">        $redis &#x3D; Factory::getUserRedisClient();</span><br><span class="line">        $num &#x3D; $redis-&gt;get($key);</span><br><span class="line">        $num &#x3D; $num ? $num + 1 : 1;</span><br><span class="line"></span><br><span class="line">        try &#123;</span><br><span class="line">            $redis-&gt;setex($key, 86400, $num); &#x2F;&#x2F;保存一天后过期</span><br><span class="line">        &#125; catch (\Exception $e) &#123;</span><br><span class="line">            LogService::logError(&quot;set $ownerId $key exception : &quot; . $e-&gt;getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">细节</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/09/01/%E9%99%90%E5%88%B6ip%E6%8E%A5%E5%8F%A3%E6%A1%88%E4%BE%8B/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Docker-入门教程" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/08/17/Docker-%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">Docker 入门教程</a>
+    </h1>
+  
+
+        
+        <a href="/2021/08/17/Docker-%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" class="archive-article-date">
+  	<time datetime="2021-08-17T06:30:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-08-17</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Docker</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/08/17/Docker-%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-charles手机端捕获数据" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/08/17/charles%E6%89%8B%E6%9C%BA%E7%AB%AF%E6%8D%95%E8%8E%B7%E6%95%B0%E6%8D%AE/">charles手机端捕获数据</a>
+    </h1>
+  
+
+        
+        <a href="/2021/08/17/charles%E6%89%8B%E6%9C%BA%E7%AB%AF%E6%8D%95%E8%8E%B7%E6%95%B0%E6%8D%AE/" class="archive-article-date">
+  	<time datetime="2021-08-17T05:42:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-08-17</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>推荐一款自己常用的捕获手机端数据工具:<strong>charles</strong></p>
+<p>注意:关于安卓7.0版本以上charles无法抓取https包的问题,这个因为测试都是公司的包，所以安卓开发那边会做相应处理打包，就不会出现问题了。</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/lovelygirlyuzhu/article/details/109645152">关于Charles的安装，Charles给手机链接代理，安装证书，安卓手机抓包的连接，以及配置</a> 这篇文章写得很不错的。</p>
+<blockquote>
+<p>常用的点</p>
+</blockquote>
+<p>在处理好PC端的charles的下载，安装，证书之类后。</p>
+<p>手机连接与电脑<strong>同一网络下</strong>的WIFI,手动设置<code>代理</code>，主机名<code>charles:Help-&gt;Local IP Addresses</code>,端口名<code>charles:Proxy-&gt;Proxy Settings-&gt;Port</code>。</p>
+<p>连接成功后，其实就可以捕获数据了。但是https的数据会显示错误，这时候就需要下载证书了。</p>
+<p>手机浏览器下载证书链接:<a target="_blank" rel="noopener" href="http://chls.pro/ssl,%E4%B8%8B%E8%BD%BD%E5%AE%8C%E5%90%8E%E3%80%82%E8%AE%A9%E6%89%8B%E6%9C%BA%E4%BF%A1%E4%BB%BB%E8%AF%81%E4%B9%A6%EF%BC%8C%E4%BE%8B%E5%A6%82:&quot;%E6%8C%87%E7%BA%B9%E4%B8%8E%E5%AF%86%E7%A0%81-%E5%85%B6%E4%BB%96%E5%AE%89%E8%A3%85%E9%80%89%E9%A1%B9-%E4%BB%8E%E5%AD%98%E5%82%A8%E8%A3%85%E7%BD%AE%E5%AE%89%E8%A3%85&quot;%E6%93%8D%E4%BD%9C%E4%BF%A1%E4%BB%BB%EF%BC%8C%E5%BD%93%E7%84%B6%E4%B8%8D%E5%90%8C%E6%89%8B%E6%9C%BA%E6%93%8D%E4%BD%9C%E4%BF%A1%E4%BB%BB%E7%9A%84%E8%B7%AF%E5%BE%84%E4%B8%8D%E4%B8%80%E5%AE%9A%E7%9B%B8%E5%90%8C%E3%80%82">http://chls.pro/ssl,下载完后。让手机信任证书，例如:&quot;指纹与密码-其他安装选项-从存储装置安装&quot;操作信任，当然不同手机操作信任的路径不一定相同。</a></p>
+<blockquote>
+<p>Charles抓包postman</p>
+</blockquote>
+<p>因为有很多测试再<code>postman</code>上面测试，那么如何让<code>postman</code>上面的数据被charles捕获，看下面这篇文章。</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/zhongyili_sohu/article/details/87881861">Charles抓包postman</a></p>
+<p>要想postman请求走charles，那么需要手动在postman设置代理，如下图</p>
+<p><img src="/2021/08/17/charles%E6%89%8B%E6%9C%BA%E7%AB%AF%E6%8D%95%E8%8E%B7%E6%95%B0%E6%8D%AE/1.png"></p>
+<blockquote>
+<p>Charles Android 抓包失败(未实践，因为内部有专门可捕捉包)</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/x2584179909/article/details/108376220">app抓不到包之将证书安装到系统证书中</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/mrxiagc/article/details/75329629">Charles Android 抓包失败SSLHandshake: Received fatal alert: certificate_unknown</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">工具推荐</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/08/17/charles%E6%89%8B%E6%9C%BA%E7%AB%AF%E6%8D%95%E8%8E%B7%E6%95%B0%E6%8D%AE/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Go-控制结构for循环loop" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1102,354 +1386,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2021/07/16/%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-hexo使用markdown图片无法显示问题" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/13/hexo%E4%BD%BF%E7%94%A8markdown%E5%9B%BE%E7%89%87%E6%97%A0%E6%B3%95%E6%98%BE%E7%A4%BA%E9%97%AE%E9%A2%98/">hexo使用markdown图片无法显示问题(引用,亲测可用)</a>
-    </h1>
-  
-
-        
-        <a href="/2021/07/13/hexo%E4%BD%BF%E7%94%A8markdown%E5%9B%BE%E7%89%87%E6%97%A0%E6%B3%95%E6%98%BE%E7%A4%BA%E9%97%AE%E9%A2%98/" class="archive-article-date">
-  	<time datetime="2021-07-13T02:56:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-07-13</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>hexo默认无法自动处理文章插入本地图片，需要通过扩展插件支持。</p>
-<blockquote>
-<p>如何处理图片路径问题</p>
-</blockquote>
-<ul>
-<li><p>配置_config.yml里面的post_asset_folder:false这个选项设置为true。</p>
-</li>
-<li><p>安装hexo-asset-image，运行hexo n “xxxx”来生成md博文时，/source/_posts文件夹内除了xxxx.md文件还有一个同名的文件夹，把图片放入该文件夹。</p>
-</li>
-<li><p>使用<code>![图片类型或空](存放图片文件夹名/图片名.png)</code>直接插入图片即可。</p>
-</li>
-</ul>
-<blockquote>
-<p>关于插件问题</p>
-</blockquote>
-<p>由于hexo3版本后对很多插件支持有问题，hexo-asset-image插件在处理data.permalink链接时出现路径错误，把年月去掉了，导致最后生成的路径为%d/xxx/xxx需要对其做兼容处理。通过判断当前版本是否等于3的版本做不同的路径分割。</p>
-<ul>
-<li><p>在代码中加入：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var version &#x3D; String(hexo.version).split(&#39;.&#39;);</span><br></pre></td></tr></table></figure>
-<p>&emsp;&emsp;</p>
-</li>
-<li><p>修改<code>date.permalink</code>处理：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var link &#x3D; data.permalink;  </span><br><span class="line">if(version.length &gt; 0 &amp;&amp; Number(version[0]) &#x3D;&#x3D; 3) </span><br><span class="line">    var beginPos &#x3D; getPosition(link, &#39;&#x2F;&#39;, 1) + 1; </span><br><span class="line">else </span><br><span class="line">    var beginPos &#x3D; getPosition(link, &#39;&#x2F;&#39;, 3) + 1;</span><br></pre></td></tr></table></figure>
-<p>重新生成静态文件即可正确显示。</p>
-</li>
-<li><p>可直接安装已经修改过得插件<code>npm install https://github.com/7ym0n/hexo-asset-image --sa</code>。</p>
-</li>
-</ul>
-<hr>
-<p>作者：菜鸡_快递到了<br>链接：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/3db6a61d3782">https://www.jianshu.com/p/3db6a61d3782</a><br>来源：简书<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
-<hr>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">随笔</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/07/13/hexo%E4%BD%BF%E7%94%A8markdown%E5%9B%BE%E7%89%87%E6%97%A0%E6%B3%95%E6%98%BE%E7%A4%BA%E9%97%AE%E9%A2%98/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-接口超时优化代码案例记录" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/13/%E6%8E%A5%E5%8F%A3%E8%B6%85%E6%97%B6%E4%BC%98%E5%8C%96%E4%BB%A3%E7%A0%81%E6%A1%88%E4%BE%8B%E8%AE%B0%E5%BD%95/">接口超时优化代码案例记录</a>
-    </h1>
-  
-
-        
-        <a href="/2021/07/13/%E6%8E%A5%E5%8F%A3%E8%B6%85%E6%97%B6%E4%BC%98%E5%8C%96%E4%BB%A3%E7%A0%81%E6%A1%88%E4%BE%8B%E8%AE%B0%E5%BD%95/" class="archive-article-date">
-  	<time datetime="2021-07-13T02:01:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-07-13</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>语言:PHP</strong></p>
-<p><strong>接口超时问题</strong>是一个比较常见的场景，当接口中包含有较多的<strong>数据库查询语句</strong>,并且涉及到<strong>循环执行</strong>这些查询语句时，执行时间就会变大很多，初期可能因为新表数据量少还在接受范围，当后期数据量变大后，可能就会消耗极的时间，甚至是超时。</p>
-<h3 id="方法一-延长可执行时间"><a href="#方法一-延长可执行时间" class="headerlink" title="方法一:延长可执行时间"></a>方法一:延长可执行时间</h3><p>对面这个问题，我们可以延长可执行时间，</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set_time_limit(<span class="number">30</span>); <span class="comment">//设置程序执行时间为30s</span></span><br></pre></td></tr></table></figure>
-
-<p>但这种方式,对用户其实特别不友好。除了一些特殊场景外，并不建议无限制的延长可执行时间。特别是<strong>不要</strong>将时间设置为<code>set_time_limit(0)</code>无限时长，这样一旦遇到死循环情况，执行就不会结束，可能会导致大量进程堆积，极大的消耗CPU。</p>
-<h3 id="方法二-消息队列"><a href="#方法二-消息队列" class="headerlink" title="方法二:消息队列"></a>方法二:消息队列</h3><p>通过<strong>消息队列</strong>的方式，将请求<strong>插入队列</strong>(可以借助Redis等缓存)，直接返回结果。再脚本通过获取<strong>队列信息</strong>执行需要的操作。</p>
-<ul>
-<li>优点：这样返回的速度会极快，而且内容也可以有效执行。</li>
-<li>缺点：脚本如果执行失败，但之前请求已经返回成功。</li>
-<li>优化： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 脚本完成时通过请求**回调接口**告知执行结果;(当然,脚本执行过程中的日志记录也很重要)</span><br><span class="line">2. 前端收到接口返回成功信息时，展示给用户的内容&quot;友好&quot;调整，例如执行完成、已执行。前端提供查看结果页，及时更新状态;</span><br><span class="line">3. 如果明确执行的时间是较长的，前端可以适当做一些等待动画，让整个完成等待时间有一定延长，对后续用户查看结果是友好的.</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<h3 id="方法三-php-接口提前响应返回，然后继续执行后台逻辑"><a href="#方法三-php-接口提前响应返回，然后继续执行后台逻辑" class="headerlink" title="方法三:php 接口提前响应返回，然后继续执行后台逻辑"></a>方法三:php 接口提前响应返回，然后继续执行后台逻辑</h3><p>php 程序(以 php5.6 版本进行演示) 是可以在接口中，进行一些异步操作的， 不过写法有点特殊。</p>
-<h4 id="1-ob-end-clean"><a href="#1-ob-end-clean" class="headerlink" title="1. ob_end_clean()"></a>1. ob_end_clean()</h4><p>这个是清除之前的缓冲内容，这是必需的，如果之前的缓存不为空的话，里面可能有 http 头或者其它内容，导致后面的内容不能及时的输出</p>
-<h4 id="2-header-“Connection-close”"><a href="#2-header-“Connection-close”" class="headerlink" title="2. header(“Connection: close”)"></a>2. header(“Connection: close”)</h4><p>告诉浏览器，连接关闭了，这样浏览器就不用等待服务器的响应。</p>
-<h4 id="3-header-“HTTP-1-1-200-OK”"><a href="#3-header-“HTTP-1-1-200-OK”" class="headerlink" title="3. header(“HTTP/1.1 200 OK”)"></a>3. header(“HTTP/1.1 200 OK”)</h4><p>发送 200 状态码，要不然可能浏览器会重试，特别是有代理的情况下</p>
-<h4 id="4-ob-start"><a href="#4-ob-start" class="headerlink" title="4. ob_start()"></a>4. ob_start()</h4><p>开启当前代码缓冲</p>
-<h4 id="5-ob-end-flush"><a href="#5-ob-end-flush" class="headerlink" title="5. ob_end_flush()"></a>5. ob_end_flush()</h4><p>输出当前缓冲</p>
-<h4 id="6-flush"><a href="#6-flush" class="headerlink" title="6. flush()"></a>6. flush()</h4><p>输出PHP缓冲</p>
-<h4 id="7-ignore-user-abort-true"><a href="#7-ignore-user-abort-true" class="headerlink" title="7. ignore_user_abort(true)"></a>7. ignore_user_abort(true)</h4><p>在关闭连接后，继续运行php脚本</p>
-<h4 id="8-set-time-limit-0"><a href="#8-set-time-limit-0" class="headerlink" title="8. set_time_limit(0)"></a>8. set_time_limit(0)</h4><p>no time limit，不设置超时时间（根据实际情况使用）</p>
-<h4 id="9-fastcgi-finish-request"><a href="#9-fastcgi-finish-request" class="headerlink" title="9. fastcgi_finish_request()"></a>9. fastcgi_finish_request()</h4><p>这个在有用 fpm 的时候，会用到， 也是将提前返回响应，然后接下来的逻辑后台执行。</p>
-<p>封装函数:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 异步的成功返回函数</span><br><span class="line">public function returnSuccessJsonDataAsync($otherReturnData &#x3D; [], $timeout &#x3D; 60, $allowCors &#x3D; true)&#123;</span><br><span class="line">    $msgData &#x3D; [&#39;code&#39; &#x3D;&gt; 1, &#39;msg&#39; &#x3D;&gt; &#39;Success&#39;];</span><br><span class="line">    if(empty($otherReturnData))&#123;</span><br><span class="line">        $data &#x3D; $msgData;</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        $data &#x3D; array_merge($msgData, $otherReturnData);</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;&#x2F; 接下来提前告诉 浏览器返回， 其他的后台允许</span><br><span class="line">    ob_end_clean();</span><br><span class="line">    &#x2F;&#x2F;告诉浏览器，连接关闭了，这样浏览器就不用等待服务器的响应</span><br><span class="line">    header(&quot;Connection: close&quot;);</span><br><span class="line">    header(&quot;HTTP&#x2F;1.1 200 OK&quot;);</span><br><span class="line">    ob_start();</span><br><span class="line">    $str &#x3D; json_encode($data);</span><br><span class="line">    header(&#39;Content-type: application&#x2F;json&#39;);</span><br><span class="line">    header(&#39;Content-Length: &#39; . strlen($str));</span><br><span class="line">    </span><br><span class="line">    &#x2F;&#x2F; 如果允许跨域，那么就设置跨域头</span><br><span class="line">    if($allowCors)&#123;</span><br><span class="line">        $origin &#x3D; Yii::$app-&gt;request-&gt;getHeaders()-&gt;get(&#39;Origin&#39;);</span><br><span class="line">        header(&quot;Access-Control-Allow-Origin: &#123;$origin&#125;&quot;);</span><br><span class="line">        header(&#39;Access-Control-Allow-Credentials: true&#39;);</span><br><span class="line">        header(&#39;Access-Control-Allow-Methods: POST, GET, OPTIONS&#39;);</span><br><span class="line">        header(&#39;Access-Control-Allow-Headers: origin, content-type&#39;);</span><br><span class="line">        header(&#39;Access-Control-Max-Age: 86400&#39;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    echo $str;</span><br><span class="line"></span><br><span class="line">    ob_end_flush();</span><br><span class="line">    if(ob_get_length())&#123;</span><br><span class="line">        ob_flush();</span><br><span class="line">    &#125;</span><br><span class="line">    flush();</span><br><span class="line">    &#x2F;&#x2F; yii或yaf默认不会立即输出，加上此句即可（前提是用的fpm）</span><br><span class="line">    if (function_exists(&quot;fastcgi_finish_request&quot;)) &#123;</span><br><span class="line">        fastcgi_finish_request(); &#x2F;&#x2F; 响应完成, 立即返回到前端,关闭连接</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;******** background process starts here ********&#x2F;</span><br><span class="line">    &#x2F;&#x2F;在关闭连接后，继续运行php脚本</span><br><span class="line">    ignore_user_abort(true);</span><br><span class="line">    &#x2F;&#x2F;no time limit，不设置超时时间（根据实际情况使用）</span><br><span class="line">    set_time_limit($timeout);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/superhosts/article/details/42292053">深入理解ob_flush和flush的区别(ob_flush()与flush()使用方法)</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.php.cn/php-weizijiaocheng-370354.html">php：flush()和ob_flush(),ob_end_flush()用法区别详解</a></p>
-<h3 id="方法四-异步并行-引入swoole或用go"><a href="#方法四-异步并行-引入swoole或用go" class="headerlink" title="方法四:异步并行,引入swoole或用go"></a>方法四:异步并行,引入swoole或用go</h3>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">优化案例</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/07/13/%E6%8E%A5%E5%8F%A3%E8%B6%85%E6%97%B6%E4%BC%98%E5%8C%96%E4%BB%A3%E7%A0%81%E6%A1%88%E4%BE%8B%E8%AE%B0%E5%BD%95/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Go-解决go的fatal-error-concurrent-map-writes-map非并发安全" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/06/Go-%E8%A7%A3%E5%86%B3go%E7%9A%84fatal-error-concurrent-map-writes-map%E9%9D%9E%E5%B9%B6%E5%8F%91%E5%AE%89%E5%85%A8/">Go-解决go的fatal error: concurrent map writes map非并发安全</a>
-    </h1>
-  
-
-        
-        <a href="/2021/07/06/Go-%E8%A7%A3%E5%86%B3go%E7%9A%84fatal-error-concurrent-map-writes-map%E9%9D%9E%E5%B9%B6%E5%8F%91%E5%AE%89%E5%85%A8/" class="archive-article-date">
-  	<time datetime="2021-07-06T03:13:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-07-06</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>普及概念：</p>
-</blockquote>
-<h4 id="普及1"><a href="#普及1" class="headerlink" title="普及1"></a>普及1</h4><p><a target="_blank" rel="noopener" href="https://studygolang.com/articles/12972?fr=sidebar">Golang sync.WaitGroup的用法</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">    &quot;fmt&quot;</span><br><span class="line">    &quot;time&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main()&#123;</span><br><span class="line">    for i :&#x3D; 0; i &lt; 100 ; i++&#123;</span><br><span class="line">        go fmt.Println(i) &#x2F;&#x2F;并行</span><br><span class="line">    &#125;</span><br><span class="line">    time.Sleep(time.Second)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>上述方法，其实就是通过sleep等待go并行线程都完成再往下走，但是这个也是有问题的因为sleep的时间无法精确。</p>
-<ul>
-<li>可以考虑使用管道来完成上述操作：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">func main() &#123;</span><br><span class="line">    c :&#x3D; make(chan bool, 100)</span><br><span class="line">    for i :&#x3D; 0; i &lt; 100; i++ &#123;</span><br><span class="line">        go func(i int) &#123;</span><br><span class="line">            fmt.Println(i)</span><br><span class="line">            c &lt;- true</span><br><span class="line">        &#125;(i)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    for i :&#x3D; 0; i &lt; 100; i++ &#123;</span><br><span class="line">        &lt;-c</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>首先可以肯定的是使用管道是能达到我们的目的的，而且不但能达到目的，还能十分完美的达到目的。</p>
-<ul>
-<li>但go语言中有一个其他的工具<code>sync.WaitGroup</code> 能更加方便的帮助我们达到这个目的。</li>
-</ul>
-<p><code>WaitGroup</code> 对象内部有一个计数器，最初从0开始，它有三个方法：<code>Add(), Done(), Wait()</code> 用来控制计数器的数量。<code>Add(n)</code> 把计数器设置为<code>n</code> ，<code>Done()</code> 每次把计数器<code>-1</code> ，<code>wait()</code> 会阻塞代码的运行，直到计数器地值减为0。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">func main() &#123;</span><br><span class="line">    wg :&#x3D; sync.WaitGroup&#123;&#125;</span><br><span class="line">    wg.Add(100) &#x2F;&#x2F;计算器设置为100</span><br><span class="line">    for i :&#x3D; 0; i &lt; 100; i++ &#123;</span><br><span class="line">        go func(i int) &#123;</span><br><span class="line">            fmt.Println(i)</span><br><span class="line">            wg.Done() &#x2F;&#x2F;减1</span><br><span class="line">        &#125;(i)</span><br><span class="line">    &#125;</span><br><span class="line">    wg.Wait() &#x2F;&#x2F;等待100减到0，取消阻塞，往下执行</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>但是要注意：</p>
-<p>1.我们不能使用<code>Add()</code> 给<code>wg</code> 设置一个负值</p>
-<p>2.WaitGroup对象不是一个引用类型</p>
-<p>WaitGroup对象不是一个引用类型，在通过函数传值的时候需要使用地址：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">func main() &#123;</span><br><span class="line">    wg :&#x3D; sync.WaitGroup&#123;&#125;</span><br><span class="line">    wg.Add(100)</span><br><span class="line">    for i :&#x3D; 0; i &lt; 100; i++ &#123;</span><br><span class="line">        go f(i, &amp;wg)</span><br><span class="line">    &#125;</span><br><span class="line">    wg.Wait()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 一定要通过指针传值，不然进程会进入死锁状态</span><br><span class="line">func f(i int, wg *sync.WaitGroup) &#123; </span><br><span class="line">    fmt.Println(i)</span><br><span class="line">    wg.Done()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="普及2"><a href="#普及2" class="headerlink" title="普及2"></a>普及2</h4><p><a target="_blank" rel="noopener" href="http://c.biancheng.net/view/61.html">Go语言defer (延迟执行语句)</a></p>
-<p>Go语言的 defer 语句会将其后面跟随的语句进行延迟处理，在 defer 归属的函数即将返回时，将延迟处理的语句按 defer 的<strong>逆序</strong>进行执行，也就是说，<strong>先</strong>被 defer 的语句<strong>最后</strong>被执行，<strong>最后</strong>被 defer 的语句，<strong>最先</strong>被执行。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">好处及用处就不用说了。</span><br><span class="line">这边讲关于sync.WaitGroup的实际应用。</span><br><span class="line">defer wg.Done()  &#x2F;&#x2F;可以将这条语句放在函数中，不用担心句末遗忘，或者后续添加内容遗忘移动位置</span><br></pre></td></tr></table></figure>
-
-<h4 id="普及3"><a href="#普及3" class="headerlink" title="普及3"></a>普及3</h4><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/setevn/p/8977922.html">golang中sync.RWMutex和sync.Mutex区别</a></p>
-<p>golang中sync包实现了两种锁<strong>Mutex （互斥锁）</strong>和<strong>RWMutex（读写锁）</strong>，其中RWMutex是基于Mutex实现的，只读锁的实现使用类似引用计数器的功能．</p>
-<p>其中<strong>Mutex</strong>为互斥锁，Lock()加锁，Unlock()解锁，使用Lock()加锁后，便不能再次对其进行加锁，直到利用Unlock()解锁对其解锁后，才能再次加锁．适用于<strong>读写不确定</strong>场景，即读写次数没有明显的区别，并且只允许只有一个读或者写的场景，所以该锁叶叫做<strong>全局锁</strong>。</p>
-<p><strong>RWMutex</strong>是一个读写锁，该锁可以加多个读锁或者一个写锁，其经常用于读次数远远多于写次数的场景．</p>
-<p><strong><a target="_blank" rel="noopener" href="https://blog.csdn.net/u010230794/article/details/78554370">RWMutex的使用主要事项</a></strong></p>
-<ul>
-<li><strong>1、读锁的时候无需等待读锁的结束</strong></li>
-<li><strong>2、读锁的时候要等待写锁的结束</strong></li>
-<li><strong>3、写锁的时候要等待读锁的结束</strong></li>
-<li><strong>4、写锁的时候要等待写锁的结束</strong></li>
-</ul>
-<blockquote>
-<p>正题</p>
-</blockquote>
-<h4 id="问题代码"><a href="#问题代码" class="headerlink" title="问题代码"></a>问题代码</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">var wg sync.WaitGroup</span><br><span class="line">sortUrl :&#x3D; make(map[int]string) &#x2F;&#x2F;map</span><br><span class="line">for index, url :&#x3D; range matchStr &#123;</span><br><span class="line">	wg.Add(1)</span><br><span class="line">	go func(url string, i int) &#123;</span><br><span class="line">		defer wg.Done()</span><br><span class="line">		screenChangeUrl, err :&#x3D; ChangeImageToOurService(url, accountId, &quot;Claw-GooglePlay-AppInfo-Screenshot-&quot;, i, AMS_STORE_PREFIX)</span><br><span class="line">		if err &#x3D;&#x3D; nil &#123;</span><br><span class="line">			sortUrl[i] &#x3D; screenChangeUrl &#x2F;&#x2F;问题</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;(url, index)</span><br><span class="line">&#125;</span><br><span class="line">wg.Wait()</span><br></pre></td></tr></table></figure>
-
-<h4 id="为什么会报”fatal-error-concurrent-map-writes-map”？"><a href="#为什么会报”fatal-error-concurrent-map-writes-map”？" class="headerlink" title="为什么会报”fatal error: concurrent map writes map”？"></a>为什么会报”fatal error: concurrent map writes map”？</h4><p>因为map不是并发安全的 , 当有多个并发的groutine读写同一个map时，会出现panic错误。</p>
-<h4 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h4><p>在继续使用Map类型的情况下，常规解决方案一般分为两种。</p>
-<ul>
-<li>并发的groutine定义多个map，进行读写。这样就不存在同时读写一个map。这种的试用场景就是，</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">a :&#x3D; make(map[int]string)</span><br><span class="line">b :&#x3D; make(map[int]string)</span><br><span class="line">go func()&#123;</span><br><span class="line">   a[1] &#x3D; 5</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">go func()&#123;</span><br><span class="line">    b[1] &#x3D;5</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<ul>
-<li>但更多是通过锁(适合上面代码)</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">var wg sync.WaitGroup</span><br><span class="line">locker :&#x3D; new(sync.Mutex) &#x2F;&#x2F;互斥锁，这边也可以根据场景考虑用写锁</span><br><span class="line">sortUrl :&#x3D; make(map[int]string)</span><br><span class="line">for index, url :&#x3D; range matchStr &#123;</span><br><span class="line">    wg.Add(1)</span><br><span class="line">    go func(url string, i int) &#123;</span><br><span class="line">        locker.Lock() &#x2F;&#x2F;锁定</span><br><span class="line">        defer wg.Done()</span><br><span class="line">        defer locker.Unlock() &#x2F;&#x2F;解锁</span><br><span class="line">        screenChangeUrl, err :&#x3D; ChangeImageToOurService(url, accountId, &quot;Claw-GooglePlay-AppInfo-Screenshot-&quot;, i, AMS_STORE_PREFIX)</span><br><span class="line">        if err &#x3D;&#x3D; nil &#123;</span><br><span class="line">            sortUrl[i] &#x3D; screenChangeUrl</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;(url, index)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这样就可以有效解决报错问题。但是会无形造成串行，因为都在等待解锁。</p>
-<h4 id="使用并行的解决方案"><a href="#使用并行的解决方案" class="headerlink" title="使用并行的解决方案"></a>使用并行的解决方案</h4><ul>
-<li>所以，我们想了两种方案，一种弃用map类型(这个该文章不描述)，另一种使用sync.Map(版本支持)。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">因为map本就是不适合并行的，所以go官方推出了sync.Map。</span><br><span class="line">通过测试，</span><br><span class="line">		var wg sync.WaitGroup</span><br><span class="line">		var t2 &#x3D; time.Now()</span><br><span class="line">		var sortUrl sync.Map &#x2F;&#x2F;新增</span><br><span class="line">		start :&#x3D; time.Now()</span><br><span class="line">		for index, url :&#x3D; range matchStr &#123;</span><br><span class="line">			wg.Add(1)</span><br><span class="line">			go func(url string, i int) &#123;</span><br><span class="line">				defer wg.Done()</span><br><span class="line">				urlString :&#x3D; &quot;url&quot; + &quot;,&quot; + fmt.Sprintf(&quot;%d&quot;,i)</span><br><span class="line">				if i &#x3D;&#x3D; 2 &#123;</span><br><span class="line">					time.Sleep(3 * time.Second)</span><br><span class="line">				&#125;</span><br><span class="line">				if i &#x3D;&#x3D; 3 &#123;</span><br><span class="line">					time.Sleep(8 * time.Second)</span><br><span class="line">				&#125;</span><br><span class="line">				sortUrl.Store(i, urlString) &#x2F;&#x2F;新增</span><br><span class="line">			&#125;(url, index)</span><br><span class="line">		&#125;</span><br><span class="line">		wg.Wait()</span><br><span class="line">		elapsed :&#x3D; time.Since(start)</span><br><span class="line">log.Debug(elapsed)</span><br></pre></td></tr></table></figure>
-<p>结果:elapsed为8.005294657s，证明可以并行。</p>
-<ul>
-<li>但是sync.Map和Map的使用却是有很大区别，下面介绍sync.Map的使用。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">var sortUrl sync.Map &#x2F;&#x2F;定义</span><br><span class="line">sortUrl.Store(i, urlString) &#x2F;&#x2F;使用i为key,urlString为value</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 遍历所有sync.Map中的键值对</span><br><span class="line">sortUrl.Range(func(k, v interface&#123;&#125;) bool &#123;</span><br><span class="line">  key :&#x3D; k.(int) &#x2F;&#x2F;注意转换成int类型</span><br><span class="line">  keys &#x3D; append(keys, key)</span><br><span class="line">  return true</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">for k :&#x3D; range keys &#123;</span><br><span class="line">  key,_ :&#x3D; sortUrl.Load(k) &#x2F;&#x2F;获取值，返回value interface&#123;&#125;, ok bool</span><br><span class="line">  keyValue :&#x3D; key.(string) &#x2F;&#x2F;转成string类型</span><br><span class="line">  uploadSuccessUrl &#x3D; append(uploadSuccessUrl, keyValue)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<p>更多操作可参考文档:<a target="_blank" rel="noopener" href="http://c.biancheng.net/view/34.html">Go语言sync.Map (在并发环境中使用的map)</a></p>
-<h4 id="附录介绍一些需要的类型转换文档"><a href="#附录介绍一些需要的类型转换文档" class="headerlink" title="附录介绍一些需要的类型转换文档:"></a>附录介绍一些需要的类型转换文档:</h4><p><a target="_blank" rel="noopener" href="https://www.jb51.net/article/142447.htm">Golang 中整数转字符串的方法</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/xujiamin0022016/article/details/109226605">golang-interface转string</a><br><a target="_blank" rel="noopener" href="https://studygolang.com/articles/7323">golang学习之interface与其它类型转换</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">GO</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/07/06/Go-%E8%A7%A3%E5%86%B3go%E7%9A%84fatal-error-concurrent-map-writes-map%E9%9D%9E%E5%B9%B6%E5%8F%91%E5%AE%89%E5%85%A8/">展开全文 >></a>
         </p>
       
 
