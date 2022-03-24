@@ -32,9 +32,7 @@
 
   
 
-<meta name="generator" content="Hexo 5.4.0"><link rel="stylesheet" href="/assets/css/APlayer.min.css" class="aplayer-style-marker">
-<script src="/assets/js/APlayer.min.js" class="aplayer-script-marker"></script>
-</head>
+<meta name="generator" content="Hexo 5.4.0"></head>
 
 <body>
   <div id="container" q-class="show:isCtnShow">
@@ -209,6 +207,402 @@
           </div>
           <div id="js-content" class="content-ll">
             
+  
+    <article id="post-Docker-部署gitlab" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/">Docker-部署gitlab</a>
+    </h1>
+  
+
+        
+        <a href="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/" class="archive-article-date">
+  	<time datetime="2021-10-02T14:16:10.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-02</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="一、前提条件"><a href="#一、前提条件" class="headerlink" title="一、前提条件"></a>一、前提条件</h3><p>1.存在docker<br>2.服务器可以联网（外网）<br>3.服务器内存至少4G（内存不够会出现502错误）</p>
+<p>内存不足502错误如下图所示：</p>
+<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g1.png"></p>
+<h3 id="二、安装"><a href="#二、安装" class="headerlink" title="二、安装"></a>二、安装</h3><p>安装环境:Centos7</p>
+<p>1.查找GitLab镜像</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker search gitlab</span><br></pre></td></tr></table></figure>
+
+<p>2.拉取gitlab docker镜像</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull gitlab&#x2F;gitlab-ce:latest</span><br></pre></td></tr></table></figure>
+
+<p>3.运行GitLab并运行容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">docker run \</span><br><span class="line">-itd \</span><br><span class="line">-p 9980:80 \</span><br><span class="line">-p 9922:22 \</span><br><span class="line">-v &#x2F;usr&#x2F;local&#x2F;gitlab-test&#x2F;etc:&#x2F;etc&#x2F;gitlab \</span><br><span class="line">-v &#x2F;usr&#x2F;local&#x2F;gitlab-test&#x2F;log:&#x2F;var&#x2F;log&#x2F;gitlab \</span><br><span class="line">-v &#x2F;usr&#x2F;local&#x2F;gitlab-test&#x2F;opt:&#x2F;var&#x2F;opt&#x2F;gitlab \</span><br><span class="line">--restart always \</span><br><span class="line">--privileged&#x3D;true \</span><br><span class="line">--name gitlab-test \</span><br><span class="line">gitlab&#x2F;gitlab-ce</span><br></pre></td></tr></table></figure>
+<p>成功会返回的容器ID哦！！<br>　　<br>命令解释：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">-i 以交互模式运行容器，通常与 -t 同时使用命令解释：</span><br><span class="line"></span><br><span class="line">-t 为容器重新分配一个伪输入终端，通常与 -i 同时使用</span><br><span class="line"></span><br><span class="line">-d 后台运行容器，并返回容器ID</span><br><span class="line"></span><br><span class="line">-p 9980:80 将容器内80端口映射至宿主机9980端口，这是访问gitlab的端口</span><br><span class="line"></span><br><span class="line">-p 9922:22 将容器内22端口映射至宿主机9922端口，这是访问ssh的端口</span><br><span class="line"></span><br><span class="line">-v &#x2F;usr&#x2F;local&#x2F;gitlab-test&#x2F;etc:&#x2F;etc&#x2F;gitlab 将容器&#x2F;etc&#x2F;gitlab目录挂载到宿主机&#x2F;usr&#x2F;local&#x2F;gitlab-test&#x2F;etc目录下，若宿主机内此目录不存在将会自动创建，其他两个挂载同这个一样</span><br><span class="line"></span><br><span class="line">--restart always 容器自启动</span><br><span class="line"></span><br><span class="line">--privileged&#x3D;true 让容器获取宿主机root权限</span><br><span class="line"></span><br><span class="line">--name gitlab-test 设置容器名称为gitlab-test</span><br><span class="line"></span><br><span class="line">gitlab&#x2F;gitlab-ce 镜像的名称，这里也可以写镜像ID</span><br></pre></td></tr></table></figure>
+
+<p><strong>重点：接下来的配置请在容器内进行修改，不要在挂载到宿主机的文件上进行修改。否则可能出现配置更新不到容器内，或者是不能即时更新到容器内，导致gitlab启动成功，但是无法访问</strong></p>
+<p>4.进入容器内</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it gitlab-test &#x2F;bin&#x2F;bash</span><br></pre></td></tr></table></figure>
+
+<p>5.修改gitlab.rb</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 打开文件</span><br><span class="line">vi &#x2F;etc&#x2F;gitlab&#x2F;gitlab.rb</span><br><span class="line"> </span><br><span class="line"># 这个文件是全注释掉了的，所以直接在首行添加如下配置</span><br><span class="line">  </span><br><span class="line"># gitlab访问地址，可以写域名。如果端口不写的话默认为80端口 （图片上拼写错误，正确的是external_url）</span><br><span class="line">external_url &#39;http:&#x2F;&#x2F;192.168.201.5:9980&#39;</span><br><span class="line"># ssh主机ip</span><br><span class="line">gitlab_rails[&#39;gitlab_ssh_host&#39;] &#x3D; &#39;192.168.201.5&#39;</span><br><span class="line"># ssh连接端口</span><br><span class="line">gitlab_rails[&#39;gitlab_shell_ssh_port&#39;] &#x3D; 9922</span><br></pre></td></tr></table></figure>
+
+<p>6.修改gitlab.yml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 打开文件</span><br><span class="line">vi &#x2F;opt&#x2F;gitlab&#x2F;embedded&#x2F;service&#x2F;gitlab-rails&#x2F;config&#x2F;gitlab.yml</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g2.png"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># 配置解释：</span><br><span class="line"> </span><br><span class="line"># host：访问的IP  192.168.201.5</span><br><span class="line"> </span><br><span class="line"># port：访问的端口  9980</span><br><span class="line"> </span><br><span class="line"># 以上两个和gitlab.rb内external_url的配置保持一致</span><br><span class="line"> </span><br><span class="line"># ssh_host：ssh主机ip，和gitlab.rb内gitlab_rails[&#39;gitlab_ssh_host&#39;]保持一致</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 配置二：找到gitlab_shell标签下的ssh_port，将其修改为9922</span><br><span class="line">#（和gitlab.rb内gitlab_rails[&#39;gitlab_shell_ssh_port&#39;] 保持一致）</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g3.png"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># 保存并退出:wq</span><br></pre></td></tr></table></figure>
+
+<p>7.让修改后的配置生效</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitlab-ctl reconfigure</span><br></pre></td></tr></table></figure>
+
+<p>8.重启gitlab</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitlab-ctl restart</span><br></pre></td></tr></table></figure>
+
+<p>9.退出容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exit</span><br></pre></td></tr></table></figure>
+
+<p>10.在游览器输入如下地址，访问gitlab（eaxternal_url配置的就是这个）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:192.168.201.5:9980</span><br></pre></td></tr></table></figure>
+
+<p>如果访问不成功的话：</p>
+<p>（1）   进入容器查看gitlab.rb和gitlab.yml文件是否配置成功</p>
+<p>（2）   查看防火墙是否开放9980、9922端口</p>
+<p>11.依然访问不成功！！</p>
+<p>确认防火墙firewall 和 iptables 都没有阻止端口。gitlab也运行成功，但是无法访问！！</p>
+<p>查看端口,确实有监听9980和9922端口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -lntp</span><br></pre></td></tr></table></figure>
+
+<p>但是telnet还是被拒绝</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">telnet 192.168.201.5 9980</span><br></pre></td></tr></table></figure>
+
+<p>查看了了日志，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ docker logs -f -t  --tail&#x3D;100 gitlab-test | grep &quot;failed&quot;</span><br><span class="line"></span><br><span class="line">021&#x2F;09&#x2F;27 16:47:03 [crit] 929#0: *54 connect() to unix:&#x2F;var&#x2F;opt&#x2F;gitlab&#x2F;gitlab-workhorse&#x2F;sockets&#x2F;socket failed (2: No such file or directory) while connecting</span><br><span class="line">to upstream, client: 127.0.0.1, server: 756dc32e9be4, request: &quot;GET &#x2F;help HTTP&#x2F;1.1&quot;, upstream: &quot;http:&#x2F;&#x2F;unix:&#x2F;var&#x2F;opt&#x2F;gitlab&#x2F;gitlab-work</span><br><span class="line"></span><br><span class="line">实时查看gitlab的输出日志(也能找到上面错误)</span><br><span class="line">gitlab-ctl tail</span><br><span class="line"></span><br><span class="line">查看gitlab当前的启动状态(正常)</span><br><span class="line">gitlab-ctl status</span><br></pre></td></tr></table></figure>
+
+<p>于是网上搜了方法,docker 镜像启动成功但是无法访问</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">解决办法：</span><br><span class="line"></span><br><span class="line">vi &#x2F;etc&#x2F;sysctl.conf 或者</span><br><span class="line"></span><br><span class="line">vi &#x2F;usr&#x2F;lib&#x2F;sysctl.d&#x2F;00-system.conf 添加如下代码： net.ipv4.ip_forward&#x3D;1</span><br><span class="line"></span><br><span class="line">重启network服务</span><br><span class="line"></span><br><span class="line">systemctl restart network 查看是否修改成功</span><br><span class="line"></span><br><span class="line">sysctl net.ipv4.ip_forward 如果返回为“net.ipv4.ip_forward &#x3D; 1”则表示成功了</span><br></pre></td></tr></table></figure>
+<p>但因为原本就是”net.ipv4.ip_forward = 1”，所以也不是这个原因。</p>
+<p>还提升了虚拟机内存，但同样无法访问。</p>
+<p>最后，发现了gitlab对8080端口是有需求的，所以kill -9相关进程后，发现可以访问了(还是要等待一段时间)。</p>
+<p>12.第一次访问默认是root账户，会需要修改密码（密码至少8位数，出现如下界面就基本上部署成功了）</p>
+<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g4.png"></p>
+<p>13.输入新密码后进行登录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root&#x2F;gitlab123456</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g5.png"></p>
+<p>14.登录后界面如下图，创建一个新项目</p>
+<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g6.png"></p>
+<p>15.输入信息，创建项目</p>
+<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g7.png"></p>
+<p>16.检查这里两处的ip的端口是否是你配置的</p>
+<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g8.png"></p>
+<p>如果这里两处的端口和ip和配置的不一样，再次进入容器检查gitlab.yml文件</p>
+<p>如下图显示：</p>
+<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g9.png"></p>
+<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g10.png"></p>
+<p>若不一样，将其修改为你的配置，然后:wq，再进行下面的操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gitlab-ctl reconfigure</span><br><span class="line">gitlab-ctl restart</span><br></pre></td></tr></table></figure>
+
+<p>17.安装到此结束</p>
+<h3 id="三、关闭用户注册"><a href="#三、关闭用户注册" class="headerlink" title="三、关闭用户注册"></a>三、关闭用户注册</h3><p>1.使用root用户登录gitlab</p>
+<p>2.点击【Admin Area】</p>
+<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g11.png"></p>
+<p>3.点击【Settings】</p>
+<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g12.png"></p>
+<p>4.点击Sign-in restrictions这一栏的【Expand】</p>
+<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g13.png"></p>
+<p>5.取消勾选</p>
+<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g14.png"></p>
+<p>6.往下滑动，找到保存按钮，点击保存</p>
+<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g15.png"></p>
+<p>7.进入登录界面，发现注册的窗口已经消失了</p>
+<p><img src="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/d_g16.png"></p>
+<h3 id="四、邮件配置"><a href="#四、邮件配置" class="headerlink" title="四、邮件配置"></a>四、邮件配置</h3><h3 id="五、自动备份配置"><a href="#五、自动备份配置" class="headerlink" title="五、自动备份配置"></a>五、自动备份配置</h3><h3 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h3><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/diaomina/p/12830449.html">docker部署gitlab</a></p>
+<h3 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h3><p>虽然，这几篇文章没有真正帮助到点，但也给了启迪。让我关掉已占用的8080端口，在此附上链接。</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/zuxing/articles/9329152.html">docker安装配置gitlab详细过程</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/xiayuandongcn/article/details/119871356">centos7 gitlab14搭建完成后，无法访问的问题处理（“error“:“badgateway: failed to receive response: dial unix /var/opt）</a> 这篇有帮助，但未实践成功。因为直接kill了8080端口占用进程。</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/wangxicoding/article/details/43738137">我所遇到的GitLab 502问题的解决</a></p>
+<p>比较实用的几篇</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/kofsony/p/11103852.html">docker启动,重启,关闭命令</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/kreo/p/4368811.html">CentOS7安装iptables防火墙</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/zl1991/p/10531726.html">docker 端口映射 及外部无法访问问题</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">docker</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/10/02/Docker-%E9%83%A8%E7%BD%B2gitlab/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Docker-入门篇" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/02/Docker-%E5%85%A5%E9%97%A8%E7%AF%87/">Docker入门教程</a>
+    </h1>
+  
+
+        
+        <a href="/2021/10/02/Docker-%E5%85%A5%E9%97%A8%E7%AF%87/" class="archive-article-date">
+  	<time datetime="2021-10-02T13:39:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-02</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="安装Docker"><a href="#安装Docker" class="headerlink" title="安装Docker"></a>安装Docker</h2><h3 id="安装环境"><a href="#安装环境" class="headerlink" title="安装环境"></a>安装环境</h3><p>此处在Centos7进行安装，可以使用以下命令查看CentOS版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsb_release -a</span><br></pre></td></tr></table></figure>
+
+<p>在 CentOS 7安装docker要求系统为64位、系统内核版本为 3.10 以上，可以使用以下命令查看</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname -r</span><br></pre></td></tr></table></figure>
+
+<h3 id="用yum源安装"><a href="#用yum源安装" class="headerlink" title="用yum源安装"></a>用yum源安装</h3><p><strong>查看是否已安装docker列表</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum list installed | grep docker</span><br></pre></td></tr></table></figure>
+
+<p><strong>安装docker</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install docker</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/kingsonfu/p/11576797.html">linux 安装docker</a></p>
+<h3 id="查找docker安装路径"><a href="#查找docker安装路径" class="headerlink" title="查找docker安装路径"></a>查找docker安装路径</h3><p>Linux系统下查找安装包所在目录的方法,rpm查找安装包路径</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Linux rpm 命令用于管理套件</span><br><span class="line">参数说明：</span><br><span class="line">-a 　查询所有套件。</span><br><span class="line">-l 　显示套件的文件列表。</span><br><span class="line">-q 　使用询问模式，当遇到任何问题时，rpm指令会先询问用户</span><br><span class="line"></span><br><span class="line">rpm -qa | grep docker</span><br><span class="line"></span><br><span class="line">rpm -ql docker-ce-19.03.13-3.el7.x86_64</span><br><span class="line"></span><br><span class="line">which</span><br><span class="line">使用指令&quot;which&quot;查看&quot;nginx&quot;的绝对路径，输入如下命令</span><br><span class="line">which nginx</span><br><span class="line"></span><br><span class="line">whereis</span><br><span class="line">使用 whereis 命令，能够方便的定位到文件系统中可执行文件的位置</span><br><span class="line">whereis nginx</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看是否安装成功"><a href="#查看是否安装成功" class="headerlink" title="查看是否安装成功"></a>查看是否安装成功</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># docker version 或者# docker info</span><br></pre></td></tr></table></figure>
+
+<h3 id="Docker-需要用户具有-sudo-权限，为了避免每次命令都输入sudo，可以把用户加入-Docker-用户组"><a href="#Docker-需要用户具有-sudo-权限，为了避免每次命令都输入sudo，可以把用户加入-Docker-用户组" class="headerlink" title="Docker 需要用户具有 sudo 权限，为了避免每次命令都输入sudo，可以把用户加入 Docker 用户组"></a>Docker 需要用户具有 sudo 权限，为了避免每次命令都输入<code>sudo</code>，可以把用户加入 Docker 用户组</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo usermod -aG docker $USER</span><br></pre></td></tr></table></figure>
+
+<h3 id="Docker-运行命令"><a href="#Docker-运行命令" class="headerlink" title="Docker 运行命令"></a>Docker 运行命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># systemctl 命令的用法</span><br><span class="line">$ sudo systemctl start docker </span><br></pre></td></tr></table></figure>
+
+<h2 id="image文件"><a href="#image文件" class="headerlink" title="image文件"></a>image文件</h2><p><strong>Docker 把应用程序及其依赖，打包在 image 文件里面。</strong></p>
+<p>只有通过这个文件，才能生成 Docker 容器。<strong>image 文件可以看作是容器的模板</strong>。Docker 根据 image 文件<strong>生成</strong>容器的实例。同一个 image 文件，可以生成多个同时运行的容器实例。</p>
+<p>image 是二进制文件。实际开发中，一个 image 文件往往通过继承另一个 image 文件，加上一些个性化设置而生成。举例来说，你可以在 Ubuntu 的 image 基础上，往里面加入 Apache 服务器，形成你的 image。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 列出本机的所有 image 文件。</span><br><span class="line">$ docker image ls# 删除 image 文件$ docker image rm [imageName]</span><br></pre></td></tr></table></figure>
+
+<p>image 文件是通用的，一台机器的 image 文件拷贝到另一台机器，照样可以使用。一般来说，为了节省时间，我们应该尽量使用别人制作好的 image 文件，而不是自己制作。即使要定制，也应该基于别人的 image 文件进行加工，而不是从零开始制作。</p>
+<p>为了方便共享，image 文件制作完成后，可以上传到网上的仓库。Docker 的官方仓库 <a target="_blank" rel="noopener" href="https://hub.docker.com/">Docker Hub</a> 是最重要、最常用的 image 仓库。此外，出售自己制作的 image 文件也是可以的。</p>
+<blockquote>
+<p>将 image 文件从仓库抓取到本地</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker image pull library&#x2F;hello-world</span><br></pre></td></tr></table></figure>
+
+<p>上面代码中，<code>docker image pull</code>是抓取 image 文件的命令。<code>library/hello-world</code>是 image 文件在仓库里面的位置，其中<code>library</code>是 image 文件所在的组，<code>hello-world</code>是 image 文件的名字。</p>
+<p>由于 <strong>Docker 官方提供</strong> 的 image 文件，都放在<a target="_blank" rel="noopener" href="https://hub.docker.com/r/library/"><code>library</code></a>组里面，所以它的是默认组，<strong>可以省略</strong>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker image pull hello-world</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>查看 image 文件</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker image ls</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>运行这个 image 文件生成容器实例并运行</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker container run hello-world</span><br></pre></td></tr></table></figure>
+
+<p>注意，<code>docker container run</code>命令具有自动抓取 image 文件的功能。如果发现本地没有指定的 image 文件，就会从仓库自动抓取。因此，前面的<code>docker image pull</code>命令并不是必需的步骤。</p>
+<blockquote>
+<p>手动终止容器运行</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker container kill [containID]</span><br></pre></td></tr></table></figure>
+
+<h2 id="容器文件"><a href="#容器文件" class="headerlink" title="容器文件"></a>容器文件</h2><p><strong>image 文件生成的容器实例，本身也是一个文件，称为容器文件。</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 列出本机正在运行的容器</span><br><span class="line">$ docker container ls</span><br><span class="line">或</span><br><span class="line">$ docker ps</span><br><span class="line"></span><br><span class="line"># 列出本机所有容器，包括终止运行的容器</span><br><span class="line">$ docker container ls --all</span><br></pre></td></tr></table></figure>
+
+<p>终止运行的容器文件，依然会占据硬盘空间，可以使用<a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/container_rm/"><code>docker container rm</code></a>命令删除。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker container rm [containerID]</span><br></pre></td></tr></table></figure>
+
+<h2 id="Dockerfile-文件"><a href="#Dockerfile-文件" class="headerlink" title="Dockerfile 文件"></a>Dockerfile 文件</h2><p>学会使用 image 文件以后，接下来的问题就是，如何可以生成 image 文件？如果你要推广自己的软件，势必要自己制作 image 文件。</p>
+<p>这就需要用到 Dockerfile 文件。它是一个文本文件，用来配置 image。Docker 根据 该文件生成二进制的 image 文件。</p>
+<p>下面通过一个实例，演示如何编写 Dockerfile 文件。</p>
+<h2 id="实例：制作自己的-Docker-容器"><a href="#实例：制作自己的-Docker-容器" class="headerlink" title="实例：制作自己的 Docker 容器"></a>实例：制作自己的 Docker 容器</h2><p>这部分内容就不做抄录了，附上参考和转载文章地址 <a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2018/02/docker-tutorial.html">Docker 入门教程</a> 和 <a target="_blank" rel="noopener" href="https://www.ruanyifeng.com/blog/2018/02/docker-wordpress-tutorial.html">Docker 微服务教程</a>,</p>
+<h2 id="image-仓库的镜像网址"><a href="#image-仓库的镜像网址" class="headerlink" title="image 仓库的镜像网址"></a>image 仓库的镜像网址</h2><p>本教程需要从仓库下载 image 文件，但是国内访问 Docker 的官方仓库很慢，还经常断线，所以要把仓库网址改成国内的镜像站。这里推荐使用官方镜像 registry.docker-cn.com 。下面是我的 Debian 系统的默认仓库修改方法，其他系统的修改方法参考官方文档。</p>
+<p>打开/etc/default/docker文件（需要sudo权限），在文件的底部加上一行。</p>
+<p>DOCKER_OPTS=”–registry-mirror=<a target="_blank" rel="noopener" href="https://registry.docker-cn.com&quot;/">https://registry.docker-cn.com&quot;</a><br>然后，重启 Docker 服务。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo service docker restart</span><br></pre></td></tr></table></figure>
+<p>现在就会自动从镜像仓库下载 image 文件了。</p>
+<h2 id="github镜像"><a href="#github镜像" class="headerlink" title="github镜像"></a>github镜像</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;hub.fastgit.org&#x2F;</span><br></pre></td></tr></table></figure>
+
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">docker</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/10/02/Docker-%E5%85%A5%E9%97%A8%E7%AF%87/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-关于git撤回内容的思考" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/01/%E5%85%B3%E4%BA%8Egit%E6%92%A4%E5%9B%9E%E5%86%85%E5%AE%B9%E7%9A%84%E6%80%9D%E8%80%83/">关于git撤回内容的思考</a>
+    </h1>
+  
+
+        
+        <a href="/2021/09/01/%E5%85%B3%E4%BA%8Egit%E6%92%A4%E5%9B%9E%E5%86%85%E5%AE%B9%E7%9A%84%E6%80%9D%E8%80%83/" class="archive-article-date">
+  	<time datetime="2021-09-01T11:36:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-09-01</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="本地"><a href="#本地" class="headerlink" title="本地"></a>本地</h2><p>如果是在本地就直接用Reset</p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/c2ec5f06cf1a">Git Reset 三种模式</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">知识点</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/09/01/%E5%85%B3%E4%BA%8Egit%E6%92%A4%E5%9B%9E%E5%86%85%E5%AE%B9%E7%9A%84%E6%80%9D%E8%80%83/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
   
     <article id="post-限制ip接口案例" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
@@ -986,435 +1380,6 @@
 
 
   
-    <article id="post-Hexo博客中插入音乐" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/08/03/Hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E9%9F%B3%E4%B9%90/">Hexo博客中插入音乐</a>
-    </h1>
-  
-
-        
-        <a href="/2021/08/03/Hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E9%9F%B3%E4%B9%90/" class="archive-article-date">
-  	<time datetime="2021-08-03T07:07:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-08-03</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="成品"><a href="#成品" class="headerlink" title="成品"></a>成品</h3><p>具体成功已体现在<code>网络掩码</code>文章底部。</p>
-<h3 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h3><p>一款html5音乐播放器：Aplayer。把Aplayer加入hexo需要用到hexo-tag-aplayer插件。</p>
-<p>切换到hexo目录，运行：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save hexo-tag-aplayer</span><br></pre></td></tr></table></figure>
-
-<p>安装完成后，在需要添加音乐的地方加上：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% aplayer &quot;歌曲名称&quot; &quot;作者&quot; &quot;音乐_url&quot; &quot;封面图片_url&quot; &quot;autoplay&quot; %&#125;</span><br></pre></td></tr></table></figure>
-
-<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/6e41e3191963">文章链接</a></p>
-<h3 id="网易云外链的处理"><a href="#网易云外链的处理" class="headerlink" title="网易云外链的处理"></a>网易云外链的处理</h3><p>网易云提供的外链连接无法成功播放，所以找到一篇解决的文章。</p>
-<p>例如：杨钰莹的心雨，网址是：<code>http://music.163.com/#/song?id=317151</code></p>
-<p>很明显，ID是317151</p>
-<p>那么，这首歌的真实地址就是：<code>http://music.163.com/song/media/outer/url?id=317151.mp3</code></p>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/MirageFox/p/7995929.html">文章链接</a></p>
-<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>mac端(<code>win端没有测试过</code>)控制不了音量大小，只能空过电脑或耳机条件。</p>
-
-        <div id="aplayer-tJmCKDzt" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
-            <pre class="aplayer-lrc-content"></pre>
-        </div>
-        <script>
-          var ap = new APlayer({
-            element: document.getElementById("aplayer-tJmCKDzt"),
-            narrow: false,
-            autoplay: false,
-            showlrc: false,
-            music: {
-              title: "U",
-              author: "许杨玉琢",
-              url: "https://music.163.com/song/media/outer/url?id=1475649128.mp3",
-              pic: "/yyzka.jpeg",
-              lrc: ""
-            }
-          });
-          window.aplayers || (window.aplayers = []);
-          window.aplayers.push(ap);
-        </script>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">随笔</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/08/03/Hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E9%9F%B3%E4%B9%90/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-网络掩码" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/08/03/%E7%BD%91%E7%BB%9C%E6%8E%A9%E7%A0%81/">网络掩码</a>
-    </h1>
-  
-
-        
-        <a href="/2021/08/03/%E7%BD%91%E7%BB%9C%E6%8E%A9%E7%A0%81/" class="archive-article-date">
-  	<time datetime="2021-08-03T02:31:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-08-03</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="ip地址的组成（网络位-主机位）"><a href="#ip地址的组成（网络位-主机位）" class="headerlink" title="ip地址的组成（网络位+主机位）"></a>ip地址的组成（网络位+主机位）</h3><p><strong>IP地址采用分层结构；</strong></p>
-<p>IP地址是由网络号（net ID）与主机号（host ID）两部分组成的。</p>
-<p><strong>根据不同的取值范围，IP地址可以分为五类</strong>；IP地址中的前5位用于标识IP地址的类别：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">A类地址的第一位为0；  127 &#x3D;&gt; 0(128)1(64)1(32)1(16) 1(8)1(4)1(2)1(1)</span><br><span class="line">网络位7(8-1)位，主机号24位(32-7-1 &#x3D; 24)</span><br><span class="line"></span><br><span class="line">B类地址的前两位为10； 191 &#x3D;&gt; 1(128)0(64)1(32)1(16) 1(8)1(4)1(2)1(1)</span><br><span class="line">网络位14(8+8-2)位，主机号16位(32-14-2 &#x3D; 16)</span><br><span class="line"></span><br><span class="line">C类地址的前三位为110；223 &#x3D;&gt; 1(128)1(64)0(32)1(16) 1(8)1(4)1(2)1(1)</span><br><span class="line">网络位21(8+8+8-3)位，主机号位(32-21-3 &#x3D; 8)</span><br><span class="line"></span><br><span class="line">D类地址的前四位为1110；</span><br><span class="line">E类地址的前五位为11110；</span><br></pre></td></tr></table></figure>
-<p><img src="/2021/08/03/%E7%BD%91%E7%BB%9C%E6%8E%A9%E7%A0%81/wl_1.png" alt="png"></p>
-<p>实际大多通过<code>子网掩码</code>来区分网络位和主机位，子网掩码跟IP地址一一对应，子网掩码为1的是网络位，为0的是主机位。<br>如：192.168.1.2 掩码255.255.255.0 。网络位192.168.1 主机位是2</p>
-<p>举个例子：比如172.16.2.160/255.255.255.0</p>
-<p>这个IP地址的【网络号】就是172.16.2.0 主机号为   0.0.0.160 </p>
-<blockquote>
-<p>划分子网情况</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">如：172.16.2.160&#x2F;255.255.255.192(IP地址&#x2F;掩码)</span><br><span class="line"></span><br><span class="line">1010   1100   0001   0000   0000   0010   1010   0000   (二进制)</span><br><span class="line"></span><br><span class="line">1111   1111   1111   1111   1111   1111   1100   0000  （子网掩码）</span><br><span class="line"></span><br><span class="line">------------------------------------------相&quot;与&quot;(理解成相乘）</span><br><span class="line"></span><br><span class="line">1010   1100   0001   0000   0000   0010   1000   0000（172.16.2.128这就是子网号）</span><br><span class="line"></span><br><span class="line">1010   1100   0001   0000   0000   0010   1000   0001（172.16.2.129是第一个主机）</span><br><span class="line"></span><br><span class="line">1010   1100   0001   0000   0000   0010   1011   1110（172.16.2.190最后一个主机）</span><br><span class="line"></span><br><span class="line">1010   1100   0001   0000   0000   0010   1011   1111   广播地址  172.16.2.191 </span><br><span class="line"></span><br><span class="line">个人的理解:</span><br><span class="line">通过ip二进制和子网掩码二进制&quot;与&quot;可以发现，子网掩码二进制 1 的部分代表&quot;网络位&quot;, 0 的部分代表&quot;主机位&quot;，</span><br><span class="line">上面的例子可以看出&quot;主机位&quot;有6位，那么最后一段8位前两位是定的10，所以&quot;第一个主机位&quot;是1000 0001，&quot;最后一个主机位&quot;是1011 1110，因为还要留一个&quot;广播地址&quot;1011 1111。 </span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>子网掩码的作用：</p>
-</blockquote>
-<ol>
-<li>将一类ip地址（也就是只确定的网络号的ip）划分为更加小的子网络(<code>通常得到一个c类ip,如：212.26.220.0最后一组是主机号（最大255），用子网掩码分成更小的网段</code>）</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">因为掩码的值是连续的1，那么子网掩码的值也就是有规律的：</span><br><span class="line">比如</span><br><span class="line">1000 0000 ---&gt; 128</span><br><span class="line">1100 0000 ---&gt; 192</span><br><span class="line">1110 0000 ---&gt; 224</span><br><span class="line">1111 0000 ---&gt; 240</span><br><span class="line">1111 1000 ---&gt; 248</span><br><span class="line">1111 1100 ---&gt; 252</span><br><span class="line">1111 1110 ---&gt; 254</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>将相邻的网络地址合并成同一逻辑网络</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">两个C类IP地址215.60.30.0与215.60.31.0与子网掩码255.255.254.0</span><br><span class="line">11010111.00111100.00011110.00000000--&gt;215.60.30.0</span><br><span class="line">11010111.00111100.00011111.00000000--&gt;215.60.31.0</span><br><span class="line">11111111.11111111.11111110.10000000--&gt;255.255.254.0&#x2F;&#x2F;掩码</span><br><span class="line">11010111.00111100.00011110.00000000--&gt;215.60.30.0&#x2F;&#x2F;都是该网段</span><br></pre></td></tr></table></figure>
-
-<p>注意：一个错误的理解：子网掩码主要目的是增加了ip数量！！！其实并没有增加！！！（<code>也不能说没有增加，比如相同的ip不同子网掩码，实际公网是不存在相同的ip,如果说是两个局域网这种情况，不知道算不算增加了</code>）</p>
-<p>补充：</p>
-<ul>
-<li><p>只知道ip地址那么只能知道是属于哪一类ip。或者认为没有子网络，比如c类ip，那么前3组是网络号，后面一组是主机号</p>
-</li>
-<li><p>只有知道子网掩码和ip，才能知道具体的网段和主机号</p>
-</li>
-<li><p>相同子网掩码未必是同一网段ip,同一网段的ip必然有相同的子网掩码。</p>
-</li>
-</ul>
-<blockquote>
-<p>“IP地址/ 数字” 是什么意思？例如 192.168.5.12 / 21</p>
-</blockquote>
-<p>数字是子网掩码位（数），说明子网掩码由21个1组成，即 子网掩码是：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">11111111 11111111 11111000 00000000  ，也就是255.255.248.0</span><br></pre></td></tr></table></figure>
-
-<p><a target="_blank" rel="noopener" href="http://t.zoukankan.com/straybirds-p-5319604.html">文章链接</a></p>
-<h3 id="子网掩码-网络掩码-的位数"><a href="#子网掩码-网络掩码-的位数" class="headerlink" title="子网掩码(网络掩码)的位数"></a>子网掩码(网络掩码)的位数</h3><p>255.255.255.0  =&gt; / 24</p>
-<p>1111 1111 1111 1111 1111 1111 0000 0000  = 24（总长32，1算，0不算）</p>
-<h4 id="已知IP地址和子网掩码-如何快速计算是否在同一网段-仍待验证"><a href="#已知IP地址和子网掩码-如何快速计算是否在同一网段-仍待验证" class="headerlink" title="已知IP地址和子网掩码,如何快速计算是否在同一网段(仍待验证)"></a>已知IP地址和子网掩码,如何快速计算是否在同一网段(仍待验证)</h4><p>下面哪些IP位于同一子网中？</p>
-<ul>
-<li>192.168.78.36/29</li>
-<li>192.168.78.42/29</li>
-<li>192.168.78.41/29</li>
-<li>192.168.78.45/29</li>
-<li>192.168.78.48/29</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">通过上面子网掩码29位，我们可以知道 网络位是29位，主机位3位。所以，判断是否同一网段，看&quot;网络位&quot;是否相同。</span><br><span class="line">因为前面都是相同的，所以看最后一段的数字二进制8位扣除3位&quot;主机位&quot;后是否相同。</span><br><span class="line"></span><br><span class="line">36 (2 +4)                      0010 0100   &#x3D;&gt;  0010 0 (扣除3位主机位)</span><br><span class="line"></span><br><span class="line">42  (32 + 8 + 2)             0010 1010    &#x3D;&gt; 0010 1</span><br><span class="line"></span><br><span class="line">41  (32 + 8 + 1)              0010 1001    &#x3D;&gt; 0010 1</span><br><span class="line"></span><br><span class="line">45  (32 + 8 + 4 +1)         0010 1101    &#x3D;&gt;  0010 1</span><br><span class="line"></span><br><span class="line">48  (32 + 16)                  0011  0000   &#x3D;&gt; 0011  0</span><br><span class="line"></span><br><span class="line">可以看出 42 41 45在同一网段</span><br><span class="line"></span><br><span class="line">那么快速的方法</span><br><span class="line">主机位3位： 2^3 &#x3D; 8</span><br><span class="line">36&#x2F;8 &#x3D; 4</span><br><span class="line">42&#x2F;8 &#x3D; 5</span><br><span class="line">41&#x2F;8 &#x3D; 5</span><br><span class="line">45&#x2F;8 &#x3D; 5</span><br><span class="line">48&#x2F;8 &#x3D; 6</span><br></pre></td></tr></table></figure>
-
-<p>下面哪些IP位于同一子网中？</p>
-<ul>
-<li>192.168.165.24/255.255.254.0 和 192.168.164.78/255.255.254.0</li>
-<li>192.168.165.24/255.255.255.255 和 192.168.164.78/255.255.255.255</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">第一组计算:</span><br><span class="line">255.255.254.0        2^9  &#x3D;  256</span><br><span class="line"></span><br><span class="line">16524 &#x2F; 256 &#x3D; 64.5</span><br><span class="line"></span><br><span class="line">16478 &#x2F; 256  &#x3D; 64.3</span><br><span class="line"></span><br><span class="line">商64，相同</span><br><span class="line"></span><br><span class="line">第二组计算:</span><br><span class="line">255.255.255.255  2^8 &#x3D; 128</span><br><span class="line"></span><br><span class="line">16524&#x2F;128 &#x3D; 129</span><br><span class="line"></span><br><span class="line">16478&#x2F;128 &#x3D; 128.7</span><br><span class="line"></span><br><span class="line">商129和128，不相同</span><br></pre></td></tr></table></figure>
-
-<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/VmXgt6usAfPKyfmsAM_UZg">文章地址-还有其他知识点哦</a></p>
-<h3 id="IP地址、子网掩码、网段、网关的关系"><a href="#IP地址、子网掩码、网段、网关的关系" class="headerlink" title="IP地址、子网掩码、网段、网关的关系"></a>IP地址、子网掩码、网段、网关的关系</h3><p>IP地址、子网掩码、网络地址、广播地址、网段、网关的关系,例：</p>
-<table>
-<thead>
-<tr>
-<th>name</th>
-<th>终端A</th>
-<th>终端B</th>
-<th>终端C</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>IP地址</td>
-<td>192.168.1.10</td>
-<td>192.168.1.23</td>
-<td>192.168.1.40</td>
-</tr>
-<tr>
-<td>子网掩码</td>
-<td>255.255.255.224</td>
-<td>255.255.255.224</td>
-<td>255.255.255.224</td>
-</tr>
-<tr>
-<td>网络地址</td>
-<td>192.168.1.0</td>
-<td>192.168.1.0</td>
-<td>192.168.1.32</td>
-</tr>
-<tr>
-<td>广播地址</td>
-<td>192.168.1.31</td>
-<td>192.168.1.31</td>
-<td>192.168.1.63</td>
-</tr>
-<tr>
-<td>网段</td>
-<td>192.168.1.0~192.168.1.31</td>
-<td>192.168.1.0~192.168.1.31</td>
-<td>192.168.1.31~192.168.1.63</td>
-</tr>
-<tr>
-<td>网关</td>
-<td>192.168.1.1</td>
-<td>192.168.1.1</td>
-<td>192.168.1.32</td>
-</tr>
-</tbody></table>
-<blockquote>
-<p>总结：</p>
-</blockquote>
-<ul>
-<li>网络地址=IP地址&amp;子网掩码</li>
-<li>广播地址=IP地址|（！子网掩码）</li>
-<li>网段：网络地址相同的IP地址属于同一网段，即同一子网。</li>
-<li>网关：同一网段（子网）间终端可直接通信，如终端A和终端B；不在同一网段（子网）的终端不能直接通信，需要通过网关才能通信，如终端A和终端C。</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41324483/article/details/100179816">文章地址</a></p>
-
-        <div id="aplayer-uUbbxQQc" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
-            <pre class="aplayer-lrc-content"></pre>
-        </div>
-        <script>
-          var ap = new APlayer({
-            element: document.getElementById("aplayer-uUbbxQQc"),
-            narrow: false,
-            autoplay: true,
-            showlrc: false,
-            music: {
-              title: "Giri Giri",
-              author: "许杨玉琢",
-              url: "https://music.163.com/song/media/outer/url?id=1865305744.mp3",
-              pic: "/yyzka.jpeg",
-              lrc: ""
-            }
-          });
-          window.aplayers || (window.aplayers = []);
-          window.aplayers.push(ap);
-        </script>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">网络</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/08/03/%E7%BD%91%E7%BB%9C%E6%8E%A9%E7%A0%81/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-哈希算法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/07/16/%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/">哈希算法</a>
-    </h1>
-  
-
-        
-        <a href="/2021/07/16/%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/" class="archive-article-date">
-  	<time datetime="2021-07-16T02:58:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-07-16</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>为什么开启这一篇呢？因为后面要对gopush进行讲解。</p>
-<h3 id="一致性哈希算法-图片网上资源，联系可删，描述均为自己观点"><a href="#一致性哈希算法-图片网上资源，联系可删，描述均为自己观点" class="headerlink" title="一致性哈希算法(图片网上资源，联系可删，描述均为自己观点)"></a>一致性哈希算法(图片网上资源，联系可删，描述均为自己观点)</h3><blockquote>
-<p>0~2^32-1 可以理解为一个圆的外环均匀分布为2^32个点 =&gt; key</p>
-</blockquote>
-<p><img src="/2021/07/16/%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/hx1.jpg" alt="jpg"></p>
-<blockquote>
-<p>在圆上分布均匀分布4个节点(node)</p>
-</blockquote>
-<p><img src="/2021/07/16/%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/hx2.jpg" alt="jpg"></p>
-<blockquote>
-<p>查找方式</p>
-</blockquote>
-<p><img src="/2021/07/16/%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/hx3.jpg" alt="jpg"></p>
-<blockquote>
-<p>删除节点影响</p>
-</blockquote>
-<p><img src="/2021/07/16/%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/hx4.jpg" alt="jpg"></p>
-<blockquote>
-<p>添加节点影响</p>
-</blockquote>
-<p><img src="/2021/07/16/%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/hx5.jpg" alt="jpg"></p>
-<blockquote>
-<p>节点少的影响</p>
-</blockquote>
-<p><img src="/2021/07/16/%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/hx6.jpg" alt="jpg"></p>
-<blockquote>
-<p>虚拟节点</p>
-</blockquote>
-<p><img src="/2021/07/16/%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/hx7.jpg" alt="jpg"></p>
-<h3 id="哈希函数"><a href="#哈希函数" class="headerlink" title="哈希函数"></a>哈希函数</h3><p>定义:记录的存储位置 = f(关键字)</p>
-<p>第一代：SHA-1(1993),MD5(1992),CRC(1975),Lookup3(2006)<br>第二代：MurmurHash(2008)<br>第三代：CityHash,SpookyHash(2011)</p>
-<h3 id="通过key获取comet-node节点"><a href="#通过key获取comet-node节点" class="headerlink" title="通过key获取comet-node节点"></a>通过key获取comet-node节点</h3><p>MurmurHash 是一种非加密型哈希函数，适用于一般的哈希检索操作。与其它流行的哈希函数相比，对于规律性较强的key，MurmurHash的随机分布特征表现更良好。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; init consistent hashing circle</span><br><span class="line">func (k *Ketama) initCircle2(node []string) &#123;</span><br><span class="line">	h :&#x3D; NewMurmur3C()</span><br><span class="line">	for _, str :&#x3D; range node &#123;</span><br><span class="line">		for i :&#x3D; 0; i &lt; k.vnode; i++ &#123;</span><br><span class="line">			vnode :&#x3D; fmt.Sprintf(&quot;%s#%d&quot;, str, i)</span><br><span class="line">			h.Write([]byte(vnode))</span><br><span class="line">			vpos :&#x3D; uint(h.Sum32())</span><br><span class="line">			k.nodes &#x3D; append(k.nodes, vpos)</span><br><span class="line">			k.nodesMapping[vpos] &#x3D; str</span><br><span class="line">			h.Reset()</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	sort.Sort(UIntSlice(k.nodes))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id><a href="#" class="headerlink" title></a></h3>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">gopush</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/07/16/%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/">Next &amp;raquo;</a>
@@ -1561,6 +1526,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Redis</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">MQTT</a>
               </li>
             
             <div class="clearfix"></div>
