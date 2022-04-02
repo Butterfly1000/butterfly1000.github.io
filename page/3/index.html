@@ -208,6 +208,134 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-GO包管理的前世今生" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/08/GO%E5%8C%85%E7%AE%A1%E7%90%86%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F/">GO包管理的前世今生</a>
+    </h1>
+  
+
+        
+        <a href="/2021/10/08/GO%E5%8C%85%E7%AE%A1%E7%90%86%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F/" class="archive-article-date">
+  	<time datetime="2021-10-08T03:13:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-08</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="早期的GO包管理-了解"><a href="#早期的GO包管理-了解" class="headerlink" title="早期的GO包管理(了解)"></a>早期的GO包管理(了解)</h2><p>早期根本没有所谓的包管理，项目依赖一塌糊涂。那么这样会出现什么问题？</p>
+<blockquote>
+<p>在没有包管理方案之前，项目依赖于 GOPATH，带来一些不便之处</p>
+</blockquote>
+<ul>
+<li>多项目难以管理。试想一下，A 项目和 B 项目 同时依赖于一个 C 项目，但是依赖于 C 项目的不同版本，如何解决，只能通过多 GOPATH 设置。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">go命令依赖一个重要的环境变量：$GOPATH</span><br><span class="line">GOPATH允许多个目录，当有多个目录时，请注意分隔符，多个目录的时候Windows是分号;，Linux系统是冒号:</span><br><span class="line">[设置Golang的GOPATH](https:&#x2F;&#x2F;blog.csdn.net&#x2F;chenjh213&#x2F;article&#x2F;details&#x2F;51381024)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>项目的依赖只能够手动 go get 下载到 GOPATH 中，如果换一台服务器开发项目，光是包依赖都得弄半天。</p>
+</li>
+<li><p>如果是本地想搭建对应的项目，还无法知道之前包的版本，只能通过当初项目创建时间进行<code>git tag</code>切换对应版本。</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git tag #展示全部tag</span><br><span class="line">git checkout  release-v1.0.0 #切换到tag分支</span><br><span class="line"></span><br><span class="line">无关-记录</span><br><span class="line">git tag release-v1.0.1 #打上tag</span><br><span class="line">git push --tag #推送</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>一些解决方案</p>
+</blockquote>
+<ul>
+<li><p>godep，glide，go verdor 这些都是曾经出现过的包管理解决方案。</p>
+</li>
+<li><p>将所有依赖包都上传到一个公共的线上文件夹(类似vendor)，然后从上面直接拷贝。</p>
+</li>
+</ul>
+<h2 id="现在的GO包管理-go版本-gt-1-11"><a href="#现在的GO包管理-go版本-gt-1-11" class="headerlink" title="现在的GO包管理(go版本 &gt;= 1.11)"></a>现在的GO包管理(go版本 &gt;= 1.11)</h2><p>Go.mod是 <strong>Golang1.11版本</strong> 新引入的官方包管理工具用于解决之前没有地方记录依赖包具体版本的问题。</p>
+<p><em>前导</em></p>
+<p>Go.mod其实就是一个Modules官方定义为：</p>
+<p>Modules是相关Go包的集合，是源代码交换和版本控制的单元。go命令直接支持使用Modules，包括记录和解析对其他模块的依赖性。Modules替换旧的基于GOPATH的方法，来指定使用哪些源文件。</p>
+<p>Modules和传统的GOPATH不同，不需要包含例如src，bin这样的子目录，一个源代码目录甚至是空目录都可以作为Modules，只要其中包含有go.mod文件。</p>
+<p><strong>go mod的使用：</strong></p>
+<p>一个很关键的地方在于环境变量GO111MODULE的设置,GO111MODULE有三个值：off, on和auto（默认值）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1.GO111MODULE&#x3D;off，go命令行将不会支持module功能，寻找依赖包的方式将会沿用旧版本那种通过vendor目录或GOPATH模式来查找。</span><br><span class="line"></span><br><span class="line">2.GO111MODULE&#x3D;on，go命令行会使用modules，而一点也不会去GOPATH目录下查找。</span><br><span class="line"></span><br><span class="line">3.GO111MODULE&#x3D;auto，默认值，go命令行将会根据当前目录来决定是否启用module功能。</span><br><span class="line">这种情况下可以分为两种情形：</span><br><span class="line">当前目录在GOPATH&#x2F;src之外且该目录包含go.mod文件</span><br><span class="line">当前文件在包含go.mod文件的目录下面。</span><br><span class="line">Go mod 的命令使用help查看</span><br></pre></td></tr></table></figure>
+
+<p>如何在项目中使用？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#cd xxx &#x2F;&#x2F;进入项目</span><br><span class="line">#go mod init  &#x2F;&#x2F;初始化项目</span><br><span class="line">#ps</span><br><span class="line">在当前目录下生成一个go.mod文件，通过这个文件管理包</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>：除了go.mod之外，go命令还维护一个名为go.sum的文件，其中包含特定模块版本内容的预期加密哈希。go命令使用go.sum文件确保这些模块的未来下载检索与第一次下载相同的位，以确保项目所依赖的模块不会出现意外更改，无论是出于恶意、意外还是其他原因。 <strong>go.mod和go.sum都应检入版本控制</strong> 。go.sum 不需要手工维护，所以可以不用太关注。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">项目子目录里是不需要init的，所有的子目录里的依赖都会组织在根目录的go.mod文件里</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>当依赖第三方包时:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- 最初是go get 拉取，而使用go mod，直接go run 或go build 即可！</span><br><span class="line">例如：go get utils&#x2F;iGong@v1.3.5</span><br><span class="line">不过，有了go mod后，只要项目 运行 或 创建二进制文件 就会自动拉取依赖。</span><br><span class="line"></span><br><span class="line">- go 会自动查找代码中的包，下载依赖包，并且把具体的依赖关系和版本写入到go.mod和go.sum文件中。</span><br><span class="line"></span><br><span class="line">- 依赖的第三方包被下载到了$GOPATH&#x2F;pkg&#x2F;mod路径下。</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>依赖包的版本控制：</strong></p>
+<p>GOPATH/pkg/mod里可以保存相同包的<strong>不同版本</strong>。<br>go.mod中可指定下载包的版本：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">如果在go.mod中没有指定，go命令会自动下载最新版本。</span><br><span class="line">如果在go.mod用require语句指定包和版本 ，go命令会根据指定的路径和版本下载包。</span><br><span class="line">当然，对于某些缺失的包，可以用replace指定代替包。</span><br><span class="line">指定版本时可以用latest，这样它会自动下载指定包的最新版本,项目也可以放在$GOPATH&#x2F;src下。</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">module app #项目名</span><br><span class="line"></span><br><span class="line">go 1.13</span><br><span class="line"></span><br><span class="line">require (</span><br><span class="line">	gorm.io&#x2F;driver&#x2F;mysql v1.1.2 &#x2F;&#x2F; indirect</span><br><span class="line">	gorm.io&#x2F;gorm v1.21.15 &#x2F;&#x2F; indirect</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">replace github.com&#x2F;qiniu&#x2F;bytes &#x3D;&gt; gitlab.airdroid.com&#x2F;zhuoh&#x2F;bytes v0.0.0-20191012100200-92558a444c07</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考原文"><a href="#参考原文" class="headerlink" title="参考原文"></a>参考原文</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/jkwanga/article/details/106288345">原文链接</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/d04b36fbdcd6#comments">原文链接</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">GO</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/10/08/GO%E5%8C%85%E7%AE%A1%E7%90%86%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Docker-部署gitlab" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -345,7 +473,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">docker</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Docker</a>
         		</li>
       		
 		</ul>
@@ -476,6 +604,8 @@
 <p>现在就会自动从镜像仓库下载 image 文件了。</p>
 <h2 id="github镜像"><a href="#github镜像" class="headerlink" title="github镜像"></a>github镜像</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;hub.fastgit.org&#x2F;</span><br></pre></td></tr></table></figure>
 
+<p><strong>原文链接：</strong></p>
+<p><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2018/02/docker-tutorial.html">Docker 入门教程</a></p>
 
       
 
@@ -489,7 +619,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">docker</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Docker</a>
         		</li>
       		
 		</ul>
@@ -720,19 +850,19 @@
 
 
   
-    <article id="post-Docker-入门教程" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-Docker常用操作命令大全" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/08/17/Docker-%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">Docker 入门教程</a>
+      <a class="article-title" href="/2021/08/17/Docker%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C%E5%91%BD%E4%BB%A4%E5%A4%A7%E5%85%A8/">Docker常用操作命令大全</a>
     </h1>
   
 
         
-        <a href="/2021/08/17/Docker-%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" class="archive-article-date">
+        <a href="/2021/08/17/Docker%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C%E5%91%BD%E4%BB%A4%E5%A4%A7%E5%85%A8/" class="archive-article-date">
   	<time datetime="2021-08-17T06:30:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-08-17</time>
 </a>
         
@@ -740,7 +870,105 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>Linux  Centos7</p>
+<h2 id="docker进程相关命令"><a href="#docker进程相关命令" class="headerlink" title="docker进程相关命令"></a>docker进程相关命令</h2><ul>
+<li><code>systemctl start docker</code> #启动docker服务</li>
+<li><code>systemctl stop docker</code> #停止docker服务</li>
+<li><code>systemctl restart docker</code>#重启docker服务</li>
+<li><code>systemctl status docker</code> #查看docker服务状态</li>
+<li><code>systemctl enable docker</code>#设置开机启动服务</li>
+</ul>
+<h2 id="docker容器管理命令"><a href="#docker容器管理命令" class="headerlink" title="docker容器管理命令"></a>docker容器管理命令</h2><p><code>docker run -d --name &#123;your_name&#125; &#123;image_name&#125;</code> # 运行容器</p>
+<blockquote>
+<p>参数说明：</p>
+<p>-i：以交互模式运行容器，通常与 -t 同时使用。加入it这两个参数后，容器创建后自动进入容器中，退出容器后，容器自动关闭。</p>
+<p>-t：为容器重新分配一个伪输入终端，通常与 -i 同时使用。</p>
+<p>-d：以守护（后台）模式运行容器。创建一个容器在后台运行，需要使用docker exec 进入容器。退出后，容器不会关闭。</p>
+<p>-it 创建的容器一般称为交互式容器；</p>
+<p>-id 创建的容器一般称为守护式容器。</p>
+<p>–name：为创建的容器命名。</p>
+<p>-p：指定容器的端口，格式为：主机(宿主)端口:容器端口 </p>
+<p>-P(大写): 随机端口映射，容器内部端口<strong>随机</strong>映射到主机的端口</p>
+<p>–volume , -v: 绑定一个卷,格式:宿主机目录/文件:容器内目录/文件</p>
+<p>​                       目录必须是绝对路径,如果目录不存在，会自动创建,可以挂载多个数据卷。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">例子：</span><br><span class="line">docker run -p 80:80 -v &#x2F;data:&#x2F;data -d nginx:latest</span><br><span class="line"></span><br><span class="line">绑定容器的 8080 端口，并将其映射到本地主机 127.0.0.1 的 80 端口上。</span><br><span class="line">$ docker run -p 127.0.0.1:80:8080&#x2F;tcp ubuntu bash</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>docker ps</code> # 查看正在运行的容器</li>
+<li><code>docker ps -s -a</code> #查看当前所有容器</li>
+<li><code>docker stop &#123;容器ID&#125;</code> #停止容器</li>
+<li><code>docker restart &#123;容器ID&#125;</code> #重启容器</li>
+<li><code>docker kill &#123;容器ID&#125;</code> #杀死容器</li>
+<li><code>docker rm -f &#123;容器ID&#125;</code> #删除已经停止的容器(这个会彻底释放内存)</li>
+</ul>
+<p><strong>如果容器是运行状态则删除失败，需要停止容器才能删除。</strong></p>
+<h2 id="docker镜像管理命令"><a href="#docker镜像管理命令" class="headerlink" title="docker镜像管理命令"></a>docker镜像管理命令</h2><ul>
+<li><p><code>docker images</code> #查看当前机器的所有镜像</p>
+<blockquote>
+<p>参数：</p>
+<p>-a/–all 列出所有镜像</p>
+<p>-q/–quiet 只显示镜像的id</p>
+</blockquote>
+</li>
+<li><p><code>docker images –q</code> # 查看所用镜像的id</p>
+</li>
+<li><p><code>docker search &#123;镜像名称&#125;</code> #搜索镜像，网络中查找需要的镜像</p>
+<p><code>$docker search redis</code></p>
+<p><strong>查找stars大于3000的镜像</strong>：<code>docker search mysql --filter=stars=3000</code></p>
+</li>
+<li><p><code>docker pull &#123;镜像名称&#125;[:tag]</code> #从Docker仓库拉取镜像，名称:版本号</p>
+</li>
+</ul>
+<p>​     <code>$docker pull mysql</code> 或<code>$docker pull mysql:5.7</code> </p>
+<ul>
+<li><p><code>docker push &#123;镜像名称&#125;</code> #推送镜像</p>
+</li>
+<li><p><code>docker rmi [-f] &#123;镜像名称/镜像id&#125;</code> #删除本地机器的镜像</p>
+</li>
+<li><p><code>docker rmi [-f]  &#123;镜像id&#125; &#123;镜像id&#125; &#123;镜像id&#125;</code> #删除多个本地机器的镜像</p>
+</li>
+<li><p><code>docker rmi [-f] docker images -q</code> #删除所有本地镜像</p>
+</li>
+<li><p><code>docker tag 镜像名称:tag 镜像名称:tag</code> #为一个镜像打tag</p>
+<blockquote>
+<p>将镜像ubuntu:15.10标记为 runoob/ubuntu:v3 镜像</p>
+</blockquote>
+<p><code>docker tag ubuntu:15.10 runoob/ubuntu:v3</code></p>
+<p><strong>查看:</strong> <code>docker images runoob/ubuntu:v3</code></p>
+</li>
+<li><p><code>docker save &#123;image_name&#125; &gt; &#123;new_image_name&#125;.tar</code> #镜像打包成一个tar包</p>
+</li>
+<li><p><code>docker load &lt; &#123;image_name&#125;.tar</code> #解压一个镜像tar包</p>
+</li>
+</ul>
+<h2 id="查看日志信息"><a href="#查看日志信息" class="headerlink" title="查看日志信息"></a>查看日志信息</h2><ul>
+<li><code>docker logs -f &#123;容器ID&#125;</code>  #查看容器日志</li>
+<li><code>docker info</code> #查看docker服务的信息</li>
+<li><code>docker inspect &#123;容器ID&#125;</code> # 获取镜像的元信息，详细信息</li>
+</ul>
+<h2 id="查看进程"><a href="#查看进程" class="headerlink" title="查看进程"></a>查看进程</h2><p><code>$ docker top f42ae22e4b72</code></p>
+<h2 id="与容器交互的命令"><a href="#与容器交互的命令" class="headerlink" title="与容器交互的命令"></a>与容器交互的命令</h2><h3 id="进入正在运行的容器"><a href="#进入正在运行的容器" class="headerlink" title="进入正在运行的容器"></a>进入正在运行的容器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it 容器ID或者容器名 &#x2F;bin&#x2F;bash</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>exec的意思是在容器中运行⼀个命令。/bin/bash是固有写法，作用是因为docker后台必须运行一个进程，否则容器就会退出，在这里表示启动容器后启动 bash。</p>
+<p>-d :分离模式: 在后台运行</p>
+<p>-i :即使没有附加也保持STDIN 打开</p>
+<p>-t :分配一个伪终端</p>
+</blockquote>
+<blockquote>
+<p>退出容器</p>
+</blockquote>
+<p><code>exit</code> #退出也关闭容器;</p>
+<p><code>Ctrl+P+Q</code> #退出不关闭容器</p>
+<p><strong>拷贝文件</strong></p>
+<p><code>docker cp 主机文件路径 容器ID或容器名:容器路径</code> #宿主机文件拷贝到容器中</p>
+<p><code>docker cp 容器ID或容器名:容器路径 主机文件路径</code> #容器文件拷贝到宿主机中</p>
+<p><strong>原文链接：</strong></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6993582707582173198">docker命令记不住？docker常用操作命令大全</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6996126578048499743">Docker常用命令</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.runoob.com/docker/docker-command-manual.html">Docker 命令大全</a></p>
+
       
 
       
@@ -763,7 +991,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2021/08/17/Docker-%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">展开全文 >></a>
+          <a class="article-more-a" href="/2021/08/17/Docker%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C%E5%91%BD%E4%BB%A4%E5%A4%A7%E5%85%A8/">展开全文 >></a>
         </p>
       
 
@@ -1240,146 +1468,6 @@
 
 
   
-    <article id="post-GO-数据类型" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/08/16/GO-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">GO 数据类型(入门篇必读)</a>
-    </h1>
-  
-
-        
-        <a href="/2021/08/16/GO-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" class="archive-article-date">
-  	<time datetime="2021-08-16T02:12:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-08-16</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>为什么是必读？因为这边会给出这个系列的参考/出处文章地址</p>
-</blockquote>
-<p><a target="_blank" rel="noopener" href="https://mojotv.cn/">https://mojotv.cn/</a></p>
-<blockquote>
-<p> 变量声明语法</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">var a int &#x2F;&#x2F;声明一个int类型的变量</span><br><span class="line"></span><br><span class="line">var b struct &#123; &#x2F;&#x2F;声明一个结构体</span><br><span class="line">    Name string</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var a &#x3D; 8 &#x2F;&#x2F;声明变量的同时赋值,编译器自动推导其数据类型</span><br><span class="line"></span><br><span class="line">var a int &#x3D; 8 &#x2F;&#x2F;声明变量的同时赋值</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;声明变量的同时赋值更习惯用&quot;:&#x3D;&quot;，但注意全局变量不可以用&quot;:&#x3D;&quot;</span><br><span class="line">a :&#x3D; 8</span><br></pre></td></tr></table></figure>
-
-<p><strong>go可使用var关键字声明全局变量,但是:=这种方式是不能用在全局变量中的.:=只能用在函数体内部.</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var (</span><br><span class="line">    a int</span><br><span class="line">    b bool</span><br><span class="line">    xx,yy,dd string&#x3D;&quot;xx&quot;,&quot;yy&quot;,&quot;dd&quot;</span><br><span class="line">    &#x2F;&#x2F;这里省略变量类型也是可以的.</span><br><span class="line">    zz,aa&#x3D;&quot;zz&quot;,&quot;aa&quot;        &#x2F;&#x2F;注意用&quot;&#x3D;&quot;，不能用&quot;:&#x3D;&quot;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-
-<p><strong>go函数体内的变量是如果被声明了,那么必须使用,不然会报错。注:全局变量声明未使用不会报错</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;已声明,但如果不想使用可以加上_&#x3D;varName,表示为已抛弃的变量.</span><br><span class="line">var a&#x3D;1</span><br><span class="line">&#x2F;&#x2F;标识为已抛弃的变量.</span><br><span class="line">_&#x3D;a  </span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>变量初始化</p>
-</blockquote>
-<p><strong>Go 语言在声明变量时会默认给变量赋个当前类型的<code>空值</code>/<code>零值</code></strong></p>
-<p>在方法中声明一个临时变量并赋初值</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;推荐,会更新值的格式自动声明变量类型</span><br><span class="line">tmpStr :&#x3D;&quot;&quot;</span><br></pre></td></tr></table></figure>
-
-<p>当一个变量或者新值被创建时, 如果没有为其明确指定初始值,go语言会自动初始化其值为此类型对应的零值。</p>
-<table>
-<thead>
-<tr>
-<th align="center">类型</th>
-<th align="center"><strong>零值</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">数值类型</td>
-<td align="center">0</td>
-</tr>
-<tr>
-<td align="center">布尔类型</td>
-<td align="center">false</td>
-</tr>
-<tr>
-<td align="center">字符串</td>
-<td align="center">“”（空字符串）</td>
-</tr>
-<tr>
-<td align="center">slice</td>
-<td align="center">nil</td>
-</tr>
-<tr>
-<td align="center">map</td>
-<td align="center">nil</td>
-</tr>
-<tr>
-<td align="center">指针</td>
-<td align="center">nil</td>
-</tr>
-<tr>
-<td align="center">函数</td>
-<td align="center">nil</td>
-</tr>
-<tr>
-<td align="center">接口</td>
-<td align="center">nil</td>
-</tr>
-<tr>
-<td align="center">信道</td>
-<td align="center">nil</td>
-</tr>
-</tbody></table>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">GO入门</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/08/16/GO-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/">Next &amp;raquo;</a>
@@ -1518,10 +1606,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">细节</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">docker</a>
               </li>
              
               <li class="article-tag-list-item">

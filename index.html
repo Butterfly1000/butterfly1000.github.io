@@ -208,6 +208,237 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Dockerfile" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/04/02/Dockerfile/">Dockerfile</a>
+    </h1>
+  
+
+        
+        <a href="/2022/04/02/Dockerfile/" class="archive-article-date">
+  	<time datetime="2022-04-02T06:00:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-04-02</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h1><p>Dockerfile是Docker中用来<strong>自动化构建</strong>镜像的<strong>配置文件</strong>，在Dockerfile中，包含了构建镜像过程中需要执行的<strong>命令、参数以及其他操作</strong>，并且支持以<code>#</code>开头的注释行。</p>
+<p>Dockerfile结构大致分为四部分：</p>
+<ul>
+<li>基础镜像信息</li>
+<li>维护者信息</li>
+<li>镜像操作指令</li>
+<li>镜像启动时执行的命令</li>
+</ul>
+<h3 id="DockerFile构建过程"><a href="#DockerFile构建过程" class="headerlink" title="DockerFile构建过程"></a>DockerFile构建过程</h3><ul>
+<li>docker从基础镜像<strong>运行一个容器</strong></li>
+<li>执行一条指令并<strong>对容器做修改</strong> </li>
+<li>执行类似docker commit的操作<strong>提交一个新的镜像层</strong></li>
+<li>docker再<strong>基于刚提交的镜像</strong>运行一个新的容器</li>
+<li>执行dockerfile中的下一条指令<strong>直到</strong>所有指令都<strong>执行完成</strong></li>
+</ul>
+<p>Dockerfile构建过程是以基础镜像为基础的，<strong>每一条指令构建一层镜像</strong>，因此每一条指令的内容，就是描述该层应当如何构建。以此，有了Dockerfile，我们可以方便的定制自己额外的需求，只需在Dockerfile里添加或者修改指令，重新构建即可。</p>
+<h2 id="构建步骤"><a href="#构建步骤" class="headerlink" title="构建步骤"></a>构建步骤</h2><ul>
+<li>编写一个 dockerfile 文件</li>
+<li><code>docker build</code>构建成为一个镜像</li>
+<li><code>docker run</code>运行镜像</li>
+<li>Docker push 发布镜像（DockerHub、阿里云像仓库）</li>
+</ul>
+<h2 id="Dockerfile的编写规范"><a href="#Dockerfile的编写规范" class="headerlink" title="Dockerfile的编写规范"></a>Dockerfile的编写规范</h2><ol>
+<li>每一个保留关键字(指令)都是必须是大写字母</li>
+<li>执行从上到下顺序执行</li>
+<li>#表示注释</li>
+<li>每一个指令都会创建提交一个新的镜像层，并提交</li>
+</ol>
+<p><img src="/2022/04/02/Dockerfile/dkf1.jpg" alt="jpg"></p>
+<h3 id="Dockerfile常用指令"><a href="#Dockerfile常用指令" class="headerlink" title="Dockerfile常用指令"></a>Dockerfile常用指令</h3><blockquote>
+<p>FROM</p>
+</blockquote>
+<p>FROM 指令用于<strong>指定基础镜像</strong>，其后构建新镜像以此为基础进行构建。<code>FROM</code>指令是Dockerfile文件中除注释命令之外的<strong>第一条指令，也是必备的指令</strong>。如果在同一个Dockerfile中<strong>创建多个镜像</strong>时，可以使用多个<code>FROM</code>指令（每个镜像一次）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">FROM &lt;image&gt;</span><br><span class="line"># 或</span><br><span class="line">FROM &lt;image&gt;:&lt;tag&gt;</span><br><span class="line"># 或</span><br><span class="line">FROM &lt;image&gt;:&lt;digest&gt;</span><br><span class="line"></span><br><span class="line">FROM ubuntu:14.04</span><br></pre></td></tr></table></figure>
+
+<p>tag或digest是可选参数，如果不使用这两个值时，会使用latest版本的基础镜像。</p>
+<blockquote>
+<p>MAINTAINET</p>
+</blockquote>
+<p>指定维护者的信息。</p>
+<blockquote>
+<p>RUN</p>
+</blockquote>
+<p><strong>在镜像的构建过程中执行特定的命令</strong>（执行某些动作、安装系统软件、配置系统信息之类），并生成一个中间镜像。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># shell格式</span><br><span class="line">RUN &lt;命令&gt;</span><br><span class="line"># exec格式</span><br><span class="line">RUN [&quot;可执行文件&quot;, &quot;参数1&quot;, &quot;参数2&quot;]</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong>如果有多行命令尽量不要写多个<code>RUN</code>，因为Dockerfile中每一个指令都会构建一层，多少个<code>RUN</code>就构建了多少层镜像，会造成镜像的臃肿，还增加了构件部署的时间，可以使用换行符<code>\</code>。</p>
+<blockquote>
+<p>COPY</p>
+</blockquote>
+<p><code>COPY</code>命令用于将宿主机器上的的文件（Dockerfile所在目录的相对路径）复制到镜像内，如果目的位置不存在，Docker会自动创建。<code>源路径</code>所指定的源可以有多个,但必须是上下文根目录中的相对路径。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">COPY &lt;源路径&gt;  &lt;目标路径&gt;</span><br><span class="line">COPY [&quot;&lt;源路径1&gt;&quot;,...   &quot;&lt;目标路径&gt;&quot;]</span><br></pre></td></tr></table></figure>
+
+<p>例如，把宿主机中的test.json文件复制到容器中/usr/src/app/目录下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">COPY test.json &#x2F;usr&#x2F;src&#x2F;app&#x2F;</span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p>ADD</p>
+</blockquote>
+<p><code>ADD</code>指令的作用和<code>COPY</code>基本一致，但是在<code>COPY</code>基础上增加了一些功能，源路径可以是URL，也可以是 tar.gz。语法格式也和<code>COPY</code>一致。</p>
+<blockquote>
+<p>ENV</p>
+</blockquote>
+<p>ENV指令可以为镜像创建出来的容器声明环境变量。并且在Dockerfile中，ENV指令声明的环境变量会被后面的特定指令(即ENV、ADD、COPY、WORKDIR、EXPOSE、VOLUME、USER)解释使用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ENV &lt;key&gt; &lt;value&gt;</span><br><span class="line"># 或</span><br><span class="line">ENV &lt;key1&gt;&#x3D;&lt;value1&gt; &lt;key2&gt;&#x3D;&lt;value2&gt;...</span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p>environment</p>
+</blockquote>
+<p>compose file 中的 environment 节点用来为容器设置环境变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">web:</span><br><span class="line">  environment:</span><br><span class="line">    DEBUG: 1</span><br><span class="line"> </span><br><span class="line">等同于</span><br><span class="line">$ docker run -e DEBUG&#x3D;1</span><br></pre></td></tr></table></figure>
+
+<p>要把当前 shell 环境变量的值传递给容器的环境变量也很简单，去掉上面代码中的赋值部分就可以了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">web:</span><br><span class="line">  environment:</span><br><span class="line">    DEBUG:</span><br></pre></td></tr></table></figure>
+
+<p>这种情况下，如果没有在当前的 shell 中导出环境变量 DEBUG，compose file 中会把它解释为 null。</p>
+<p><strong>使用文件为容器设置多个环境变量</strong></p>
+<p>如果觉得通过 environment 为容器设置环境变量不够过瘾，我们还可以像 docker -run 的 –env-file 参数一样通过文件为容器设置环境变量。</p>
+<blockquote>
+<p>WORKDIR</p>
+</blockquote>
+<p>格式: <code>WORKDIR /path/to/workdir</code></p>
+<p>WORKDIR指令<strong>设置工作目录</strong>，它之后的RUN、CMD、ENTRYPOINT、COPY以及ADD指令都会在这个工作目录下运行。如果这个工作目录不存在，则会自动创建一个。<br>WORKDIR指令可在Dockerfile中多次使用。如果提供了相对路径，则它将相对于上一个WORKDIR指令的路径。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">WORKDIR &#x2F;a</span><br><span class="line">WORKDIR b</span><br><span class="line">WORKDIR c</span><br><span class="line">RUN pwd</span><br></pre></td></tr></table></figure>
+
+<p>输出结果是 /a/b/c</p>
+<blockquote>
+<p>EXPOSE</p>
+</blockquote>
+<p>为构建的镜像设置监听端口，使容器在运行时监听。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">EXPOSE &lt;port1&gt; [&lt;port2&gt;...]</span><br><span class="line"></span><br><span class="line">例如：</span><br><span class="line">EXPOSE 8080</span><br><span class="line"></span><br><span class="line">EXPOSE 8080其实等价于docker run -p 8080,如果需要把8081端口映射到宿主机中的某个端口（如8088）以便外界访问时，则可以用docker run -p 8088:8080</span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p>USER</p>
+</blockquote>
+<p><code>USER</code>用于指定运行镜像所使用的用户。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">USER root</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>USER</code>指定用户后，Dockerfile中其后的命令<code>RUN</code>、<code>CMD</code>、<code>ENTRYPOINT</code>都将使用该用户执行。</p>
+<blockquote>
+<p>CMD</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CMD [&quot;可执行文件&quot;, &quot;参数1&quot;, &quot;参数2&quot;]</span><br></pre></td></tr></table></figure>
+
+<p><strong>指定启动容器时执行的命令</strong>，每个Dockerfile只能有一条<code>CMD</code>指令，如果指定了多条指令，则最后一条生效。</p>
+<p>其作用是在启动容器的时候提供一个默认的命令项，如果用户执行<code>docker run</code>时提供了命令项，这个命令就会覆盖掉。</p>
+<blockquote>
+<p>VOLUME</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">VOLUME [&quot;&#x2F;data&quot;]</span><br></pre></td></tr></table></figure>
+
+<p>创建一个可以从本地主机或其他容器挂载的挂载点，一般用来存放数据库和需要保持的数据等。</p>
+<blockquote>
+<p>ENTRYPOINT</p>
+</blockquote>
+<p><strong>容器启动后执行的命令</strong>，这些命令不能被<code>docker run</code>提供的参数覆盖。和<code>CMD</code>一样，每个Dockerfile中只能有一个<code>ENTRYPOINT</code>，如果指定了多条指令，则最后一条生效。 </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ENTRYPOINT [&quot;可执行文件&quot;, &quot;参数1&quot;, &quot;参数2&quot;]</span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p>ONBUILD</p>
+</blockquote>
+<p><code>ONBUILD</code>用于配置当前所创建的镜像作为其它新创建镜像的基础镜像时，所执行的操作指令。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ONBUILD [INSTRUCTION]</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="DockerFile实例"><a href="#DockerFile实例" class="headerlink" title="DockerFile实例"></a>DockerFile实例</h2><blockquote>
+<p>编写Dockerfile</p>
+</blockquote>
+<p>构建MySQL镜像</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">FROM ubuntu:bionic-20190612</span><br><span class="line"></span><br><span class="line">LABEL maintainer xxxx@xxxx.com</span><br><span class="line"></span><br><span class="line">ENV MYSQL_USER&#x3D;mysql \</span><br><span class="line">    MYSQL_VERSION&#x3D;5.7 \</span><br><span class="line">    MYSQL_DATA_DIR&#x3D;&#x2F;var&#x2F;lib&#x2F;mysql \</span><br><span class="line">    MYSQL_RUN_DIR&#x3D;&#x2F;run&#x2F;mysqld \</span><br><span class="line">    MYSQL_LOG_DIR&#x3D;&#x2F;var&#x2F;log&#x2F;mysql</span><br><span class="line"></span><br><span class="line">RUN apt-get update \</span><br><span class="line"> &amp;&amp; DEBIAN_FRONTEND&#x3D;noninteractive apt-get install -y mysql-server&#x3D;$&#123;MYSQL_VERSION&#125;* \</span><br><span class="line"> &amp;&amp; rm -rf $&#123;MYSQL_DATA_DIR&#125; \</span><br><span class="line"> &amp;&amp; rm -rf &#x2F;var&#x2F;lib&#x2F;apt&#x2F;lists&#x2F;*</span><br><span class="line"></span><br><span class="line">EXPOSE 3306&#x2F;tcp</span><br><span class="line"></span><br><span class="line">CMD [&quot;&#x2F;usr&#x2F;bin&#x2F;mysqld_safe&quot;]</span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p> 运行构建命令构建</p>
+</blockquote>
+<p><code>docker build</code>命令用于使用Dockerfile创建镜像。<br> <strong>格式</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build [OPTIONS] PATH | URL | -</span><br></pre></td></tr></table></figure>
+
+<p><strong>常用OPTION如下：</strong>：</p>
+<ul>
+<li>–build-arg=[]：设置镜像创建时的变量</li>
+<li>-f：指定要使用的Dockerfile路径</li>
+<li>-m：设置内存最大值</li>
+<li>–force-rm：设置镜像过程中删除中间容器</li>
+<li>–rm：设置镜像成功后删除中间容器</li>
+<li>–tag, -t：镜像的名字及标签，通常 name:tag 或者 name 格式</li>
+</ul>
+<h2 id="参考原文链接"><a href="#参考原文链接" class="headerlink" title="参考原文链接"></a>参考原文链接</h2><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/7018794120428650533">必会系列！使用Dockerfile构建镜像</a><br><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904081966759943">看完这篇,再也不用焦虑如何写dockerfile了</a><br><a target="_blank" rel="noopener" href="https://juejin.cn/post/7031450887725776904">Docker高级学习(二) Dockerfile</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Docker</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/04/02/Dockerfile/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Vernemq集群搭建、监控是真的好用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1399,150 +1630,6 @@
 
 
   
-    <article id="post-ICE协议下NAT穿越的实现（STUN-TURN）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/03/20/ICE%E5%8D%8F%E8%AE%AE%E4%B8%8BNAT%E7%A9%BF%E8%B6%8A%E7%9A%84%E5%AE%9E%E7%8E%B0%EF%BC%88STUN-TURN%EF%BC%89/">ICE协议下NAT穿越的实现（STUN&amp;TURN）</a>
-    </h1>
-  
-
-        
-        <a href="/2022/03/20/ICE%E5%8D%8F%E8%AE%AE%E4%B8%8BNAT%E7%A9%BF%E8%B6%8A%E7%9A%84%E5%AE%9E%E7%8E%B0%EF%BC%88STUN-TURN%EF%BC%89/" class="archive-article-date">
-  	<time datetime="2022-03-20T02:55:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-03-20</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>这一篇感觉写得真好。</p>
-<p>NAT是什么？看上一篇《P2P通信原理与实现》</p>
-<blockquote>
-<p>NAT的副作用以及解决方案</p>
-</blockquote>
-<p>国内移动无线网络运营商在链路上一段时间内没有数据通讯后, 会淘汰NAT表中的对应项, 造成链路中断。</p>
-<h5 id="这是NAT带来的第一个副作用：NAT超时"><a href="#这是NAT带来的第一个副作用：NAT超时" class="headerlink" title="这是NAT带来的第一个副作用：NAT超时:"></a>这是NAT带来的第一个副作用：NAT超时:</h5><p>而国内的运营商一般NAT超时的时间为5分钟，所以通常我们TCP长连接的心跳设置的时间间隔为3-5分钟。</p>
-<h5 id="而第二个副作用就是：我们这边文章要提到的NAT墙。"><a href="#而第二个副作用就是：我们这边文章要提到的NAT墙。" class="headerlink" title="而第二个副作用就是：我们这边文章要提到的NAT墙。"></a>而第二个副作用就是：我们这边文章要提到的NAT墙。</h5><p>NAT会有一个机制，所有外界对内网的请求，到达NAT的时候，都会被NAT所丢弃，这样如果我们处于一个NAT设备后面，我们将无法得到任何外界的数据。</p>
-<p>但是这种机制有一个解决方案：就是如果我们A主动往B发送一条信息，这样A就在自己的NAT上打了一个B的洞。这样A的这条消息到达B的NAT的时候，虽然被丢掉了，但是如果B这个时候在给A发信息，到达A的NAT的时候，就可以从A之前打的那个洞中，发送给到A手上了。</p>
-<p>简单来讲，就是<strong>如果A和B要进行通信，那么得事先A发一条信息给B，B发一条信息给A。这样提前在各自的NAT上打了对方的洞，这样下一次A和B之间就可以进行通信了。</strong></p>
-<blockquote>
-<p> 四种NAT类型，看上一篇《P2P通信原理与实现》后就完全能理解下面这段话了。</p>
-</blockquote>
-<p>RFC3489 中将 NAT 的实现分为四大类：</p>
-<ol>
-<li>Full Cone NAT                          （完全锥形 NAT）</li>
-<li>Restricted Cone NAT                 （限制锥形 NAT ，可以理解为 IP 限制，Port不限制）</li>
-<li>Port Restricted Cone NAT          （端口限制锥形 NAT，IP+Port 限制）</li>
-<li>Symmetric NAT                        （对称 NAT）</li>
-</ol>
-<p>其中完全最上层的完全锥形NAT的穿透性最好，而最下层的对称形NAT的安全性最高。</p>
-<p>简单来讲讲这4种类型的NAT代表什么：</p>
-<ul>
-<li>如果一个NAT是Full Cone NAT，那么无论什么IP地址访问，都不会被NAT墙掉（这种基本很少）。</li>
-<li>Restricted Cone NAT，仅仅是经过打洞的IP能穿越NAT，但是不限于Port。</li>
-<li>Port Restricted Cone NAT，仅仅是经过打洞的IP+端口号能穿越NAT。</li>
-<li>Symmetric NAT 这种也是仅仅是经过打洞的IP+端口号能穿越NAT，但是它有一个最大的和Cone类型的NAT的区别，它对外的公网Port是不停的变化的：<br>比如A是一个对称NAT，那么A给B发信息，经过NAT映射到一个Port:10000，A给C发信息，经过NAT映射到一个Port:10001，这样会导致一个问题，我们服务器根本无法协调进行NAT打洞。</li>
-</ul>
-<p>至于为什么无法协调打洞，下面我们会从STUN和TURN的工作原理来讲。</p>
-<blockquote>
-<h4 id="STUN和TURN的实现"><a href="#STUN和TURN的实现" class="headerlink" title="STUN和TURN的实现"></a>STUN和TURN的实现</h4></blockquote>
-<h5 id="1-STUN-Server主要做了两件事："><a href="#1-STUN-Server主要做了两件事：" class="headerlink" title="1.STUN Server主要做了两件事："></a>1.STUN Server主要做了两件事：</h5><ul>
-<li>接受客户端的请求，并且把客户端的公网IP、Port封装到ICE Candidate中。</li>
-</ul>
-<ul>
-<li>通过一个复杂的机制，<strong>得到客户端的NAT类型</strong>。</li>
-</ul>
-<p>完成了这些STUN Server就会这些基本信息发送回客户端，然后根据NAT类型，来判断是否需要TURN服务器协调进行下一步工作。</p>
-<p>我们来讲讲这两步具体做了什么吧：<br>第一件事就不用说了，其实就是得到客户端的请求，把源IP和Port拿到，添加到ICE Candidate中。</p>
-<h6 id="来讲讲第二件事，STUN是如何判断NAT的类型的："><a href="#来讲讲第二件事，STUN是如何判断NAT的类型的：" class="headerlink" title="来讲讲第二件事，STUN是如何判断NAT的类型的："></a>来讲讲第二件事，STUN是如何判断NAT的类型的：</h6><p>假设B是客户端，C是STUN服务器，C有两个IP分别为IP1和IP2（至于为什么要两个IP，接着往下看）：</p>
-<h6 id="STEP1-判断客户端是否在NAT后："><a href="#STEP1-判断客户端是否在NAT后：" class="headerlink" title="STEP1.判断客户端是否在NAT后："></a>STEP1.判断客户端是否在NAT后：</h6><p>B向C的<strong>IP1的port1端口</strong>发送一个UDP 包。C收到这个包后，会把它收到包的<strong>源</strong>IP和port写到UDP包中，然后把此包通过IP1和port1发还给B。</p>
-<p>这边还给B包中的IP和port也就是B的NAT的外网 IP和port，也就是说你在STEP1中就得到了B的NAT的外网IP。</p>
-<p>熟悉NAT工作原理的朋友可以知道，C返回给B的这个UDP包B一定收到**(因为由B主动先发送给C，B的NAT已经记录下了C的IP和端口)**。如果在你的应用中，向一个STUN服务器发送数据包后，你没有收到STUN的任何回应包，那只有两种可能：1、STUN服务器不存在，或者你弄错了port。2、你的NAT拒绝一切UDP包从外部向内部通过。</p>
-<p>当B收到此UDP后，把此UDP中的IP和自己的IP做比较，如果是一样的，就说明自己是在<strong>公网</strong>，下步NAT将去探测防火墙类型，这边不做介绍。如果不一样，说明有NAT的存在，系统进行STEP2的操作。</p>
-<h6 id="STEP2-判断是否处于Full-Cone-Nat下："><a href="#STEP2-判断是否处于Full-Cone-Nat下：" class="headerlink" title="STEP2.判断是否处于Full Cone Nat下："></a>STEP2.判断是否处于Full Cone Nat下：</h6><p>B向C的IP1发送一个UDP包，请求C通过另外一个IP2和PORT（不同与SETP1的IP1）向B返回一个UDP数据包（现在知道为什么C要有两个IP了吧，虽然还不理解为什么，呵呵）。</p>
-<p>我们来分析一下，如果B收到了这个数据包，那说明什么？说明NAT来着不拒，不对数据包进行任何过滤，这也就是STUN标准中的full cone NAT。遗憾的是，Full Cone Nat太少了，这也意味着你能收到这个数据包的可能性不大。如果没收到，那么系统进行STEP3的操作。</p>
-<h6 id="STEP3-判断是否处于对称NAT下："><a href="#STEP3-判断是否处于对称NAT下：" class="headerlink" title="STEP3.判断是否处于对称NAT下："></a>STEP3.判断是否处于对称NAT下：</h6><p>B向C的IP2的port2发送一个数据包，C收到数据包后，把它收到包的源IP和port写到UDP包中，然后通过自己的IP2和port2把此包发还给B。</p>
-<p>和step1一样，B肯定能收到这个回应UDP包。此包中的port是我们最关心的数据，下面我们来分析：<br>如果这个port和step1中的port一样，那么可以肯定这个NAT是个CONE NAT，否则是对称NAT。道理很简单：根据对称NAT的规则，当目的地址的IP和port有任何一个改变，那么NAT都会重新分配一个port使用，而在step3中，和step1对应，我们改变了IP和port。因此，如果是对称NAT,那这两个port肯定是不同的。</p>
-<p>如果在你的应用中，到此步的时候PORT是不同的，那么这个它就是处在一个对称NAT下了。如果相同，那么只剩下了restrict cone 和port restrict cone。系统用step4探测是是那一种。</p>
-<h6 id="STEP4-判断是处于Restrict-Cone-NAT还是Port-Restrict-NAT之下："><a href="#STEP4-判断是处于Restrict-Cone-NAT还是Port-Restrict-NAT之下：" class="headerlink" title="STEP4.判断是处于Restrict Cone NAT还是Port Restrict NAT之下："></a>STEP4.判断是处于Restrict Cone NAT还是Port Restrict NAT之下：</h6><p>B向C的IP2的一个端口PD发送一个数据请求包，要求C用IP2和不同于PD的port返回一个数据包给B。</p>
-<p>我们来分析结果：如果B收到了，那也就意味着只要IP相同，即使port不同，NAT也允许UDP包通过。显然这是Restrict Cone NAT。如果没收到，没别的好说，Port Restrict NAT.</p>
-<h6 id="到这里STUN-Server一共通过这4步，判断出客户端处于什么类型的NAT下，"><a href="#到这里STUN-Server一共通过这4步，判断出客户端处于什么类型的NAT下，" class="headerlink" title="到这里STUN Server一共通过这4步，判断出客户端处于什么类型的NAT下，"></a>到这里STUN Server一共通过这4步，判断出客户端处于什么类型的NAT下，</h6><h6 id="然后去做后续的处理：这4步都会返回给客户端它的公网IP、Port和NAT类型，除此之外："><a href="#然后去做后续的处理：这4步都会返回给客户端它的公网IP、Port和NAT类型，除此之外：" class="headerlink" title="然后去做后续的处理：这4步都会返回给客户端它的公网IP、Port和NAT类型，除此之外："></a>然后去做后续的处理：这4步都会返回给客户端它的公网IP、Port和NAT类型，除此之外：</h6><ul>
-<li>如果B处于公网或者Full Cone Nat下，STUN不做其他的了，因为其他客户端可以直接和A进行通信。</li>
-<li>如果B处于Restrict Cone或者Port Restrict NAT下，STUN还会协调TURN进行NAT打洞。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">B请求STUN服务器，</span><br><span class="line">STUN服务器返回ICE NAT类型给B;</span><br><span class="line">STUN服务器协调打洞TURN服务器;</span><br><span class="line">TURN服务器命令A给B打洞，B给A打洞；</span><br><span class="line">B和A通信</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>如果A处于对称NAT下，那么点对点连接下，NAT是无法进行打洞的。所以为了通信，只能采取最后的手段了，就是转成C/S架构了，STUN会协调TURN进行消息转发（中继）。</li>
-</ul>
-<h5 id="2-TURN-Server也主要做了两件事："><a href="#2-TURN-Server也主要做了两件事：" class="headerlink" title="2.TURN Server也主要做了两件事："></a>2.TURN Server也主要做了两件事：</h5><ul>
-<li><h6 id="为NAT打洞："><a href="#为NAT打洞：" class="headerlink" title="为NAT打洞："></a>为NAT打洞：</h6></li>
-</ul>
-<p>如果A和B要互相通信，那么TURN Server，会命令A和B互相发一条信息，这样各自的NAT就留下了对方的洞，下次他们就可以之间进行通信了。</p>
-<ul>
-<li><h6 id="为对称NAT提供消息转发："><a href="#为对称NAT提供消息转发：" class="headerlink" title="为对称NAT提供消息转发："></a>为对称NAT提供消息转发：</h6></li>
-</ul>
-<p>当A或者B其中一方是对称NAT时，那么给这一方发信息，就只能通过TURN Server来转发了。</p>
-<h4 id="最后补充一下，为什么对称NAT无法打洞："><a href="#最后补充一下，为什么对称NAT无法打洞：" class="headerlink" title="最后补充一下，为什么对称NAT无法打洞："></a>最后补充一下，为什么对称NAT无法打洞：</h4><p>假如A、B进行通信，而B处于对称NAT之下，那么A与B通信，STUN拿到A，B的公网地址和端口号都为10000，然后去协调TURN打洞，那么TURN去命令A发信息给B，则A就在NAT打了个B的洞，但是这个B的洞是端口号为10000的洞，但是下次B如果给A发信息，因为B是对称NAT，它给每个新的IP发送信息时，都重新对应一个公网端口，所以给A发送请求可能是公网10001端口，但是A只有B的10000端口被打洞过，所以B的请求就被丢弃了。<br>显然Server是无法协调客户端打洞的，因为协调客户端打得洞仅仅是上次对端为Server发送端口的洞，并不适用于另一个请求。</p>
-<h5 id="最后的最后再补充一点，就是NAT打的洞也是具有时效性的，如果NAT超时了，那么还是需要重新打洞的。"><a href="#最后的最后再补充一点，就是NAT打的洞也是具有时效性的，如果NAT超时了，那么还是需要重新打洞的。" class="headerlink" title="最后的最后再补充一点，就是NAT打的洞也是具有时效性的，如果NAT超时了，那么还是需要重新打洞的。"></a>最后的最后再补充一点，就是NAT打的洞也是具有时效性的，如果NAT超时了，那么还是需要重新打洞的。</h5><p><strong>文章地址：</strong></p>
-<p>作者：涂耀辉<br>链接：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/84e8c78ca61d">https://www.jianshu.com/p/84e8c78ca61d</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">网络</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/03/20/ICE%E5%8D%8F%E8%AE%AE%E4%B8%8BNAT%E7%A9%BF%E8%B6%8A%E7%9A%84%E5%AE%9E%E7%8E%B0%EF%BC%88STUN-TURN%EF%BC%89/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
@@ -1681,10 +1768,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">细节</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">docker</a>
               </li>
              
               <li class="article-tag-list-item">
